@@ -18,31 +18,20 @@ Getting your environment set up and ready for Python development
    :suffix: .
    :depth: 2
 
-.. contents:: Contents:
+**Agenda**
+
+.. contents::
    :depth: 2
    :backlinks: entry
    :local:
 
-Agenda
-======
+**Source**
 
-Setting up of your own development Python environment
+URL: https://github.com/gnyers/python-tuesday-01
 
-#. Tools and settings:
+.. code:: shell
 
-   - Python distribution(s): vanilla python.org, Anaconda
-   - Editors / IDEs: How to set up: Vim, VSCode, Spyder
-
-#. Get started with some simple use-cases:
-
-   - Installing, using and creating Python modules
-   - Set up virtual environments
-   - Using popular modules solve a handful of frequently occurring use-cases
-
-**Source**: https://github.com/gnyers/python-tuesday-01 ::
-
- git clone git@github.com:gnyers/python-tuesday-01.git
-
+   git clone git@github.com:gnyers/python-tuesday-01.git
 
 
 Python distributions
@@ -352,81 +341,89 @@ Differences:
 Installing modules
 ^^^^^^^^^^^^^^^^^^
 
-Let's install the ``requests`` module using ``pip``: ::
+Let's install the ``requests`` module using ``pip``:
 
- $ pip install requests
- Collecting requests
-   Downloading https://files.pythonhosted.org/packages/...
-     100% |████████████████████████████████| 61kB 2.1MB/s
- Collecting idna<2.9,>=2.5 (from requests)
-   Downloading https://files.pythonhosted.org/packages/...
-     100% |████████████████████████████████| 61kB 4.0MB/s
- Collecting certifi>=2017.4.17 (from requests)
-   Downloading https://files.pythonhosted.org/packages/...
-     100% |████████████████████████████████| 163kB 1.9MB/s
- Collecting urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 (from requests)
-   Downloading https://files.pythonhosted.org/packages/...
-     100% |████████████████████████████████| 153kB 3.4MB/s
- Collecting chardet<3.1.0,>=3.0.2 (from requests)
-   Downloading https://files.pythonhosted.org/packages/...
-     100% |████████████████████████████████| 143kB 2.4MB/s
- Installing collected packages: idna, certifi, urllib3, chardet, requests
- Successfully installed certifi-2019.6.16 chardet-3.0.4 idna-2.8 requests-2.22.0 urllib3-1.25.3
- You are using pip version 9.0.3, however version 19.1.1 is available.
- You should consider upgrading via the 'pip install --upgrade pip' command.
+.. code:: shell
+   :number-lines: 1
+
+   $ pip install requests
+   Collecting requests
+     Downloading https://files.pythonhosted.org/packages/...
+       100% |████████████████████████████████| 61kB 2.1MB/s
+   Collecting idna<2.9,>=2.5 (from requests)
+     Downloading https://files.pythonhosted.org/packages/...
+       100% |████████████████████████████████| 61kB 4.0MB/s
+   Collecting certifi>=2017.4.17 (from requests)
+     Downloading https://files.pythonhosted.org/packages/...
+       100% |████████████████████████████████| 163kB 1.9MB/s
+   Collecting urllib3!=1.25.0,!=1.25.1,<1.26,>=1.21.1 (from requests)
+     Downloading https://files.pythonhosted.org/packages/...
+       100% |████████████████████████████████| 153kB 3.4MB/s
+   Collecting chardet<3.1.0,>=3.0.2 (from requests)
+     Downloading https://files.pythonhosted.org/packages/...
+       100% |████████████████████████████████| 143kB 2.4MB/s
+   Installing collected packages: idna, certifi, urllib3, chardet, requests
+   Successfully installed certifi-2019.6.16 chardet-3.0.4 idna-2.8 requests-2.22.0 urllib3-1.25.3
+   You are using pip version 9.0.3, however version 19.1.1 is available.
+   You should consider upgrading via the 'pip install --upgrade pip' command.
 
 What just happened:
 
-- ``pip`` has downloaded the archive containing the ``requests`` module
-- based on information in the archive, it then (recursively) downloaded all
-  other required modules the current one depends on.
-- once all required packages are downloaded it installed them
-- thrown a warning about our outdated version of ``pip``
+- lines 2-4: ``pip`` has downloaded the archive containing the ``requests``
+  module
+- lines 5-16: based on information in the archive, it then (recursively)
+  downloaded all other required modules the current one depends on.
+- lines 17-18: once all required packages are downloaded it installed them
+- lines 19-20: ``pip`` has thrown a warning about its own outdated version
 
-Get a list of installed modules: ::
+Get a list of installed modules:
 
- $ pip list
- certifi (2019.6.16)
- chardet (3.0.4)
- idna (2.8)
- pip (9.0.3)
- requests (2.22.0)
- setuptools (39.0.1)
- urllib3 (1.25.3)
- You are using pip version 9.0.3, however version 19.1.1 is available.
- You should consider upgrading via the 'pip install --upgrade pip' command.
+.. code:: shell
+
+   $ pip list
+   certifi (2019.6.16)
+   chardet (3.0.4)
+   idna (2.8)
+   pip (9.0.3)
+   requests (2.22.0)
+   setuptools (39.0.1)
+   urllib3 (1.25.3)
+   You are using pip version 9.0.3, however version 19.1.1 is available.
+   You should consider upgrading via the 'pip install --upgrade pip' command.
 
 Now let's get rid of those annoying warnings about ``pip``'s version by
-updating it: ::
+updating it:
 
- $ pip install --upgrade pip
- Cache entry deserialization failed, entry ignored
- Collecting pip
-   Downloading https://files.pythonhosted.org/packages/.../pip-19.1.1-py2.py3-none-any.whl (1.4MB)
-     100% |████████████████████████████████| 1.4MB 528kB/s 
- Installing collected packages: pip
-   Found existing installation: pip 9.0.3
-     Uninstalling pip-9.0.3:
-       Successfully uninstalled pip-9.0.3
- Successfully installed pip-19.1.1
+.. code:: shell
+
+   $ pip install --upgrade pip
+   Cache entry deserialization failed, entry ignored
+   Collecting pip
+     Downloading https://files.pythonhosted.org/packages/.../pip-19.1.1-py2.py3-none-any.whl (1.4MB)
+       100% |████████████████████████████████| 1.4MB 528kB/s 
+   Installing collected packages: pip
+     Found existing installation: pip 9.0.3
+       Uninstalling pip-9.0.3:
+         Successfully uninstalled pip-9.0.3
+   Successfully installed pip-19.1.1
 
 Warnings are gone; also note how the latest version presents the same
-information as above: ::
+information as above:
 
- $ pip list
- Package    Version
- ---------- ---------
- certifi    2019.6.16
- chardet    3.0.4
- clipboard  0.0.4
- idna       2.8
- pip        19.1.1
- pyperclip  1.7.0
- requests   2.22.0
- setuptools 39.0.1
- urllib3    1.25.3
+.. code:: shell
 
-
+   $ pip list
+   Package    Version
+   ---------- ---------
+   certifi    2019.6.16
+   chardet    3.0.4
+   clipboard  0.0.4
+   idna       2.8
+   pip        19.1.1
+   pyperclip  1.7.0
+   requests   2.22.0
+   setuptools 39.0.1
+   urllib3    1.25.3
 
 Python Virtual Environments
 ---------------------------
@@ -459,13 +456,17 @@ A ``venv`` can be created manually or programmatically (i.e. from code).
 
 To manually create a ``venv`` execute the following steps:
 
-#. Create a directory which will be the ``root`` of the ``venv``. ::
+#. Create a directory which will be the ``root`` of the ``venv``.
 
-    mkdir -p ~/.virtualenvs/devenv
+   .. code:: shell
 
-#. Populate the ``root`` directory: ::
+      mkdir -p ~/.virtualenvs/devenv
 
-    python3 -m venv ~/.virtualenvs/devenv
+#. Populate the ``root`` directory:
+
+   .. code:: shell
+
+      python3 -m venv ~/.virtualenvs/devenv
 
 
 Working with Virtual Environments
@@ -480,18 +481,23 @@ Use a ``venv`` interactively or with VIM_
 #. Activate the ``venv`` from a directory
 
    On Linux or MacOS X, if ``venv`` is installed in ``~/.virtualenvs/devenv``:
-   ::
 
-    source ~/.virtualenvs/devenv/bin/activate
+   .. code:: shell
 
-   On Windows, from dir : ::
+      source ~/.virtualenvs/devenv/bin/activate
 
-    C:/temp/devenv/bin/activate.bat
+   On Windows, from dir :
+
+   .. code:: shell
+
+      C:/temp/devenv/bin/activate.bat
 
    This will change the prompt to show the name of the active Python ``venv``,
-   e.g.: ::
+   e.g.:
 
-    (devenv) user@host $
+   .. code:: shell
+
+      (devenv) user@host $
 
 #. Above script will modify environmental variables such that when typing
    ``python``, the interpreter, the libraries and modules in the ``venv`` will
@@ -500,17 +506,21 @@ Use a ``venv`` interactively or with VIM_
    **Note:** These settings are temporary and only active in the current session!
    #If the session is closed, you'll need to re-activate.
 
-#. Run your Python application the usual way: ::
+#. Run your Python application the usual way:
 
-    $ python myprogram.ph
+   .. code:: shell
+
+      $ python myprogram.ph
 
    **Note:** you don't need to specify explicitly ``python3``, because the
    python interpreter of the ``venv`` will be the first the OS founds.
 
 #. To de-activate the ``venv`` and restore the system-wide Python settings
-   simply execute: ::
+   simply execute:
 
-    deactivate
+   .. code:: shell
+
+      deactivate
 
 Further read:
 
@@ -547,9 +557,11 @@ following steps:
    parameter.
 #. Add the parent folder containing the root of your virtual environment.
 
-   For example: if you've created a virtual environment using: ::
+   For example: if you've created a virtual environment using:
 
-    mkdir /tmp/myenv && python3 -m venv /tmp/myenv
+   .. code:: shell
+
+      mkdir /tmp/myenv && python3 -m venv /tmp/myenv
 
    You will need to add the ``/tmp`` directory to the ``python.venvPath``
    VSCode parameter. (btw: this will be stored in the
@@ -562,7 +574,313 @@ following steps:
    interpreter when executing your Python code.
 
 
+Getting started with some simple use-cases
+==========================================
 
+Let's talk back
+---------------
+
+We'll use a simple "echo" program to get started with a few best practices.
+Let's get started with the following:
+
+.. code:: python
+   :number-lines: 1
+   :name: echo-v0.py
+
+   import sys
+   print(' '.join(sys.argv[1:]))
+
+- line 1: import the Standard Library's `sys module`_, which contains many
+  data structures related to the currently running interpreter
+- line 2: in order of how Python evaluates things:
+
+  - get a reference to the ``argv`` variable in the `sys module`_ (which is
+    a ``list``)
+  - get all but the 1st element of the list (see Slicing_), which is always
+    the name of the currently running Python program
+  - take the elements of the list and "join" them together using spaces
+    (because we asked for spaces in "``' '.join(...)``", which will return
+    a ``str``
+  - print this ``str`` out to the terminal
+
+Now let's add a few things to our program:
+
+.. code:: python
+   :number-lines: 1
+   :name: echo-v1.py
+
+   #!/usr/bin/env python
+   '''A simple program to echo back all its CLI arguments
+   '''
+
+   import sys
+   print(' '.join(sys.argv[1:]))
+
+- line 1: an instruction to the operating system (Linux, MacOS X and Unix
+  only!) with what interpreter we wish to run this file. That is: provided
+  that our program file is "executable" (see `file permissions`_)
+- lines 2-3: a rudimentary "documentation" to our program using a simple
+  docstring_
+
+.. _sys module: https://docs.python.org/3/library/sys.html
+.. _Slicing: https://stackoverflow.com/questions/509211/understanding-slice-notation
+.. _file permissions: https://www.linux.com/learn/understanding-linux-file-permissions
+.. _docstring: https://www.python.org/dev/peps/pep-0257/
+
+
+Suppose that before echoing, we wish to modify the input:
+
+.. code:: python
+   :number-lines: 1
+   :name: echo-v2.py
+
+   #!/usr/bin/env python
+   '''A simple program to echo back all its CLI arguments
+   '''
+
+   import sys
+   answer = ' '.join(sys.argv[1:])
+   answer = answer.title()
+   print(answer)
+
+- line 6: instead of printing out, the ``str`` is stored in the variable
+  ``answer``
+- line 7: by invoking the ``.title()`` method, we capitalize all words (see
+  also the documentation about other `string methods`_)
+
+.. _string methods: https://docs.python.org/3/library/stdtypes.html#string-methods
+
+Install and use a 3rd party module
+----------------------------------
+
+Using the pyperclip_ package we can access the clipboard of our desktop
+environment.
+
+Install ``pyperclip`` by executing the following in a terminal: ::
+
+ $ pip install pyperclip
+ Collecting pyperclip
+   Using cached https://files.pythonhosted.org/packages/.../pyperclip-1.7.0.tar.gz
+ Installing collected packages: pyperclip
+   Running setup.py install for pyperclip ... done
+ Successfully installed pyperclip-1.7.0
+
+Now create new Python file in your editor with the following content.
+
+**Warning**: make sure to give this file any other name than ``clipboard.py``,
+otherwise this will conflict with the module's name.
+
+.. code:: python
+   :number-lines: 1
+   :name: clip.py
+
+   #!/usr/bin/env python
+   # -*- coding: utf-8 -*-
+
+   import clipboard
+
+   # Put a string on the clipboard
+   clipboard.copy('Beautiful is better than ugly.')
+
+   print('Retrieve the content of the clipboard:\n', clipboard.paste())
+
+- line 4: import the ``clipboard`` module; 
+
+  **NOTE:** we've installed the ``pyperclip`` package, which has created
+  a module ``clipboard``!
+
+- line 7: put the string "Beautiful is better than ugly." (see `The Zen of
+  Python`_)
+- line 9: print the content of the clipboard
+
+  **NOTE:** after running the program, the string remains on the clipboard, so
+  you may try to paste this in a different application
+
+.. _pyperclip: https://pyperclip.readthedocs.io/en/latest/introduction.html
+.. _The Zen of Python: https://en.wikipedia.org/wiki/Zen_of_Python
+
+
+Working with CLI arguments
+--------------------------
+
+In one of the previous example we've already worked with CLI arguments. This
+example is a significant jump in terms of sophistication, but with this we'll
+arrive to the definitive solution for this common programming pattern.
+
+CLI arguments are one of oldest and most frequently used mechanism to provide
+some information to a program. Because it is so old (going back to the '70s)
+it has a wide variety of appearances depending on:
+
+- operating system: e.g. Unix, MacOS X and Linux usually use ``-h`` or
+  ``--help``, while Windows traditionally uses ``/h``
+- style: Unix vs. GNU style CLI arguments, the former being compact, the
+  latter more informative
+- complexity: all the following forms can mean the same
+
+  ``'-vvvltp 8000'``
+
+  ``'-v -v -v -l -t -p 8000'``
+
+  ``'--verbose 3 --long --time --port 8000``
+
+A practical example showing just how much information can be conveyed using
+CLI arguments to a seemingly simple program such as ``'ls'``:
+
+.. code::
+
+   $ ls --help
+   Usage: ls [OPTION]... [FILE]...
+   List information about the FILEs (the current directory by default).
+   Sort entries alphabetically if none of -cftuvSUX nor --sort is specified.
+
+   Mandatory arguments to long options are mandatory for short options too.
+     -a, --all                  do not ignore entries starting with .
+     -A, --almost-all           do not list implied . and ..
+         --author               with -l, print the author of each file
+     -b, --escape               print C-style escapes for nongraphic characters
+         --block-size=SIZE      with -l, scale sizes by SIZE when printing them;
+                                  e.g., '--block-size=M'; see SIZE format below
+     -B, --ignore-backups       do not list implied entries ending with ~
+     -c                         with -lt: sort by, and show, ctime (time of last
+                                  modification of file status information);
+                                  with -l: show ctime and sort by name;
+                                  otherwise: sort by ctime, newest first
+   ...
+
+Python provides multiple modules to deal with the varying levels of complexity
+of parsing command-line arguments. A few examples:
+
+- optparse_: a deprecated module in the `Standard Library`_
+- argparse_: the currently supported module in the `Standard Library`_ to
+  solve CLI parsing (see also the `argparse tutorial`_)
+- docopt_: a very intuitive module, which parses a ``docstr`` describing the
+  program's usage conforming to the traditional notation for documentation
+
+Right now we'll be checking out a few simpler use-cases of the ``argparse``
+module.
+
+.. _optparse: https://docs.python.org/3.7/library/optparse.html
+.. _argparse: https://docs.python.org/3.7/library/argparse.html
+.. _argparse tutorial: https://docs.python.org/3/howto/argparse.html
+.. _docopt: https://docopt.org/
+
+A basic example
+^^^^^^^^^^^^^^^
+
+The following code is perhaps the simplest first step:
+
+.. code:: python
+   :number-lines: 1
+   :name: cliargs1.py
+
+   #!/usr/bin/env python3
+   # -*- coding: utf-8 -*-
+
+   import argparse
+   p = argparse.ArgumentParser()
+   p.add_argument('-n', '--name',
+                  type=str,
+                  required=False,
+                  default='John Doe',
+                  help='Your name')
+   args = p.parse_args()
+
+- line 4: import the ``argparse`` module from the Standard Library
+- line 5: create a new argument parser instance, which will be able to parse
+  a list of strings (typically the CLI arguments from ``sys.argv``). This is
+  a container of parser objects for individual arguments, such as '-n' or
+  '--name' etc...
+- lines 6-10: a multi-line instruction to add the 1st argument parser, which
+  defines the requirements for the ``name`` argument:
+
+  - line 6: the CLI argument designated with this either options ``-n`` or
+    ``--name`` will interpreted as the ``name`` parameter
+  - line 7: the type of this parameter is ``str``
+  - line 8: it is an optional argument, so it may be omitted
+  - line 9: if omitted, the default value of it will be "John Doe"
+  - line 10: when the '-h' or '--help' argument is provided, this string
+    elaborates on the meaning of this parameter. The description of the
+    parameter may be multiple lines.
+
+Now let's execute the program in two different ways
+
+#. without any arguments
+
+   .. code:: shell
+
+      $ python3 cliargs1.py -h
+
+   No response, which is correct!
+
+#. with a ``'--help'`` argument
+
+   .. code:: shell
+
+      $ python3 cliargs1.py -h
+      usage: cliargs1.py [-h] [-n NAME]
+
+      optional arguments:
+        -h, --help            show this help message and exit
+        -n NAME, --name NAME  Your name
+
+Extend the program by adding a new argument ``'--age'`` to the CLI parser and
+printing the parsed values:
+
+.. code:: python
+   :number-lines: 1
+   :name: cliargs2.py
+
+   #!/usr/bin/env python3
+   # -*- coding: utf-8 -*-
+
+   import argparse
+   p = argparse.ArgumentParser()
+   p.add_argument('-n', '--name',
+                  type=str,
+                  required=False,
+                  default='John Doe',
+                  help='Your name')
+   p.add_argument('-a', '--age',
+                  type=int,
+                  required=False,
+                  default=99,
+                  help='Your age')
+   args = p.parse_args()
+   print('Name:', args.name)
+   print('Age :', args.age)
+
+Execute the program in the following ways:
+
+#. No arguments:
+
+   .. code:: shell
+
+      $ python3 cliargs2.py
+      Name: John Doe
+      Age : 99
+
+   The program prints out the default values of both parameters.
+
+#. Only the ``'--help'`` argument will instruct the program to print out its
+   help information.
+
+   .. code:: shell
+
+       $ python3 cliargs2.py --help
+       usage: cliargs2.py [-h] [-n NAME] [-a AGE]
+
+       optional arguments:
+         -h, --help            show this help message and exit
+         -n NAME, --name NAME  Your name
+         -a AGE, --age AGE     Your age
+
+#. Provide a value for both arguments:
+
+   .. code:: shell
+
+      $ python3 cliargs2.py --name Jane --age 32
+      Name: Jane
+      Age : 32
 
 
 
