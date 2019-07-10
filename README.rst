@@ -25,13 +25,17 @@ Getting your environment set up and ready for Python development
    :backlinks: entry
    :local:
 
-**Source**
+**Prep**
 
-URL: https://github.com/gnyers/python-tuesday-01
+- Get Material: 
+  URL: https://github.com/gnyers/python-tuesday
 
-.. code:: shell
+  .. code:: shell
 
-   git clone git@github.com:gnyers/python-tuesday-01.git
+     git clone git@github.com:gnyers/python-tuesday.git
+
+- Install Editor, e.g.: VSCode: https://code.visualstudio.com/
+
 
 
 Python distributions
