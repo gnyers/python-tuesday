@@ -785,6 +785,7 @@ This program produces the following output (slightly re-formatted for
 readability):
 
 .. code:: shell
+
    python3 -i read-multiple-ini.py
 
    {
