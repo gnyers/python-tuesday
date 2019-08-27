@@ -570,6 +570,8 @@ behavior.
 
 With the following slight modification we can preserve the upper-case letters:
 
+.. _cartooncharacters:
+
 .. code:: python
    :number-lines: 1
    :name: write-names-as-ini-preserve-case.py
@@ -826,12 +828,270 @@ https://docs.python.org/3/library/configparser.html#interpolation-of-values
 Working with JSON files
 =======================
 
-TODO
+The *JSON* file format (see [JSON]_) is an ECMA open standard well-suited for
+exchanging tree-like data in a human-readable text format. *JSON* is widely
+used for storing both configuration information and actual data.
+
+The "Python Standard Library" provides out-of-the-box *JSON* support in the
+``json`` modules.
+
+
+Write data to JSON file
+-----------------------
+
+Let's take the `cartoon characters data <#cartooncharacters>`_  from the
+``names`` dictionary of our earlier example and export it to a *JSON* file:
+
+.. code:: python
+   :number-lines: 1
+   :name: write-names-as-json.py
+
+   #!/usr/bin/env python3
+
+   import json
+
+   names = {
+             'kids': {
+                       'Chris': 'Family Guy',
+                       'Pebbles': 'The Flintstones',
+                       'Bart': 'The Simpsons'
+                     },
+             'adults': {
+                         'Fred': 'The Flintstones',
+                         'Betty': 'The Flintstones',
+                         'Homer': 'The Simpsons',
+                         'Lois': 'Family Guy'
+                       },
+             'other': { 'Klaus': 'American Dad',
+                        'Brian': 'Family Guy',
+                        'Roger': 'American Dad'
+                      }
+           }
+   with open('names.json', 'wt') as fh:
+      json.dump(names, fh)
+
+Focusing on the new instructions:
+
+- **line 3:** load the ``json`` module
+- **line 23:** the ``json.dump()`` takes 2 arguments: the data structure
+  (usually as a ``dict``) and a file-handler
+
+The program produces the ``"names.json"`` file with the following content
+(re-formatted for readability):
+
+.. code-block:: json
+   :name: names.json
+
+   {
+     "kids": {
+       "Chris": "Family Guy",
+       "Pebbles": "The Flintstones",
+       "Bart": "The Simpsons"
+     },
+     "adults": {
+       "Fred": "The Flintstones",
+       "Betty": "The Flintstones",
+       "Homer": "The Simpsons",
+       "Lois": "Family Guy"
+     },
+     "other": {
+       "Klaus": "American Dad",
+       "Brian": "Family Guy",
+       "Roger": "American Dad"
+     }
+   }
+
+Note the striking similarities in the syntax of the *JSON* format and the
+actual Python syntax of dictionaries! Almost exactly the same.
+
+Load JSON data from file
+------------------------
+
+Loading a *JSON* file is fairly trivial with Python's  ``json`` module:
+
+.. code:: python
+   :number-lines: 1
+   :name: read-names-from-json.py
+
+   #!/usr/bin/env pythone
+
+   import json
+   with open('names.json') as fh:
+      names = json.load(fh)
+      print(names)
+
+Output (re-formatted):
+
+.. code:: shell
+
+   python3 read-names-from-json.py
+
+   {
+     'kids': {
+       'Chris': 'Family Guy', 'Pebbles': 'The Flintstones', 
+       'Bart': 'The Simpsons'
+     },
+     'adults': {
+       'Fred': 'The Flintstones', 'Betty': 'The Flintstones', 
+       'Homer': 'The Simpsons', 'Lois': 'Family Guy'
+     },
+     'other': {
+       'Klaus': 'American Dad', 'Brian': 'Family Guy', 'Roger': 'American Dad'
+     }
+   }
 
 Working with YAML files
 =======================
 
-TODO
+In terms of purpose the [YAML]_ format is quite similar to *JSON*, except for
+two aspects:
+
+- its improved readability
+- provides richer data serialization capabilities
+
+One of the most notable usage for of the *YAML* format in the Python ecosystem
+is the [Ansible]_ configuration management solution.
+
+Install YAML module
+-------------------
+
+Currently the "Python Standard Library" does not have *YAML* support.
+Fortunately there are multiple 3rd party modules, which can be easy installed
+using the ``pip`` package management tool.
+
+Perhaps the most popular solution is provided by the [PyYAML]_ project. To
+install the module execute:
+
+.. code:: shell
+
+   pip install pyyaml
+
+Writing data to a YAML file
+---------------------------
+
+Re-using the cartoon characters `data <#cartooncharacters>`_ we can export the
+``names`` dictionary with the following simple code:
+
+.. code:: python
+   :number-lines: 1
+   :name: write-names-as-yaml.py
+
+   #!/usr/bin/env python3
+
+   import yaml
+
+   names = {
+             'kids': {
+                       'Chris': 'Family Guy',
+                       'Pebbles': 'The Flintstones',
+                       'Bart': 'The Simpsons'
+                     },
+             'adults': {
+                         'Fred': 'The Flintstones',
+                         'Betty': 'The Flintstones',
+                         'Homer': 'The Simpsons',
+                         'Lois': 'Family Guy'
+                       },
+             'other': { 'Klaus': 'American Dad',
+                        'Brian': 'Family Guy',
+                        'Roger': 'American Dad'
+                      }
+           }
+   with open('names.yaml', 'wt') as fh:
+      yaml.dump(names, fh)
+
+Focusing on the new instructions:
+
+- **line 3:** load the ``yaml`` module
+- **line 23:** the ``yaml.dump()`` takes 2 arguments: the data structure
+  (usually as a ``dict``) and a file-handler
+
+The program produces the ``"names.yaml"`` file with the following content
+(re-formatted for readability):
+
+.. code-block:: yaml
+   :name: names.yaml
+
+   adults: {Betty: The Flintstones, Fred: The Flintstones, Homer: The Simpsons, Lois: Family Guy}
+   kids: {Bart: The Simpsons, Chris: Family Guy, Pebbles: The Flintstones}
+   other: {Brian: Family Guy, Klaus: American Dad, Roger: American Dad}
+
+More advanced YAML use-case
+---------------------------
+
+The *YAML* specifications (see [YAML_specs]_) contain various simple, yet informative examples
+about the more advanced capabilities of the format.
+
+.. code-block:: yaml
+   :name: invoice.yaml
+
+   ---
+   invoice: 34843
+   date   : 2001-01-23
+   bill-to: &id001
+       given  : Chris
+       family : Dumars
+       address:
+           lines: |
+               458 Walkman Dr.
+               Suite #292
+           city    : Royal Oak
+           state   : MI
+           postal  : 48046
+   ship-to: *id001
+   product:
+       - sku         : BL394D
+         quantity    : 4
+         description : Basketball
+         price       : 450.00
+       - sku         : BL4438H
+         quantity    : 1
+         description : Super Hoop
+         price       : 2392.00
+   tax  : 251.42
+   total: 4443.52
+   comments:
+       Late afternoon is best.
+       Backup contact is Nancy
+       Billsmer @ 338-4338.
+
+
+Reading data from a YAML file
+-----------------------------
+
+Let's create our usual program to read the current format, but with a few 
+additional features: 
+
+#. Instead of hard-coding the data file's name in the program, require the
+   data file's  name as an CLI argument
+#. Using the ``pprint`` (pretty-print) module display the data in a more
+   readable format
+#. Try to handle errors
+
+.. code:: python
+   :number-lines: 1
+   :name: read-yaml.py
+
+   #!/usr/bin/env pythone
+
+   import sys
+   import yaml
+   import pprint as pp
+
+   try:
+      fh = open(sys.argv[1])
+      data = yaml.load(fh)
+   except IndexError:
+      print('I need an argument: YAML file name')
+      sys.exit(1)
+   except FileNotFoundError:
+      print('File "{}" is not found!'.format(sys.argv[1]))
+      sys.exit(2)
+   except yaml.parser.ParserError:
+      msg = 'The file {} does not appear to be a valid YAML file!'
+      print(msg.format(sys.argv[1]))
+   pp.pprint(data)
+
 
 Working with XML files
 ======================
@@ -880,6 +1140,27 @@ References
 
 .. [pep274] Dictionary Comprehensions
    https://www.python.org/dev/peps/pep-0274/
+
+.. [JSON] JSON is a language-independent data format. It was derived from
+   JavaScript, but many modern programming languages include code to generate
+   and parse JSON-format data.
+   https://en.wikipedia.org/wiki/JSON
+
+.. [YAML] YAML is a human-readable data-serialization language. It is commonly
+   used for configuration files, but could be used in many applications where
+   data is being stored or transmitted
+   https://en.wikipedia.org/wiki/YAML
+
+.. [Ansible] Ansible is an open-source software provisioning, configuration
+   management, and application-deployment tool.
+   https://en.wikipedia.org/wiki/Ansible_(software)
+
+.. [PyYAML] PyYAML is a full-featured YAML framework for the Python
+   programming language.
+   https://pyyaml.org/
+
+.. [YAML_specs] Full length examples of YAML
+   https://yaml.org/spec/1.2/spec.html#id2761803
 
 .. _pydoc open: https://docs.python.org/3/library/functions.html#open
 .. _pydoc unicode: https://docs.python.org/3/howto/unicode.html
