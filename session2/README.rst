@@ -781,6 +781,27 @@ A slightly modified version of our `earlier *INI* reader example
            for section in ini.sections() + ['DEFAULT'] }
    print(cfg)
 
+This program produces the following output (slightly re-formatted for
+readability):
+
+.. code:: shell
+   python3 -i read-multiple-ini.py
+
+   {
+     'bitbucket.org': {
+        'User': 'hg', 'ServerAliveInterval': '200', 'Compression': 'yes',
+        'CompressionLevel': '9', 'ForwardX11': 'no'},
+     'topsecret.server.com': {
+        'Port': '50022', 'ForwardX11': 'no', 'ServerAliveInterval': '200',
+        'Compression': 'yes', 'CompressionLevel': '9'},
+     'www.example.com': {
+        'User': 'jdoe', 'ServerAliveInterval': '200', 'Compression': 'yes',
+        'CompressionLevel': '9', 'ForwardX11': 'no'},
+     'DEFAULT': {
+        'ServerAliveInterval': '200', 'Compression': 'yes',
+        'CompressionLevel': '9', 'ForwardX11': 'no'}
+   }
+
 Note that some of the entries defined in ``servers.ini`` are overwritten by
 the matching entries in ``user.ini`` and there is also a new section:
 
@@ -788,7 +809,6 @@ the matching entries in ``user.ini`` and there is also a new section:
 
   - value change of ``ServerAliveInterval``: ``45`` -> ``200``
   - value change of ``ForwardX11``: ``yes`` -> ``no``
-  - new option: 
 
 - new section ``www.example.com``
 
