@@ -466,8 +466,8 @@ Working with INI files
 
 The *INI* format (see [INI_format]_) is capable of representing information
 organized in a tree structure, which lends itself well for its main use case:
-configuration files. Besides configuration files, the *INI* format can also be
-used for data exchange.
+configuration files. Besides that the *INI* format can also be used for data
+exchange.
 
 Similarly to the *CSV* format despite of lacking an official standard, it has
 been in use for decades and as a result has a multitude of (slightly
@@ -506,8 +506,8 @@ In this section we will be working with the data represented by the following
                          }
               }
 
-Writing an INI file
--------------------
+Writing data to INI file
+------------------------
 
 The following is one of the simplest solution to export to an INI file:
 
@@ -544,9 +544,8 @@ The following is one of the simplest solution to export to an INI file:
 When executing this example, it creates the ``names.ini`` file with  the
 following content:
 
-.. code:: shell
+.. code-block:: ini
 
-   cat names.ini
    [kids]
    chris = Family Guy
    pebbles = The Flintstones
@@ -566,7 +565,7 @@ following content:
 Note the lower-case key names (e.g.: 'chris', 'pebbles' etc...). This is the
 default behavior of the ``ConfigParser`` class, since the original
 implementation of the ``configparser`` module tried to adhere the *INI* format
-used on Windows. Since Windows is case-insensitive, this is the class' default
+used on Windows. Windows is case-insensitive, hence the class' default
 behavior.
 
 With the following slight modification we can preserve the upper-case letters:
@@ -613,10 +612,13 @@ A few details of this improved version:
   information on using context managers)
 - **line 26:** write the data to the output file
 
-Reading from INI file
----------------------
+Reading data from INI files
+---------------------------
 
 As usual, we'll try to read in the data from the file we just created.
+
+
+.. _readinifile:
 
 .. code:: python
    :number-lines: 1
@@ -670,6 +672,134 @@ So let's unpack what has happened here:
      }
 
 - **line 7:** display the data
+
+When we execute this program we see the following:
+
+.. code:: shell
+
+   python3 read-names-from-ini.py
+
+   {'kids': {'Chris': 'Family Guy', 'Pebbles': 'The Flintstones', 'Bart': 'The
+   Simpsons'}, 'adults': {'Fred': 'The Flintstones', 'Betty': 'The
+   Flintstones', 'Homer': 'The Simpsons', 'Lois': 'Family Guy'}, 'other':
+   {'Klaus': 'American Dad', 'Brian': 'Family Guy', 'Roger': 'American Dad'}}
+
+Writing configuration data to INI files
+---------------------------------------
+
+Using the *INI* format for configuration data is not significantly different
+and most of the differences arise from conventions after decades of use.
+
+Create a new configuration file based on the example at
+https://docs.python.org/3/library/configparser.html#quick-start
+
+.. code:: python
+   :number-lines: 1
+   :name: write-cfg-as-ini.py
+
+   #!/usr/bin/env python3
+
+   import configparser
+
+   cfg = configparser.ConfigParser()
+   cfg.optionxform = str               # make sure to preserve case!
+
+   # add the DEFAULT section
+   cfg['DEFAULT'] = {'ServerAliveInterval': 45,
+                     'Compression': 'yes',
+                     'CompressionLevel': 9,
+                     'ForwardX11': 'yes'}
+
+   # add a new section
+   cfg['bitbucket.org'] = {}
+   cfg['bitbucket.org']['User'] = 'hg'
+
+   # another new section
+   cfg['topsecret.server.com'] = {}
+   topsecret = cfg['topsecret.server.com']
+   topsecret['Port'] = '50022'
+   topsecret['ForwardX11'] = 'no'
+
+   with open('servers.ini', 'wt') as fh:
+      cfg.write(fh)
+
+This creates the following *INI* file:
+
+.. _serversini:
+
+.. code-block:: ini
+   :name: servers.ini
+
+   [DEFAULT]
+   ServerAliveInterval = 45
+   Compression = yes
+   CompressionLevel = 9
+   ForwardX11 = yes
+
+   [bitbucket.org]
+   User = hg
+
+   [topsecret.server.com]
+   Port = 50022
+   ForwardX11 = no
+
+
+More advanced use-case: Merging of multiple configuration files
+---------------------------------------------------------------
+
+Suppose that for the reason of separating out concerns, we have decided to
+split up our configuration information into the following 2 files:
+
+- ``servers.ini`` from the `earlier example <#serversini>`_, containing
+  generic server related configuration, and
+- ``user.ini`` containing the specific preferences of a user as follows:
+
+.. code-block:: ini
+   :name: user.ini
+
+   [DEFAULT]
+   ServerAliveInterval = 200
+   ForwardX11 = no
+
+   [www.example.com]
+   User = jdoe
+
+A slightly modified version of our `earlier *INI* reader example
+<#readinifile>`_ will read and merge both the ``servers.ini``
+
+.. code:: python
+   :number-lines: 1
+   :name: read-multiple-ini.py
+
+   #!/usr/bin/env pythone
+
+   import configparser
+   ini = configparser.ConfigParser()
+   ini.optionxform = str               # make sure to preserve case!
+   files_read = ini.read(['servers.ini', 'user.ini'])
+   cfg = { section:dict(ini[section]) 
+           for section in ini.sections() + ['DEFAULT'] }
+   print(cfg)
+
+Note that some of the entries defined in ``servers.ini`` are overwritten by
+the matching entries in ``user.ini`` and there is also a new section:
+
+- changes in the ``[DEFAULT]`` section:
+
+  - value change of ``ServerAliveInterval``: ``45`` -> ``200``
+  - value change of ``ForwardX11``: ``yes`` -> ``no``
+  - new option: 
+
+- new section ``www.example.com``
+
+
+More advanced use-case: Interpolation of configuration files
+------------------------------------------------------------
+
+For more information see the following section of the ``configparser``
+module's documentation:
+
+https://docs.python.org/3/library/configparser.html#interpolation-of-values
 
 
 Working with JSON files
