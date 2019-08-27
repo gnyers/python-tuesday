@@ -359,7 +359,7 @@ A few noteworthy points about the above example:
 
 In Python there are at least a handful of ways and modules to process *CSV*
 files. We will focus here on the most obvious one: the "Python Standard
-Library's" ``csv`` (see [pydoc_csv]) module.
+Library's" ``csv`` (see [pydoc_csv]_) module.
 
 Create a CSV file
 -----------------
@@ -464,7 +464,213 @@ The steps:
 Working with INI files
 ======================
 
-TODO
+The *INI* format (see [INI_format]_) is capable of representing information
+organized in a tree structure, which lends itself well for its main use case:
+configuration files. Besides configuration files, the *INI* format can also be
+used for data exchange.
+
+Similarly to the *CSV* format despite of lacking an official standard, it has
+been in use for decades and as a result has a multitude of (slightly
+inconsistent) implementations.
+
+In terms of the format's details, the content is divided into sections, which
+in turn is a listing of properties and their associated values.
+
+Python has an implementation in the "Python Standard Library" in the module
+``configparser`` (see [pydoc_configparser]_).
+
+In Python terminology, while the *CSV* format is well-suited for storing
+``list``-like data, the *INI* format is a good choice for storing
+``dict``-like data.
+
+In this section we will be working with the data represented by the following
+``dict`` object:
+
+   .. code:: python
+
+      names = {
+                'kids': {
+                          'Chris': 'Family Guy',
+                          'Pebbles': 'The Flintstones',
+                          'Bart': 'The Simpsons'
+                        },
+                'adults': {
+                            'Fred': 'The Flintstones',
+                            'Betty': 'The Flintstones',
+                            'Homer': 'The Simpsons',
+                            'Lois': 'Family Guy'
+                          },
+                'other': { 'Klaus': 'American Dad',
+                           'Brian': 'Family Guy',
+                           'Roger': 'American Dad'
+                         }
+              }
+
+Writing an INI file
+-------------------
+
+The following is one of the simplest solution to export to an INI file:
+
+.. code:: python
+   :number-lines: 1
+   :name: write-names-as-ini.py
+
+   #!/usr/bin/env python3
+
+   import configparser
+
+   names = {
+             'kids': {
+                       'Chris': 'Family Guy',
+                       'Pebbles': 'The Flintstones',
+                       'Bart': 'The Simpsons'
+                     },
+             'adults': {
+                         'Fred': 'The Flintstones',
+                         'Betty': 'The Flintstones',
+                         'Homer': 'The Simpsons',
+                         'Lois': 'Family Guy'
+                       },
+             'other': { 'Klaus': 'American Dad',
+                        'Brian': 'Family Guy',
+                        'Roger': 'American Dad'
+                      }
+           }
+   ini = configparser.ConfigParser()
+   ini.update(names)
+   with open('names.ini', 'wt') as fh:
+      ini.write(fh)
+
+When executing this example, it creates the ``names.ini`` file with  the
+following content:
+
+.. code:: shell
+
+   cat names.ini
+   [kids]
+   chris = Family Guy
+   pebbles = The Flintstones
+   bart = The Simpsons
+
+   [adults]
+   fred = The Flintstones
+   betty = The Flintstones
+   homer = The Simpsons
+   lois = Family Guy
+
+   [other]
+   klaus = American Dad
+   brian = Family Guy
+   roger = American Dad
+
+Note the lower-case key names (e.g.: 'chris', 'pebbles' etc...). This is the
+default behavior of the ``ConfigParser`` class, since the original
+implementation of the ``configparser`` module tried to adhere the *INI* format
+used on Windows. Since Windows is case-insensitive, this is the class' default
+behavior.
+
+With the following slight modification we can preserve the upper-case letters:
+
+.. code:: python
+   :number-lines: 1
+   :name: write-names-as-ini-preserve-case.py
+
+   #!/usr/bin/env python3
+
+   import configparser
+
+   names = {
+             'kids': {
+                       'Chris': 'Family Guy',
+                       'Pebbles': 'The Flintstones',
+                       'Bart': 'The Simpsons'
+                     },
+             'adults': {
+                         'Fred': 'The Flintstones',
+                         'Betty': 'The Flintstones',
+                         'Homer': 'The Simpsons',
+                         'Lois': 'Family Guy'
+                       },
+             'other': { 'Klaus': 'American Dad',
+                        'Brian': 'Family Guy',
+                        'Roger': 'American Dad'
+                      }
+           }
+   ini = configparser.ConfigParser()
+   ini.optionxform = str               # make sure to preserve case!
+   ini.update(names)
+   with open('names-case-preserved.ini', 'wt') as fh:
+      ini.write(fh)
+
+A few details of this improved version:
+
+- **line 3:** load the ``configparser`` module
+- **line 22:** create a new ``ConfigParser`` object
+- **line 23:** make sure to preserve upper- and lower-cases in both section-
+  and key names!
+- **line 24:** copy the data from the ``names`` dictionary object
+- **line 25:** open the output file  (as a reminder: see [pep343]_ for more
+  information on using context managers)
+- **line 26:** write the data to the output file
+
+Reading from INI file
+---------------------
+
+As usual, we'll try to read in the data from the file we just created.
+
+.. code:: python
+   :number-lines: 1
+   :name: read-names-from-ini.py
+
+   #!/usr/bin/env pythone
+
+   import configparser
+   ini = configparser.ConfigParser()
+   ini.optionxform = str               # make sure to preserve case!
+   files_read = ini.read(['names-case-preserved.ini'])
+   names = { section:dict(ini[section]) for section in ini.sections() }
+   print(names)
+
+So let's unpack what has happened here:
+
+- **lines 3, 4 and 5:** load the ``configparser`` module, create a new
+  ``ConfigParser`` object and make sure it preserves upper- and lower-case
+  letters ; same as in the previous example
+- **line 5:** the ``.read()`` method is an interesting one... it is capable of
+  reading, parsing and merging multiple *INI* files in one go.
+
+  As its argument we provide a collection (in this case a ``list``) of
+  strings, which will be interpreted by the method as file names. The
+  ``.read()`` method will try to read and parse them.
+
+  The names of all successfully processed files will be provided as the
+  elements of the ``list`` object it returns.
+
+  **Very convenient!**
+
+- **line 6:** this is where we convert the ``ConfigParser`` object to
+  a ``dict``. This is not required, since we can access the data in the
+  ``ini`` object as well. However for an easy comparison with what we've
+  started it is convenient to see the data as a ``dict``
+
+  The conversion is done using a "dictionary comprehension" (see [pep274]_),
+  which is a convenient shorthand for a full-blown ``for`` loop.
+
+  To unpack its working we could write the instruction up in a way which
+  better indicates the details:
+
+  .. code:: python
+
+     names = {
+      section                          # key of the new element is the section name
+      :                                # required syntax
+      dict(ini[section])               # value is the converted ``Section``
+                                       # object to a ``dict``
+      for section in ini.sections()    # loop through each section name
+     }
+
+- **line 7:** display the data
+
 
 Working with JSON files
 =======================
@@ -512,6 +718,17 @@ References
 
 .. [pep343] PEP 343 -- The "with" Statement
    https://www.python.org/dev/peps/pep-0343/
+
+.. [INI_format] The INI file format is an informal standard for configuration
+   files capable of representing tree-structure like information.
+   See: https://en.wikipedia.org/wiki/INI_file
+
+.. [pydoc_configparser] The ``configparser`` module implements the INI
+   configuration file format.
+   See https://docs.python.org/3/library/configparser.html
+
+.. [pep274] Dictionary Comprehensions
+   https://www.python.org/dev/peps/pep-0274/
 
 .. _pydoc open: https://docs.python.org/3/library/functions.html#open
 .. _pydoc unicode: https://docs.python.org/3/howto/unicode.html
