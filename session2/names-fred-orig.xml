@@ -1,0 +1,7 @@
+<character id="1000"fname="Fred" sname="Flintstone">
+  <appeared_in>The Flintstones</appeared_in>
+  <relations>
+    <relation character_id="1001" type="child">
+    <relation character_id="1002" type="spouse">
+  </relations>
+</character>

@@ -48,7 +48,7 @@ Before being able to access any file Python needs to open it.
 
    (Example as executed in an interactive Python session or Python REPL)
 
-   .. code:: python
+   .. code:: pycon
 
       >>> # open the file 'names.txt' for reading, assume a text file
       >>> fh = open('names.txt')
@@ -65,7 +65,7 @@ Before being able to access any file Python needs to open it.
 
 #. Open a file for writing only, for example to write some data to a new file:
 
-   .. code:: python
+   .. code:: pycon
 
       >>> # open the file 'names.txt' for writing
       >>> fh = open('names.txt', 'wt')
@@ -111,7 +111,7 @@ Be careful when opening a file for writing!
    variant ``"x+"``) letter code instead. In this case, if the given file
    exists, Python will throw an exception:
 
-   .. code:: python
+   .. code:: pycon
       :number-lines: 1
 
       >>> fh = open('names.txt', 'xt')
@@ -181,7 +181,7 @@ more than one way to do this:
 #. The simplest way to read the content of the file is to read the whole
    content into memory, such as:
 
-   .. code:: python
+   .. code:: pycon
 
       >>> fh = open('names.txt')
       >>> content = fh.read()
@@ -193,7 +193,7 @@ more than one way to do this:
    The file's content is now in a ``str`` object, which when printed produces
    to following output:
 
-   .. code:: python
+   .. code:: pycon
 
       >>> print(content)
       Hayley
@@ -210,7 +210,7 @@ more than one way to do this:
 
 #. More often than not we want to read text files line-by-line:
 
-   .. code:: python
+   .. code:: pycon
 
       >>> fh = open('names.txt')
       >>> for line in fh:
@@ -229,7 +229,7 @@ more than one way to do this:
    Verify this by typing the ``line`` variable, which still contains the
    last line:
 
-   .. code:: python
+   .. code:: pycon
 
       >>> line
       'Wilma\n'
@@ -241,7 +241,7 @@ more than one way to do this:
    The following is a solution, where the ``end=''`` argument instructs the
    ``print()`` function to print an empty ``str`` at the end of the line:
 
-   .. code:: python
+   .. code:: pycon
 
       >>> fh = open('names.txt')
       >>> for line in fh:
@@ -428,8 +428,8 @@ and verify the file it has produced:
    pebbles|Pebbles Flintstone|flintstones|f|kids
 
 
-Read data from a CSV file
--------------------------
+Read data from a CSV files
+--------------------------
 
 Now that we have an example *CSV* example, we can re-create the Python data
 structure from the data:
@@ -832,12 +832,16 @@ The *JSON* file format (see [JSON]_) is an ECMA open standard well-suited for
 exchanging tree-like data in a human-readable text format. *JSON* is widely
 used for storing both configuration information and actual data.
 
+
+JSON support in Python
+----------------------
+
 The "Python Standard Library" provides out-of-the-box *JSON* support in the
 ``json`` modules.
 
 
-Write data to JSON file
------------------------
+Writing data to JSON file
+-------------------------
 
 Let's take the `cartoon characters data <#cartooncharacters>`_  from the
 ``names`` dictionary of our earlier example and export it to a *JSON* file:
@@ -904,8 +908,8 @@ The program produces the ``"names.json"`` file with the following content
 Note the striking similarities in the syntax of the *JSON* format and the
 actual Python syntax of dictionaries! Almost exactly the same.
 
-Load JSON data from file
-------------------------
+Reading data from JSON files
+----------------------------
 
 Loading a *JSON* file is fairly trivial with Python's  ``json`` module:
 
@@ -952,8 +956,8 @@ two aspects:
 One of the most notable usage for of the *YAML* format in the Python ecosystem
 is the [Ansible]_ configuration management solution.
 
-Install YAML module
--------------------
+YAML support in Python
+----------------------
 
 Currently the "Python Standard Library" does not have *YAML* support.
 Fortunately there are multiple 3rd party modules, which can be easy installed
@@ -1056,8 +1060,8 @@ about the more advanced capabilities of the format.
        Billsmer @ 338-4338.
 
 
-Reading data from a YAML file
------------------------------
+Reading data from a YAML files
+------------------------------
 
 Let's create our usual program to read the current format, but with a few 
 additional features: 
@@ -1096,7 +1100,332 @@ additional features:
 Working with XML files
 ======================
 
-TODO
+The eXtensible Markup Language (XML) format is has been the workhorse of data
+exchange in the last two decades. Because of its flexibility and the rich
+ecosystem XML is still an often used format, especially in enterprise
+applications. The format is best suited for the representation of tree-like
+data structures. XML also provides standards and tools for the verification of
+the data based on schema.
+
+Following is a first simple example of our cartoon characters data in as XML:
+
+.. _examplexml:
+
+.. code-block:: xml
+   :name: names-fred-orig.xml
+
+   <character id="1000"fname="Fred" sname="Flintstone">
+     <appeared_in>The Flintstones</appeared_in>
+     <relations>
+       <relation character_id="1001" type="child">
+       <relation character_id="1002" type="spouse">
+     </relations>
+   </character>
+
+XML support in Python
+---------------------
+
+Python has rich XML support in the form of multiple XML related modules and
+projects. The two main reason for the lack of a single implementation are on
+the one hand the huge scope and functionality of XML, and different
+implementations with overlapping functionality.
+Out of the many a few of these XML implementations also have made it to the
+"Python Standard Library". (see for more [pydoc_markup_tools]_)
+
+In our example we'll be using the ``lxml`` module, which is currently
+a popular choice.  (see for more [lxml]_) This module is a wrapper around the
+``libxml2`` and ``libxslt`` libraries, both written in C. (see also:
+http://www.xmlsoft.org/)
+
+Execute the following to install the ``lxml`` module:
+
+.. code:: shell
+
+   pip install lxml
+
+**NOTE:** The installation of ``lxml`` require a working C compiler, which may
+be an issue, especially for Windows users. Please visit the "Installing
+``lxml``" page ([lxml_install]_) which provides a link to the "unofficial
+Windows binaries".
+
+
+Writing XML data
+----------------
+
+Working with XML is significantly more complex than the previously discussed
+formats. To get acquainted with the API let's follow the "``lxml`` Tutorial" (see
+[lxml_tutorial]_) and try to code the `above <#examplexml>`_ example manually
+in an interactive Python session:
+
+.. code:: pycon
+   :number-lines: 1
+
+   >>> from lxml import etree
+   >>> root = etree.Element('character', attrib={'id': '1000', 'fname': 'Fred', 'sname': 'Flintstone'})
+
+At this point the ``root`` variable is bound to an object, which represents an
+XML node. Let's see how the data is organized:
+
+.. code:: pycon
+   :number-lines: 3
+
+   >>> type(root)                      # the object's type
+   <type 'lxml.etree._Element'>
+   >>> root.tag                        # the XML tag of this node
+   'character'
+   >>> root.attrib                     # the XML attributes of the node
+   {'fname': 'Fred', 'id': '1000', 'sname': 'Flintstone'}
+
+The string representation of this node:
+
+.. code:: pycon
+   :number-lines: 9
+
+   >>> etree.tostring(root)
+   b'<character fname="Fred" id="1000" sname="Flintstone"/>'
+
+**WARNING:** Notice the ``b`` prefix in the result of the ``tostring()``
+function: the returned object is of type ``bytes`` (and not ``str``)! If we
+were to attempt to write this to a file which has been opened in text mode
+(e.g.: "``open( 'somename.xml', 'wt')``"), we would get an Exception!
+
+The simple rule here is: ``bytes`` objects can be written to binary files
+(i.e.: mode "``wb``") and ``str`` objects to text files (i.e.: mode "``wt``")
+
+For a ``str`` result we need to decode the ``tostring()`` function's result:
+
+.. code:: pycon
+   :number-lines: 11
+
+   >>> etree.tostring(root).decode()
+   '<character fname="Fred" id="1000" sname="Flintstone"/>'
+
+Next, we add two child nodes representing the ``appeared_in`` and the
+``relations`` tags and check the XML output:
+
+.. code:: pycon
+   :number-lines: 13
+
+   >>> a = etree.Element('appeared_in') # create a new node
+   >>> b = etree.Element('relations')   # another new node
+   >>> root.append(a)                   # add the ``a`` node to root
+   >>> root.append(b)                   # add the ``b`` node to root
+
+   >>> ### Check the XML representation of ``root``
+   >>> print(etree.tostring(root, pretty_print=True).decode())
+   <character fname="Fred" id="1000" sname="Flintstone">
+     <appeared_in/>
+     <relations/>
+   </character>
+
+   >>>
+
+The ``root`` element is an container object, which currently holds 2 objects.
+The API makes it possible to treat ``root`` as if it was a ``list``.
+
+.. code:: pycon
+   :number-lines: 26
+
+   >>> root[0].tag                     # element lookup with similar to ``list``
+   'appeared_in'
+   >>> len(root)                       # the ``len()`` works correctly
+   2
+
+   ### with ``for`` we can iterate through the elements
+   >>> for node in root:
+   ...     print(node.tag, node.attrib)
+   ... 
+   appeared_in {}
+   relations {}
+   >>>
+
+Let's add the missing pieces:
+
+.. code:: pycon
+   :number-lines: 38
+
+   ### Add the cartoon title to the ``appeared_in`` tag
+   >>> root[0].text = 'The Flintstones'
+   >>> print(etree.tostring(root, pretty_print=True).decode())
+   ### Show changes in XML representation
+   <character fname="Fred" id="1000" sname="Flintstone">
+     <appeared_in>The Flintstones</appeared_in>
+     <relations/>
+   </character>
+
+   ### Add first relation
+   >>> r1 = etree.Element('relation', attrib={'character_id': '1002', 'type': 'spouse'})
+   ### index 1 is the earlier ``relations`` node. Add ``r1`` node to this
+   >>> root[1].append(r1)
+   ### Show XML representation
+   >>> print(etree.tostring(root, pretty_print=True).decode())
+   <character fname="Fred" id="1000" sname="Flintstone">
+     <appeared_in>The Flintstones</appeared_in>
+     <relations>
+       <relation character_id="1002" type="spouse"/>
+     </relations>
+   </character>
+
+   ### Add second relation
+   >>> r2 = etree.Element('relation', attrib={'character_id': '1001', 'type': 'child'})
+   >>> root[1].append(r2)
+   ### Show XML representation
+   >>> print(etree.tostring(root, pretty_print=True).decode())
+   <character fname="Fred" id="1000" sname="Flintstone">
+     <appeared_in>The Flintstones</appeared_in>
+     <relations>
+       <relation character_id="1002" type="spouse"/>
+       <relation character_id="1001" type="child"/>
+     </relations>
+   </character>
+
+At this point we can export the data in XML format:
+
+.. code:: pycon
+   :number-lines: 72
+
+   >>> fh = open('names-fred-written.xml', 'wt')
+   >>> fh.write(etree.tostring(root, pretty_print=True).decode())
+   198
+   >>> fh.close()
+
+The content of the ``names-fred-written.xml`` file looks like this:
+
+.. code-block:: xml
+
+   <character fname="Fred" id="1000" sname="Flintstone">
+     <appeared_in>The Flintstones</appeared_in>
+     <relations>
+       <relation character_id="1002" type="spouse"/>
+       <relation character_id="1001" type="child"/>
+     </relations>
+   </character>
+
+To summarize the above interactive session, let's put the essential bits into
+a single Python program:
+
+.. code:: python
+   :number-lines: 1
+   :name: write-names-as-xml-fred.py
+
+   #!/usr/bin/env python3
+   from lxml import etree
+   root = etree.Element('character',
+                        attrib={'id': '1000',
+                                'fname': 'Fred',
+                                'sname': 'Flintstone'})
+   a = etree.Element('appeared_in') # create a new node
+   b = etree.Element('relations')   # another new node
+   root.append(a)                   # add the ``a`` node to root
+   root.append(b)                   # add the ``b`` node to root
+   root[0].text = 'The Flintstones' # add title in node ``appeared_in``
+   r1 = etree.Element('relation', attrib={'character_id': '1002',
+                                          'type': 'spouse'})
+   root[1].append(r1)
+   r2 = etree.Element('relation', attrib={'character_id': '1001',
+                                          'type': 'child'})
+   root[1].append(r2)
+
+   with open('names-fred-written.xml', 'wt') as fh:
+       fh.write(etree.tostring(root, pretty_print=True).decode())
+
+
+Reading data from an XML file
+-----------------------------
+
+Using our previous example, let's try re-create the ``root`` object from the
+XML file:
+
+.. code:: pycon
+   :number-lines: 1
+
+   >>> fh = open('names-fred-written.xml')
+   >>> root = etree.fromstring(fh.read())
+
+- **line 1:** open the XML file in ``read-only`` and ``text`` mode, because of
+  implied ``"wt"`` mode string
+- **line 2:** the step in the order as they are executed:
+
+  - ``fh.read()`` method will read the entire content of the file into
+    a ``str``
+  - ``etree.fromstring()`` function will convert this string to an instance of
+    ``lxml.etree._Element``, i.e.: the Python object representing the XML
+    content
+
+At this point the object bound to the ``root`` variable contains all
+information from the file. Using a ``for`` loop we can iterate through the
+elements:
+
+.. code:: pycon
+   :number-lines: 3
+
+   >>> for node in root:
+   ...     tmpl.format(node.tag, len(node), node.text, node.attrib)
+   ...
+   'appeared_in          0     The Flintstones      {}'
+   'relations            2     \n                    {}'
+
+To summarize:
+
+.. code:: python
+   :number-lines: 1
+   :name: read-names-from-xml.py
+
+   #!/usr/bin/env python3
+   from lxml import etree
+
+   fh = open('names-fred-written.xml')
+   root = etree.fromstring(fh.read())
+   for node in root:
+       tmpl.format(node.tag, len(node), node.text, node.attrib)
+
+For large XML files this approach may be less efficient, since all the
+processing is done in the Python interpreter. A more efficient way would be to
+outsource the bulk of the work the underlying ``libxml2`` and ``libxstl``
+libraries (see http://www.xmlsoft.org/), which we will consider next.
+
+
+Processing XML data in Python
+-----------------------------
+
+Because the data that can be stored in XML format, can be large in terms of
+both complexity and amount, processing is usually a non-trivial task. The
+``lxml`` FAQ (see [lxml_faq]_) lists several considerations when processing
+XML data. Dealing with large XML files can be more efficient using the
+[xpath]_ technology, especially if we are only interested in certain parts.
+
+Using an XPath search string return all nodes with the ``relation`` tag. The
+parsing and searching is done in the C library, instead of Python, so it's the
+performance is optimal:
+
+.. code:: pycon
+   :number-lines: 1
+
+   >>> root.findall(".//relation")
+   [<Element relation at 0x7f923f495888>, <Element relation at 0x7f923f46b7c8>]
+
+As above, except loop through all the ``relation`` node(s) and show their
+attributes.
+
+.. code:: pycon
+   :number-lines: 1
+
+   >>> for e in root.findall(".//relation"): print(e.attrib)
+   ...
+   {'character_id': '1002', 'type': 'spouse'}
+   {'character_id': '1001', 'type': 'child'}
+
+The following XPath search string will limit the results to ``relation`` nodes
+which have a ``type`` attribute with the value ``spouse``.
+
+.. code:: pycon
+   :number-lines: 1
+
+   >>> for e in root.findall('.//relation[@type="spouse"]'):
+   ...     print(e.attrib)
+   ...
+   {'character_id': '1002', 'type': 'spouse'}
+   >>>
 
 
 References
@@ -1161,6 +1490,34 @@ References
 
 .. [YAML_specs] Full length examples of YAML
    https://yaml.org/spec/1.2/spec.html#id2761803
+
+.. [lxml_install] https://lxml.de/installation.html
+
+.. [lxml_tutorial] A brief overview of lxml's concepts
+   https://lxml.de/tutorial.html
+
+.. [pydoc_markup_tools] The Python Standard Library's Structured Markup
+   Processing Tools
+   https://docs.python.org/3/library/markup.html
+
+.. [lxml] The ``lxml`` XML toolkit is a Pythonic binding for the C libraries
+   libxml2 and libxslt.  It provides a the feature completeness of the
+   C libraries with a mostly compatible API to the well-known ElementTree API
+   from the Python Standard Library.
+
+.. [lxml_faq] The lxml Frequently Asked Questions
+   https://lxml.de/FAQ.html
+
+.. [xpath] The XPath language provides the ability to navigate around in XML
+   documents, selecting nodes by a variety of criteria.
+
+   For more see:
+
+   - XPath in Wikipedia: https://en.wikipedia.org/wiki/XPath
+   - XML and XPath tutorials over at w3school:
+
+     - https://www.w3schools.com/xml/xml_xpath.asp
+     - https://www.w3schools.com/xml/xpath_intro.asp
 
 .. _pydoc open: https://docs.python.org/3/library/functions.html#open
 .. _pydoc unicode: https://docs.python.org/3/howto/unicode.html
