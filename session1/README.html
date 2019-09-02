@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="generator" content="Docutils 0.14: http://docutils.sourceforge.net/" />
+<title>Python Tuesday: Session 1</title>
+<meta name="author" content="Gábor Nyers" />
+<style type="text/css">
+
+/*
+ * CSS
+ */
+
+html{
+  background: #ffffff;
+}
+
+@media (max-width: 400px) {
+  html {
+    /* background: #ffcccc;  */
+    font-size: 10px;
+  }
+}
+@media (min-width: 401px) and (max-width: 800px) {
+  html {
+    /* background: #ccffcc; */
+    font-size: 14px;
+  }
+}
+@media (min-width: 801px) {
+  html {
+    /* background: #ccccff; */
+    font-size: 20px;
+    max-width: 1024px;
+    margin: auto;
+  }
+}
+
+.content {
+  background: #c3c3c3;
+}
+
+h1, h2, h3 {
+  border-bottom: 1pt #00ff00;
+}
+
+h1 {
+  font-size: 1.4rem;
+}
+
+.topic-title {
+  font-size: 1.4rem;
+}
+
+
+p {
+  margin: 0.5em;
+}
+
+a {
+  border: none;
+}
+
+dl {
+  padding: 0.2em;
+}
+dt {
+  float: left;
+  clear: left;
+  max-width: 200px;
+  text-align: right;
+  font-weight: bold;
+  background: #f0f0f0;
+  color: #222222;
+  padding: 0 5px 0 5px;
+}
+dt::after {
+  content: ": ";
+}
+dd {
+  margin: 0 0 0 120px;
+  padding: 0 0 0.5em 0;
+  padding: 0 5px 0 5px;
+}
+
+dd p {
+  margin: 0 0 0 0;
+}
+
+/* BEGIN */
+pre, .literal {
+  margin: 0.5em;
+  background: #f0f0f0;
+  font: 0.92rem Inconsolata, monospace;
+  color: #222222;
+  text-shadow: 0 0 5px #C8C8C8;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+::selection {
+  background: #0080FF;
+  text-shadow: none;
+}
+.ln, .prompt {
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+}
+/*  END */
+
+
+/*
+vim: filetype=css textwidth=78 foldmethod=syntax foldcolumn=3 wrap
+vim: linebreak ruler spell spelllang=en showbreak=… shiftwidth=2
+vim: softtabstop=2 tabstop=2
+*/
+
+
+</style>
+</head>
+<body>
+<div class="document" id="python-tuesday-session-1">
+<h1 class="title">Python Tuesday: Session 1</h1>
+
+<p class="subtitle" id="getting-your-environment-set-up-and-ready-for-python-development">Getting your environment set up and ready for Python development</p>
+<dl class="docinfo simple">
+<dt class="date">Date</dt>
+<dd class="date">2019-08-05</dd>
+<dt class="author">Author</dt>
+<dd class="author"><p>Gábor Nyers</p></dd>
+<dt class="tags">tags</dt>
+<dd class="tags"><p>python</p>
+</dd>
+<dt class="category">category</dt>
+<dd class="category"><p>python_workshop</p>
+</dd>
+<dt class="summary">summary</dt>
+<dd class="summary"><p>The things you need to get started with developing in Python</p>
+</dd>
+<dt class="licence">licence</dt>
+<dd class="licence"><p>CC BY-NC 4.0 <a class="reference external" href="https://creativecommons.org/licenses/by-nc/4.0/">https://creativecommons.org/licenses/by-nc/4.0/</a></p>
+</dd>
+</dl>
+<p><strong>Agenda</strong></p>
+<div class="contents local topic" id="contents">
+<ul class="auto-toc simple">
+<li><p><a class="reference internal" href="#python-distributions" id="id2"><span class="sectnum">1.</span> Python distributions</a></p>
+<ul class="auto-toc">
+<li><p><a class="reference internal" href="#the-official-python-distribution" id="id3"><span class="sectnum">1.1.</span> The official Python distribution</a></p></li>
+<li><p><a class="reference internal" href="#anaconda-com-a-more-rich-python-distro" id="id4"><span class="sectnum">1.2.</span> anaconda.com: A more rich Python distro</a></p></li>
+<li><p><a class="reference internal" href="#which-python-distribution-to-choose" id="id5"><span class="sectnum">1.3.</span> Which Python distribution to choose?</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#selecting-and-setting-up-an-editor-ide" id="id6"><span class="sectnum">2.</span> Selecting and Setting-up an Editor/IDE</a></p>
+<ul class="auto-toc">
+<li><p><a class="reference internal" href="#a-few-important-considerations-for-editor-ide-selection" id="id7"><span class="sectnum">2.1.</span> A few important considerations for editor/IDE selection</a></p></li>
+<li><p><a class="reference internal" href="#resources-on-selection-of-an-editor-ide" id="id8"><span class="sectnum">2.2.</span> Resources on selection of an editor/IDE</a></p></li>
+<li><p><a class="reference internal" href="#checklist-getting-started-with-visual-code" id="id9"><span class="sectnum">2.3.</span> Checklist: Getting started with Visual Code</a></p></li>
+<li><p><a class="reference internal" href="#checklist-getting-started-with-vim" id="id10"><span class="sectnum">2.4.</span> Checklist: Getting started with VIM</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#python-modules" id="id11"><span class="sectnum">3.</span> Python Modules</a></p>
+<ul class="auto-toc">
+<li><p><a class="reference internal" href="#installing-3rd-party-python-modules" id="id12"><span class="sectnum">3.1.</span> Installing 3rd Party Python modules</a></p></li>
+<li><p><a class="reference internal" href="#python-virtual-environments" id="id13"><span class="sectnum">3.2.</span> Python Virtual Environments</a></p></li>
+<li><p><a class="reference internal" href="#create-a-virtual-environment" id="id14"><span class="sectnum">3.3.</span> Create a virtual environment</a></p></li>
+<li><p><a class="reference internal" href="#working-with-virtual-environments" id="id15"><span class="sectnum">3.4.</span> Working with Virtual Environments</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#getting-started-with-some-simple-use-cases" id="id16"><span class="sectnum">4.</span> Getting started with some simple use-cases</a></p>
+<ul class="auto-toc">
+<li><p><a class="reference internal" href="#let-s-talk-back" id="id17"><span class="sectnum">4.1.</span> Let's talk back</a></p></li>
+<li><p><a class="reference internal" href="#install-and-use-a-3rd-party-module" id="id18"><span class="sectnum">4.2.</span> Install and use a 3rd party module</a></p></li>
+<li><p><a class="reference internal" href="#working-with-cli-arguments" id="id19"><span class="sectnum">4.3.</span> Working with CLI arguments</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<p><strong>Prep</strong></p>
+<ul>
+<li><p>Get Material:
+URL: <a class="reference external" href="https://github.com/gnyers/python-tuesday">https://github.com/gnyers/python-tuesday</a></p>
+<pre class="code shell literal-block"><code>git clone git&#64;github.com:gnyers/python-tuesday.git</code></pre>
+</li>
+<li><p>Install Editor, e.g.: VSCode: <a class="reference external" href="https://code.visualstudio.com/">https://code.visualstudio.com/</a></p></li>
+</ul>
+<div class="section" id="python-distributions">
+<h1><a class="toc-backref" href="#id2"><span class="sectnum">1.</span> Python distributions</a></h1>
+<p><strong>What is a Python distribution?</strong></p>
+<p>A software collection made available by the Python project or some other
+organization to execute Python programs. It contains a Python run-time
+environment, the Python <a class="reference external" href="https://docs.python.org/3/library/">Standard Library</a> and (optionally) additional Python
+modules.</p>
+<p><strong>How many Python distros are there?</strong></p>
+<p>The Python Wiki lists more than a dozen of <a class="reference external" href="https://wiki.python.org/moin/PythonDistributions">Python distributions</a>, though
+several of the pages are unavailable.</p>
+<p>We will be discussing the two most well-known Python distributions:</p>
+<ul class="simple">
+<li><p>The official <a class="reference external" href="#part-vanilla-python">Python distro</a>, and</p></li>
+<li><p>The <a class="reference external" href="#part-anaconda">Anaconda product</a></p></li>
+</ul>
+<div class="section" id="the-official-python-distribution">
+<span id="part-vanilla-python"></span><h2><a class="toc-backref" href="#id3"><span class="sectnum">1.1.</span> The official Python distribution</a></h2>
+<p>The canonical Python run-time environment developed, managed and distributed
+by the <a class="reference external" href="https://www.python.org/psf/">Python Software Foundation</a> the official custodian of the Python
+programming language, its reference implementation and the well-known Python
+trademark. To find out more visit the website at <a class="reference external" href="http://python.org">http://python.org</a>.</p>
+<p>It contains:</p>
+<ul class="simple">
+<li><p>Python <a class="reference external" href="https://docs.python.org/3/tutorial/interpreter.html">CLI interpreter</a>, which is used for both <strong>running programs</strong> and for
+<strong>interactive</strong> work.</p></li>
+<li><p>The <a class="reference external" href="https://docs.python.org/3/library/idle.html">IDLE</a> GUI interpreter, which can be used for interactive work.</p></li>
+<li><p>Required (binary) libraries</p></li>
+<li><p>The Python <a class="reference external" href="https://docs.python.org/3/library/">Standard Library</a>, which is mostly written in Python, but lower
+level operating system related functions are written in C.</p></li>
+<li><p>The official documentation of this minor version</p>
+<ul>
+<li><p>The Language Reference</p></li>
+<li><p>Standard Library</p></li>
+<li><p>Official HOWTO's and Tutorials</p></li>
+<li><p>C-API documentation (extending Python itself, OR extending an application
+with Python!)</p></li>
+</ul>
+</li>
+</ul>
+<p>The official Python distribution does <strong>not</strong> contain:</p>
+<ul class="simple">
+<li><p>An editor or IDE</p></li>
+<li><p>Python modules not part of the official <a class="reference external" href="https://docs.python.org/3/library/">Standard Library</a>, such as:</p>
+<ul>
+<li><p><span class="docutils literal">setuptools_</span>: library and CLI tools to create distributable packages of
+Python modules</p></li>
+<li><p><a class="reference external" href="https://pypi.org/project/pip/">pip</a>: library and CLI tools to install 3rd party modules from <a class="reference external" href="https://pypi.python.org">PyPI</a></p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="anaconda-com-a-more-rich-python-distro">
+<span id="part-anaconda"></span><h2><a class="toc-backref" href="#id4"><span class="sectnum">1.2.</span> anaconda.com: A more rich Python distro</a></h2>
+<p>The <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a> distribution is made up of the official Python distro and a list
+of 1500+ selected Python modules. This product is aimed mainly at data science
+and scientific computing customers and is being developed and managed by
+a commercial company. While the product itself is completely open source, the
+company provides commercial services around it.</p>
+<p><a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a> contains the following major components:</p>
+<ul class="simple">
+<li><p>The official <a class="reference external" href="https://python.org">Python</a> distribution (both v2 and v3)</p></li>
+<li><p><a class="reference external" href="https://docs.continuum.io/anaconda/navigator/">Anaconda Navigator</a>: a convenient GUI application to start
+Anaconda applications, manage virtual environments and search for- and
+update  modules.</p></li>
+<li><p><a class="reference external" href="https://conda.io/en/latest/">Conda</a> package manager (a more advanced version of <span class="docutils literal">pip</span>)</p></li>
+<li><p>Some 1500+ Python modules (see <a class="reference external" href="https://docs.anaconda.com/anaconda/packages/pkg-docs/">Anaconda Pkg List</a>), of which ~200 are
+automatically installed.</p></li>
+<li><p><a class="reference external" href="https://www.spyder-ide.org/">Spyder</a>, an open source IDE (Integrated Development Environment) specializing
+in scientific use-cases.</p></li>
+<li><p><a class="reference external" href="https://jupyter.org/">Jupyter Notebooks</a> and the <a class="reference external" href="https://ipython.org/">IPython</a> interpreter</p></li>
+<li><p>etc...</p></li>
+</ul>
+<p>Further links to get started with Anaconda:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://www.anaconda.com/distribution/#download-section">Anaconda download</a> page</p></li>
+<li><p><a class="reference external" href="https://docs.anaconda.com/anaconda/">Anaconda Docs</a></p></li>
+<li><p><a class="reference external" href="https://docs.conda.io/projects/conda/en/latest/user-guide/cheatsheet.html">Conda Cheat Sheet</a></p></li>
+</ul>
+</div>
+<div class="section" id="which-python-distribution-to-choose">
+<h2><a class="toc-backref" href="#id5"><span class="sectnum">1.3.</span> Which Python distribution to choose?</a></h2>
+<p>Depending on you specific case there might be server consideration when
+selecting a Python distribution:</p>
+<ul class="simple">
+<li><p>Download and Install size:</p>
+<ul>
+<li><p>The official <a class="reference external" href="https://python.org">Python</a> distribution is a few 10s of MB</p></li>
+<li><p>The default installation of <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a> is easily 10x that</p></li>
+</ul>
+</li>
+<li><p>What kind of applications will you be developing:</p>
+<ul>
+<li><p>For Scientific or data science scenario's <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a> is well suited,
+because it provides most of the modules you'll need.</p></li>
+<li><p>For generic Python development the official <a class="reference external" href="https://python.org">Python</a> distribution is a good
+fit.</p></li>
+</ul>
+</li>
+<li><p>The level of your Programming/Python knowledge:</p>
+<ul>
+<li><p>To have everything work and get things done while needing to invest the
+least in Python knowledge, the <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a> distribution provides a kind of
+one-stop-shop experience.</p></li>
+<li><p>For more experience developers learning the details of the vanilla <a class="reference external" href="https://python.org">Python</a>
+environment is valuable knowledge.</p></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="selecting-and-setting-up-an-editor-ide">
+<h1><a class="toc-backref" href="#id6"><span class="sectnum">2.</span> Selecting and Setting-up an Editor/IDE</a></h1>
+<p>One of the most important tool when you developing software is the actual
+application which you use to edit your code. This application goes by
+different names, such as an &quot;editor&quot; or an &quot;IDE&quot; (Integrated Development
+Environment). The difference between an editor and an IDE has to do with the
+level of specialization the tool offers for the language.</p>
+<ul class="simple">
+<li><p>Generic editors, such as: <a class="reference external" href="https://vim.org">VIM</a> (**) or <a class="reference external" href="https://www.gnu.org/software/emacs/">Emacs</a> (**)</p></li>
+<li><p>Light-weight IDEs: <a class="reference external" href="https://www.spyder-ide.org/">Spyder</a> (**), <a class="reference external" href="https://www.sublimetext.com/">Sublime</a> (*), <a class="reference external" href="https://atom.io/">Atom</a> (**), <a class="reference external" href="https://www.geany.org/">Geany</a> (**)</p></li>
+<li><p>Heavy-duty development environments, like: <a class="reference external" href="https://www.jetbrains.com/pycharm/">PyCharm</a> (*), Eclipse's <a class="reference external" href="https://www.pydev.org/">PyDev</a> (**) or
+<a class="reference external" href="https://visualstudio.microsoft.com/vs/">VisualStudio</a> (*)</p></li>
+<li><p>Honorable mention: <a class="reference external" href="https://jupyter.org/">Jupyter Notebooks</a> (**)</p></li>
+</ul>
+<p>where:</p>
+<ul class="simple">
+<li><p>(*): Proprietary product</p></li>
+<li><p>(**): Open source project</p></li>
+</ul>
+<div class="section" id="a-few-important-considerations-for-editor-ide-selection">
+<h2><a class="toc-backref" href="#id7"><span class="sectnum">2.1.</span> A few important considerations for editor/IDE selection</a></h2>
+<ul>
+<li><p>Support for the Python syntax and best practices, i.e.: <span class="docutils literal">&lt;Tab&gt;</span> to
+4x``&lt;Space&gt;`` coversion, auto-indentation</p></li>
+<li><p>Syntax Highlighting: colorize the code with multiple colors, which highlight
+different parts of the code, e.g.: comment, strings, reserved words</p></li>
+<li><p>Tab completion</p></li>
+<li><p>Variable overview: list of names of already defined variables, functions and
+class names.</p></li>
+<li><p>Snippets: inserting small pieces of often used code with a few key-strokes</p></li>
+<li><p>Automatically perform static code analytics: verify code quality with tools
+such as <a class="reference external" href="https://pypi.org/project/pep8/">pep8</a>, <a class="reference external" href="https://github.com/PyCQA/pylint">pylint</a>, <a class="reference external" href="https://github.com/pyflakes/pyflakes/">pyflakes</a> , <a class="reference external" href="https://github.com/python/black">black</a>, <a class="reference external" href="https://github.com/python/mypy">mypy</a></p>
+<p>Things as: unused, unrecognized or mistyped variables, usage of &lt;Space&gt;s,
+un-imported modules, etc...</p>
+</li>
+<li><p>Terminal support, i.e.: ability to run the program being developed and watch
+its output</p></li>
+<li><p>Support for virtual environments (related to previous point)</p></li>
+<li><p>Is it possible to use your coding tool in a production environment?</p></li>
+<li><p>Support for refactoring: consistently renaming variables, function- or class
+names throughout a code base</p></li>
+</ul>
+</div>
+<div class="section" id="resources-on-selection-of-an-editor-ide">
+<h2><a class="toc-backref" href="#id8"><span class="sectnum">2.2.</span> Resources on selection of an editor/IDE</a></h2>
+<ul class="simple">
+<li><p>&quot;Python IDEs and Code Editors (Guide)&quot;
+<a class="reference external" href="https://realpython.com/python-ides-code-editors-guide/">https://realpython.com/python-ides-code-editors-guide/</a></p></li>
+<li><p>&quot;Which Python static analysis tools should I use?&quot;
+<a class="reference external" href="https://www.codacy.com/blog/which-python-static-analysis-tools-should-i-use/">https://www.codacy.com/blog/which-python-static-analysis-tools-should-i-use/</a></p></li>
+</ul>
+</div>
+<div class="section" id="checklist-getting-started-with-visual-code">
+<h2><a class="toc-backref" href="#id9"><span class="sectnum">2.3.</span> Checklist: Getting started with Visual Code</a></h2>
+<p>Based on the &quot;Getting Started with Python in VS Code&quot; article above.</p>
+<ol class="arabic simple">
+<li><p>Download and install VSCode from <a class="reference external" href="https://code.visualstudio.com/Download">https://code.visualstudio.com/Download</a></p></li>
+<li><p>Install the &quot;<a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=ms-python.python">Python extension for VSCode</a>&quot; by Microsoft using
+the built-in package manager</p></li>
+<li><p>Select your Python interpreter:</p>
+<ol class="arabic simple">
+<li><p>Activate the Command Palette with the keystroke <span class="docutils literal"><span class="pre">&lt;Ctrl&gt;+&lt;Shift&gt;+P</span></span></p></li>
+<li><p>Start typing &quot;Select Python Interpreter&quot;, which should automatically
+discover the installed Python run-time.</p></li>
+</ol>
+</li>
+<li><p>Create a new <span class="docutils literal">helloworld</span> application and run it by right-clicking on the
+code and selecting the &quot;Run Python File in Terminal&quot;</p></li>
+</ol>
+<p>Further read:</p>
+<ul class="simple">
+<li><p>&quot;Getting Started with Python in VS Code&quot;
+<a class="reference external" href="https://code.visualstudio.com/docs/python/python-tutorial">https://code.visualstudio.com/docs/python/python-tutorial</a></p></li>
+</ul>
+</div>
+<div class="section" id="checklist-getting-started-with-vim">
+<h2><a class="toc-backref" href="#id10"><span class="sectnum">2.4.</span> Checklist: Getting started with VIM</a></h2>
+<p><a class="reference external" href="https://vim.org">VIM</a> is famous (or infamous) of its steep learning curve, yet it still has
+a huge number of users. So there must be something to it, right? Anyway,
+regardless if you're an experienced VIM person, or just curious about the
+fuss, this is how to get started with Python development in VIM. It is a more
+involved process that getting started with VSCode, yet people seem to thing
+it's worth the effort.</p>
+<ol class="arabic simple">
+<li><p>Download and Install <a class="reference external" href="https://vim.org">VIM</a></p></li>
+<li><p>Install a plug-in manager for VIM, such as <a class="reference external" href="https://github.com/VundleVim/Vundle.vim">Vundle</a></p></li>
+<li><p>Follow one of the more detailed guides below.</p></li>
+</ol>
+<p>Further read:</p>
+<ul class="simple">
+<li><p>&quot;VIM and Python – A Match Made in Heaven&quot;
+<a class="reference external" href="https://realpython.com/vim-and-python-a-match-made-in-heaven/">https://realpython.com/vim-and-python-a-match-made-in-heaven/</a></p></li>
+<li><p>Setting up VIM as an IDE for Python
+<a class="reference external" href="https://medium.com/&#64;hanspinckaers/setting-up-vim-as-an-ide-for-python-773722142d1d">https://medium.com/&#64;hanspinckaers/setting-up-vim-as-an-ide-for-python-773722142d1d</a></p></li>
+</ul>
+</div>
+</div>
+<div class="section" id="python-modules">
+<h1><a class="toc-backref" href="#id11"><span class="sectnum">3.</span> Python Modules</a></h1>
+<p>Typically there are 3 types of modules you'll need to work with on a daily
+bases:</p>
+<ul class="simple">
+<li><p>Modules of the <a class="reference external" href="https://docs.python.org/3/library/">Standard Library</a></p></li>
+<li><p>Modules which are part of the application being developed</p></li>
+<li><p>3rd party modules, e.g. available in <a class="reference external" href="https://pypi.python.org">PyPI</a> or <a class="reference external" href="https://repo.continuum.io/">Anaconda Repository</a>.</p></li>
+</ul>
+<p>The availability of the first two are trivial, but finding and installing 3rd
+party modules is a concern.</p>
+<div class="section" id="installing-3rd-party-python-modules">
+<h2><a class="toc-backref" href="#id12"><span class="sectnum">3.1.</span> Installing 3rd Party Python modules</a></h2>
+<p>There are several sources of to install Python modules from, such as:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pypi.python.org">PyPI</a>: the Python Package Index, which is the official 3rd party repository.
+The site is managed by the <a class="reference external" href="https://www.python.org/psf/">Python Software Foundation</a>.</p></li>
+<li><p><cite>Anaconda Repository_</cite>: the repository managed by Anaconda, the commercial
+entity behind the Python distro of the same name.</p></li>
+</ul>
+<p>Tools to manage 3rd party modules:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://pypi.org/project/pip/">pip</a>: the de-facto module management tool.</p></li>
+<li><p><a class="reference external" href="https://conda.io/en/latest/">conda</a>: a much more sophisticated manager for modules developed primarily
+for the <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda</a> Python distribution</p></li>
+<li><p><a class="reference external" href="https://docs.pipenv.org/en/latest/">pipenv</a>: similarly sophisticated capabilities as <a class="reference external" href="https://conda.io/en/latest/">conda</a>, but generic</p></li>
+</ul>
+<p>Shared features:</p>
+<ul class="simple">
+<li><p>basic package management: searching, downloading, installing, up- and
+downgrading and removing of modules.</p></li>
+<li><p>support for the several different Python package formats (i.e.: the
+distributable, (usually) platform-independent archive containing stuff
+needed to install or compile a module</p></li>
+</ul>
+<p>Differences:</p>
+<ul class="simple">
+<li><p><span class="docutils literal">pipenv</span> and <span class="docutils literal">conda</span> can do everything <span class="docutils literal">pip</span> can, with support of more
+sophisticated dependency management and security</p></li>
+<li><p><span class="docutils literal">pipenv</span> and <span class="docutils literal">conda</span> manage Python virtual environments, <span class="docutils literal">pip</span> does
+not.</p></li>
+</ul>
+<div class="section" id="installing-modules">
+<h3>Installing modules</h3>
+<p>Let's install the <span class="docutils literal">requests</span> module using <span class="docutils literal">pip</span>:</p>
+<pre class="code shell literal-block"><code><span class="ln"> 1 </span>$ pip install requests
+<span class="ln"> 2 </span>Collecting requests
+<span class="ln"> 3 </span>  Downloading https://files.pythonhosted.org/packages/...
+<span class="ln"> 4 </span>    <span class="literal number">100</span>% <span class="punctuation">|</span>████████████████████████████████<span class="punctuation">|</span> 61kB <span class="literal number">2</span>.1MB/s
+<span class="ln"> 5 </span>Collecting idna&lt;<span class="literal number">2</span>.9,&gt;<span class="operator">=</span><span class="literal number">2</span>.5 <span class="operator">(</span>from requests<span class="operator">)</span>
+<span class="ln"> 6 </span>  Downloading https://files.pythonhosted.org/packages/...
+<span class="ln"> 7 </span>    <span class="literal number">100</span>% <span class="punctuation">|</span>████████████████████████████████<span class="punctuation">|</span> 61kB <span class="literal number">4</span>.0MB/s
+<span class="ln"> 8 </span>Collecting certifi&gt;<span class="operator">=</span><span class="literal number">2017</span>.4.17 <span class="operator">(</span>from requests<span class="operator">)</span>
+<span class="ln"> 9 </span>  Downloading https://files.pythonhosted.org/packages/...
+<span class="ln">10 </span>    <span class="literal number">100</span>% <span class="punctuation">|</span>████████████████████████████████<span class="punctuation">|</span> 163kB <span class="literal number">1</span>.9MB/s
+<span class="ln">11 </span>Collecting urllib3!<span class="operator">=</span><span class="literal number">1</span>.25.0,!<span class="operator">=</span><span class="literal number">1</span>.25.1,&lt;<span class="literal number">1</span>.26,&gt;<span class="operator">=</span><span class="literal number">1</span>.21.1 <span class="operator">(</span>from requests<span class="operator">)</span>
+<span class="ln">12 </span>  Downloading https://files.pythonhosted.org/packages/...
+<span class="ln">13 </span>    <span class="literal number">100</span>% <span class="punctuation">|</span>████████████████████████████████<span class="punctuation">|</span> 153kB <span class="literal number">3</span>.4MB/s
+<span class="ln">14 </span>Collecting chardet&lt;<span class="literal number">3</span>.1.0,&gt;<span class="operator">=</span><span class="literal number">3</span>.0.2 <span class="operator">(</span>from requests<span class="operator">)</span>
+<span class="ln">15 </span>  Downloading https://files.pythonhosted.org/packages/...
+<span class="ln">16 </span>    <span class="literal number">100</span>% <span class="punctuation">|</span>████████████████████████████████<span class="punctuation">|</span> 143kB <span class="literal number">2</span>.4MB/s
+<span class="ln">17 </span>Installing collected packages: idna, certifi, urllib3, chardet, requests
+<span class="ln">18 </span>Successfully installed certifi-2019.6.16 chardet-3.0.4 idna-2.8 requests-2.22.0 urllib3-1.25.3
+<span class="ln">19 </span>You are using pip version <span class="literal number">9</span>.0.3, however version <span class="literal number">19</span>.1.1 is available.
+<span class="ln">20 </span>You should consider upgrading via the <span class="literal string single">'pip install --upgrade pip'</span> command.</code></pre>
+<p>What just happened:</p>
+<ul class="simple">
+<li><p>lines 2-4: <span class="docutils literal">pip</span> has downloaded the archive containing the <span class="docutils literal">requests</span>
+module</p></li>
+<li><p>lines 5-16: based on information in the archive, it then (recursively)
+downloaded all other required modules the current one depends on.</p></li>
+<li><p>lines 17-18: once all required packages are downloaded it installed them</p></li>
+<li><p>lines 19-20: <span class="docutils literal">pip</span> has thrown a warning about its own outdated version</p></li>
+</ul>
+<p>Get a list of installed modules:</p>
+<pre class="code shell literal-block"><code>$ pip list
+certifi <span class="operator">(</span><span class="literal number">2019</span>.6.16<span class="operator">)</span>
+chardet <span class="operator">(</span><span class="literal number">3</span>.0.4<span class="operator">)</span>
+idna <span class="operator">(</span><span class="literal number">2</span>.8<span class="operator">)</span>
+pip <span class="operator">(</span><span class="literal number">9</span>.0.3<span class="operator">)</span>
+requests <span class="operator">(</span><span class="literal number">2</span>.22.0<span class="operator">)</span>
+setuptools <span class="operator">(</span><span class="literal number">39</span>.0.1<span class="operator">)</span>
+urllib3 <span class="operator">(</span><span class="literal number">1</span>.25.3<span class="operator">)</span>
+You are using pip version <span class="literal number">9</span>.0.3, however version <span class="literal number">19</span>.1.1 is available.
+You should consider upgrading via the <span class="literal string single">'pip install --upgrade pip'</span> command.</code></pre>
+<p>Now let's get rid of those annoying warnings about <span class="docutils literal">pip</span>'s version by
+updating it:</p>
+<pre class="code shell literal-block"><code>$ pip install --upgrade pip
+Cache entry deserialization failed, entry ignored
+Collecting pip
+  Downloading https://files.pythonhosted.org/packages/.../pip-19.1.1-py2.py3-none-any.whl <span class="operator">(</span><span class="literal number">1</span>.4MB<span class="operator">)</span>
+    <span class="literal number">100</span>% <span class="punctuation">|</span>████████████████████████████████<span class="punctuation">|</span> <span class="literal number">1</span>.4MB 528kB/s
+Installing collected packages: pip
+  Found existing installation: pip <span class="literal number">9</span>.0.3
+    Uninstalling pip-9.0.3:
+      Successfully uninstalled pip-9.0.3
+Successfully installed pip-19.1.1</code></pre>
+<p>Warnings are gone; also note how the latest version presents the same
+information as above:</p>
+<pre class="code shell literal-block"><code>$ pip list
+Package    Version
+---------- ---------
+certifi    <span class="literal number">2019</span>.6.16
+chardet    <span class="literal number">3</span>.0.4
+clipboard  <span class="literal number">0</span>.0.4
+idna       <span class="literal number">2</span>.8
+pip        <span class="literal number">19</span>.1.1
+pyperclip  <span class="literal number">1</span>.7.0
+requests   <span class="literal number">2</span>.22.0
+setuptools <span class="literal number">39</span>.0.1
+urllib3    <span class="literal number">1</span>.25.3</code></pre>
+</div>
+</div>
+<div class="section" id="python-virtual-environments">
+<h2><a class="toc-backref" href="#id13"><span class="sectnum">3.2.</span> Python Virtual Environments</a></h2>
+<dl class="simple">
+<dt>Python Virtual Environment:</dt>
+<dd><p>Used run conflicting Python applications, in terms of modules, module
+versions or even interpreter versions. For this reason they need to be
+isolated from one another. It is a best practice to develop each
+application in its own virtual environment.</p>
+</dd>
+</dl>
+<p>Consider the following:</p>
+<ul class="simple">
+<li><p>A virtual environment (or <strong>venv</strong>) is very simple and very light-weight
+isolation mechanism to allow the use of conflicting modules or even
+different Python major (and minor) versions.</p></li>
+<li><p>Please note that this technique has nothing to do with virtualization (such
+as VMware, VirtualBox or KVM) nor containers create by such tools as
+<span class="docutils literal">LXC</span>, <span class="docutils literal">Docker</span> or <span class="docutils literal"><span class="pre">systemd-nspawn</span></span>.</p></li>
+<li><p>Python virtual environments are &quot;just&quot; a separate sets of directories and
+appropriate environment variables resulting in a separate Python run-time
+environment.</p></li>
+<li><p>If the same module is used in multiple <span class="docutils literal">venv</span>'s, it needs to be installed
+multiple times.</p></li>
+</ul>
+</div>
+<div class="section" id="create-a-virtual-environment">
+<h2><a class="toc-backref" href="#id14"><span class="sectnum">3.3.</span> Create a virtual environment</a></h2>
+<p>A <span class="docutils literal">venv</span> can be created manually or programmatically (i.e. from code).</p>
+<p>To manually create a <span class="docutils literal">venv</span> execute the following steps:</p>
+<ol class="arabic">
+<li><p>Create a directory which will be the <span class="docutils literal">root</span> of the <span class="docutils literal">venv</span>.</p>
+<pre class="code shell literal-block"><code>mkdir -p ~/.virtualenvs/devenv</code></pre>
+</li>
+<li><p>Populate the <span class="docutils literal">root</span> directory:</p>
+<pre class="code shell literal-block"><code>python3 -m venv ~/.virtualenvs/devenv</code></pre>
+</li>
+</ol>
+</div>
+<div class="section" id="working-with-virtual-environments">
+<h2><a class="toc-backref" href="#id15"><span class="sectnum">3.4.</span> Working with Virtual Environments</a></h2>
+<p>Every time you want to use a <span class="docutils literal">venv</span> you need to activate it either
+interactively or as a batch process during the startup of an application.</p>
+<div class="section" id="use-a-venv-interactively-or-with-vim">
+<h3>Use a <span class="docutils literal">venv</span> interactively or with <a class="reference external" href="https://vim.org">VIM</a></h3>
+<ol class="arabic">
+<li><p>Activate the <span class="docutils literal">venv</span> from a directory</p>
+<p>On Linux or MacOS X, if <span class="docutils literal">venv</span> is installed in <span class="docutils literal"><span class="pre">~/.virtualenvs/devenv</span></span>:</p>
+<pre class="code shell literal-block"><code><span class="name builtin">source</span> ~/.virtualenvs/devenv/bin/activate</code></pre>
+<p>On Windows, from dir :</p>
+<pre class="code shell literal-block"><code>C:/temp/devenv/bin/activate.bat</code></pre>
+<p>This will change the prompt to show the name of the active Python <span class="docutils literal">venv</span>,
+e.g.:</p>
+<pre class="code shell literal-block"><code><span class="operator">(</span>devenv<span class="operator">)</span> user&#64;host $</code></pre>
+</li>
+<li><p>Above script will modify environmental variables such that when typing
+<span class="docutils literal">python</span>, the interpreter, the libraries and modules in the <span class="docutils literal">venv</span> will
+be used.</p>
+<p><strong>Note:</strong> These settings are temporary and only active in the current session!
+#If the session is closed, you'll need to re-activate.</p>
+</li>
+<li><p>Run your Python application the usual way:</p>
+<pre class="code shell literal-block"><code>$ python myprogram.ph</code></pre>
+<p><strong>Note:</strong> you don't need to specify explicitly <span class="docutils literal">python3</span>, because the
+python interpreter of the <span class="docutils literal">venv</span> will be the first the OS founds.</p>
+</li>
+<li><p>To de-activate the <span class="docutils literal">venv</span> and restore the system-wide Python settings
+simply execute:</p>
+<pre class="code shell literal-block"><code>deactivate</code></pre>
+</li>
+</ol>
+<p>Further read:</p>
+<ul class="simple">
+<li><p>The Official Python tutorial &quot;Virtual Environments and Packages&quot;
+<a class="reference external" href="https://docs.python.org/3/tutorial/venv.html">https://docs.python.org/3/tutorial/venv.html</a></p></li>
+<li><p>&quot;Managing environments&quot; - Anaconda documentation
+<a class="reference external" href="https://docs.anaconda.com/anaconda/navigator/tutorials/manage-environments/">https://docs.anaconda.com/anaconda/navigator/tutorials/manage-environments/</a></p></li>
+</ul>
+</div>
+<div class="section" id="setup-vscode-to-use-venv">
+<h3>Setup <a class="reference external" href="https://code.visualstudio.com/">VSCode</a> to use <span class="docutils literal">venv</span></h3>
+<p>Please note that <a class="reference external" href="https://code.visualstudio.com/">VSCode</a> will automatically discover Python environments of the
+following types:</p>
+<ul class="simple">
+<li><p>system wide Python environments</p></li>
+<li><p>virtual environments located in any of the following special directories:</p>
+<ul>
+<li><p>$HOME/.virtualenvs</p></li>
+<li><p>$HOME/.pyenv</p></li>
+<li><p>$HOME/Envs</p></li>
+</ul>
+</li>
+</ul>
+<p>In case you'd like to use an environment from a non-standard location use the
+following steps:</p>
+<ol class="arabic">
+<li><p>Start VSCode</p></li>
+<li><p>Open your project</p></li>
+<li><p>Edit your settings by selecting <span class="docutils literal">File</span> -&gt; <span class="docutils literal">Preferences</span> -&gt; <span class="docutils literal">Settings</span>
+menus. This will open a new tab titled: &quot;Settings&quot;</p>
+<p>or hitting the <span class="docutils literal">&lt;Ctrl&gt; + ,</span> (comma) keystroke</p>
+</li>
+<li><p>In the &quot;Search&quot; field type: <span class="docutils literal">venv</span> and find the &quot;Python: Venv Folder&quot;
+parameter.</p></li>
+<li><p>Add the parent folder containing the root of your virtual environment.</p>
+<p>For example: if you've created a virtual environment using:</p>
+<pre class="code shell literal-block"><code>mkdir /tmp/myenv <span class="operator">&amp;&amp;</span> python3 -m venv /tmp/myenv</code></pre>
+<p>You will need to add the <span class="docutils literal">/tmp</span> directory to the <span class="docutils literal">python.venvPath</span>
+VSCode parameter. (btw: this will be stored in the
+<span class="docutils literal"><span class="pre">~/.config/Code/User/settings.json</span></span> file.</p>
+</li>
+<li><p>After this select the correct environment using the Command Palette -&gt;
+&quot;Select Python Interpreter&quot; action.</p></li>
+<li><p>Restart any VSCode terminal to propagate these changes and use the correct
+interpreter when executing your Python code.</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div class="section" id="getting-started-with-some-simple-use-cases">
+<h1><a class="toc-backref" href="#id16"><span class="sectnum">4.</span> Getting started with some simple use-cases</a></h1>
+<div class="section" id="let-s-talk-back">
+<h2><a class="toc-backref" href="#id17"><span class="sectnum">4.1.</span> Let's talk back</a></h2>
+<p>We'll use a simple &quot;echo&quot; program to get started with a few best practices.
+Let's get started with the following:</p>
+<pre class="code python literal-block" id="echo-v0-py"><code><span class="ln">1 </span><span class="keyword namespace">import</span> <span class="name namespace">sys</span>
+<span class="ln">2 </span><span class="keyword">print</span><span class="punctuation">(</span><span class="literal string single">' '</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">(</span><span class="name">sys</span><span class="operator">.</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">:]))</span></code></pre>
+<ul class="simple">
+<li><p>line 1: import the Standard Library's <a class="reference external" href="https://docs.python.org/3/library/sys.html">sys module</a>, which contains many
+data structures related to the currently running interpreter</p></li>
+<li><p>line 2: in order of how Python evaluates things:</p>
+<ul>
+<li><p>get a reference to the <span class="docutils literal">argv</span> variable in the <a class="reference external" href="https://docs.python.org/3/library/sys.html">sys module</a> (which is
+a <span class="docutils literal">list</span>)</p></li>
+<li><p>get all but the 1st element of the list (see <a class="reference external" href="https://stackoverflow.com/questions/509211/understanding-slice-notation">Slicing</a>), which is always
+the name of the currently running Python program</p></li>
+<li><p>take the elements of the list and &quot;join&quot; them together using spaces
+(because we asked for spaces in &quot;<span class="docutils literal">' <span class="pre">'.join(...)</span></span>&quot;, which will return
+a <span class="docutils literal">str</span></p></li>
+<li><p>print this <span class="docutils literal">str</span> out to the terminal</p></li>
+</ul>
+</li>
+</ul>
+<p>Now let's add a few things to our program:</p>
+<pre class="code python literal-block" id="echo-v1-py"><code><span class="ln">1 </span><span class="comment hashbang">#!/usr/bin/env python</span>
+<span class="ln">2 </span><span class="literal string doc">'''A simple program to echo back all its CLI arguments
+</span><span class="ln">3 </span><span class="literal string doc">'''</span>
+<span class="ln">4 </span>
+<span class="ln">5 </span><span class="keyword namespace">import</span> <span class="name namespace">sys</span>
+<span class="ln">6 </span><span class="keyword">print</span><span class="punctuation">(</span><span class="literal string single">' '</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">(</span><span class="name">sys</span><span class="operator">.</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">:]))</span></code></pre>
+<ul class="simple">
+<li><p>line 1: an instruction to the operating system (Linux, MacOS X and Unix
+only!) with what interpreter we wish to run this file. That is: provided
+that our program file is &quot;executable&quot; (see <a class="reference external" href="https://www.linux.com/learn/understanding-linux-file-permissions">file permissions</a>)</p></li>
+<li><p>lines 2-3: a rudimentary &quot;documentation&quot; to our program using a simple
+<a class="reference external" href="https://www.python.org/dev/peps/pep-0257/">docstring</a></p></li>
+</ul>
+<p>Suppose that before echoing, we wish to modify the input:</p>
+<pre class="code python literal-block" id="echo-v2-py"><code><span class="ln">1 </span><span class="comment hashbang">#!/usr/bin/env python</span>
+<span class="ln">2 </span><span class="literal string doc">'''A simple program to echo back all its CLI arguments
+</span><span class="ln">3 </span><span class="literal string doc">'''</span>
+<span class="ln">4 </span>
+<span class="ln">5 </span><span class="keyword namespace">import</span> <span class="name namespace">sys</span>
+<span class="ln">6 </span><span class="name">answer</span> <span class="operator">=</span> <span class="literal string single">' '</span><span class="operator">.</span><span class="name">join</span><span class="punctuation">(</span><span class="name">sys</span><span class="operator">.</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">:])</span>
+<span class="ln">7 </span><span class="name">answer</span> <span class="operator">=</span> <span class="name">answer</span><span class="operator">.</span><span class="name">title</span><span class="punctuation">()</span>
+<span class="ln">8 </span><span class="keyword">print</span><span class="punctuation">(</span><span class="name">answer</span><span class="punctuation">)</span></code></pre>
+<ul class="simple">
+<li><p>line 6: instead of printing out, the <span class="docutils literal">str</span> is stored in the variable
+<span class="docutils literal">answer</span></p></li>
+<li><p>line 7: by invoking the <span class="docutils literal">.title()</span> method, we capitalize all words (see
+also the documentation about other <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#string-methods">string methods</a>)</p></li>
+</ul>
+</div>
+<div class="section" id="install-and-use-a-3rd-party-module">
+<h2><a class="toc-backref" href="#id18"><span class="sectnum">4.2.</span> Install and use a 3rd party module</a></h2>
+<p>Using the <a class="reference external" href="https://pyperclip.readthedocs.io/en/latest/introduction.html">pyperclip</a> package we can access the clipboard of our desktop
+environment.</p>
+<p>Install <span class="docutils literal">pyperclip</span> by executing the following in a terminal:</p>
+<pre class="literal-block">$ pip install pyperclip
+Collecting pyperclip
+  Using cached https://files.pythonhosted.org/packages/.../pyperclip-1.7.0.tar.gz
+Installing collected packages: pyperclip
+  Running setup.py install for pyperclip ... done
+Successfully installed pyperclip-1.7.0</pre>
+<p>Now create new Python file in your editor with the following content.</p>
+<p><strong>Warning</strong>: make sure to give this file any other name than <span class="docutils literal">clipboard.py</span>,
+otherwise this will conflict with the module's name.</p>
+<pre class="code python literal-block" id="clip-py"><code><span class="ln"> 1 </span><span class="comment hashbang">#!/usr/bin/env python</span>
+<span class="ln"> 2 </span><span class="comment single"># -*- coding: utf-8 -*-</span>
+<span class="ln"> 3 </span>
+<span class="ln"> 4 </span><span class="keyword namespace">import</span> <span class="name namespace">clipboard</span>
+<span class="ln"> 5 </span>
+<span class="ln"> 6 </span><span class="comment single"># Put a string on the clipboard</span>
+<span class="ln"> 7 </span><span class="name">clipboard</span><span class="operator">.</span><span class="name">copy</span><span class="punctuation">(</span><span class="literal string single">'Beautiful is better than ugly.'</span><span class="punctuation">)</span>
+<span class="ln"> 8 </span>
+<span class="ln"> 9 </span><span class="keyword">print</span><span class="punctuation">(</span><span class="literal string single">'Retrieve the content of the clipboard:</span><span class="literal string escape">\n</span><span class="literal string single">'</span><span class="punctuation">,</span> <span class="name">clipboard</span><span class="operator">.</span><span class="name">paste</span><span class="punctuation">())</span></code></pre>
+<ul>
+<li><p>line 4: import the <span class="docutils literal">clipboard</span> module;</p>
+<p><strong>NOTE:</strong> we've installed the <span class="docutils literal">pyperclip</span> package, which has created
+a module <span class="docutils literal">clipboard</span>!</p>
+</li>
+<li><p>line 7: put the string &quot;Beautiful is better than ugly.&quot; (see <a class="reference external" href="https://en.wikipedia.org/wiki/Zen_of_Python">The Zen of
+Python</a>)</p></li>
+<li><p>line 9: print the content of the clipboard</p>
+<p><strong>NOTE:</strong> after running the program, the string remains on the clipboard, so
+you may try to paste this in a different application</p>
+</li>
+</ul>
+</div>
+<div class="section" id="working-with-cli-arguments">
+<h2><a class="toc-backref" href="#id19"><span class="sectnum">4.3.</span> Working with CLI arguments</a></h2>
+<p>In one of the previous example we've already worked with CLI arguments. This
+example is a significant jump in terms of sophistication, but with this we'll
+arrive to the definitive solution for this common programming pattern.</p>
+<p>CLI arguments are one of oldest and most frequently used mechanism to provide
+some information to a program. Because it is so old (going back to the '70s)
+it has a wide variety of appearances depending on:</p>
+<ul>
+<li><p>operating system: e.g. Unix, MacOS X and Linux usually use <span class="docutils literal"><span class="pre">-h</span></span> or
+<span class="docutils literal"><span class="pre">--help</span></span>, while Windows traditionally uses <span class="docutils literal">/h</span></p></li>
+<li><p>style: Unix vs. GNU style CLI arguments, the former being compact, the
+latter more informative</p></li>
+<li><p>complexity: all the following forms can mean the same</p>
+<p><span class="docutils literal"><span class="pre">'-vvvltp</span> 8000'</span></p>
+<p><span class="docutils literal"><span class="pre">'-v</span> <span class="pre">-v</span> <span class="pre">-v</span> <span class="pre">-l</span> <span class="pre">-t</span> <span class="pre">-p</span> 8000'</span></p>
+<p><span class="docutils literal"><span class="pre">'--verbose</span> 3 <span class="pre">--long</span> <span class="pre">--time</span> <span class="pre">--port</span> 8000</span></p>
+</li>
+</ul>
+<p>A practical example showing just how much information can be conveyed using
+CLI arguments to a seemingly simple program such as <span class="docutils literal">'ls'</span>:</p>
+<pre class="code literal-block"><code>$ ls --help
+Usage: ls [OPTION]... [FILE]...
+List information about the FILEs (the current directory by default).
+Sort entries alphabetically if none of -cftuvSUX nor --sort is specified.
+
+Mandatory arguments to long options are mandatory for short options too.
+  -a, --all                  do not ignore entries starting with .
+  -A, --almost-all           do not list implied . and ..
+      --author               with -l, print the author of each file
+  -b, --escape               print C-style escapes for nongraphic characters
+      --block-size=SIZE      with -l, scale sizes by SIZE when printing them;
+                               e.g., '--block-size=M'; see SIZE format below
+  -B, --ignore-backups       do not list implied entries ending with ~
+  -c                         with -lt: sort by, and show, ctime (time of last
+                               modification of file status information);
+                               with -l: show ctime and sort by name;
+                               otherwise: sort by ctime, newest first
+...</code></pre>
+<p>Python provides multiple modules to deal with the varying levels of complexity
+of parsing command-line arguments. A few examples:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.python.org/3.7/library/optparse.html">optparse</a>: a deprecated module in the <a class="reference external" href="https://docs.python.org/3/library/">Standard Library</a></p></li>
+<li><p><a class="reference external" href="https://docs.python.org/3.7/library/argparse.html">argparse</a>: the currently supported module in the <a class="reference external" href="https://docs.python.org/3/library/">Standard Library</a> to
+solve CLI parsing (see also the <a class="reference external" href="https://docs.python.org/3/howto/argparse.html">argparse tutorial</a>)</p></li>
+<li><p><a class="reference external" href="https://docopt.org/">docopt</a>: a very intuitive module, which parses a <span class="docutils literal">docstr</span> describing the
+program's usage conforming to the traditional notation for documentation</p></li>
+</ul>
+<p>Right now we'll be checking out a few simpler use-cases of the <span class="docutils literal">argparse</span>
+module.</p>
+<div class="section" id="a-basic-example">
+<h3>A basic example</h3>
+<p>The following code is perhaps the simplest first step:</p>
+<pre class="code python literal-block" id="cliargs1-py"><code><span class="ln"> 1 </span><span class="comment hashbang">#!/usr/bin/env python3</span>
+<span class="ln"> 2 </span><span class="comment single"># -*- coding: utf-8 -*-</span>
+<span class="ln"> 3 </span>
+<span class="ln"> 4 </span><span class="keyword namespace">import</span> <span class="name namespace">argparse</span>
+<span class="ln"> 5 </span><span class="name">p</span> <span class="operator">=</span> <span class="name">argparse</span><span class="operator">.</span><span class="name">ArgumentParser</span><span class="punctuation">()</span>
+<span class="ln"> 6 </span><span class="name">p</span><span class="operator">.</span><span class="name">add_argument</span><span class="punctuation">(</span><span class="literal string single">'-n'</span><span class="punctuation">,</span> <span class="literal string single">'--name'</span><span class="punctuation">,</span>
+<span class="ln"> 7 </span>               <span class="name builtin">type</span><span class="operator">=</span><span class="name builtin">str</span><span class="punctuation">,</span>
+<span class="ln"> 8 </span>               <span class="name">required</span><span class="operator">=</span><span class="name builtin pseudo">False</span><span class="punctuation">,</span>
+<span class="ln"> 9 </span>               <span class="name">default</span><span class="operator">=</span><span class="literal string single">'John Doe'</span><span class="punctuation">,</span>
+<span class="ln">10 </span>               <span class="name">help</span><span class="operator">=</span><span class="literal string single">'Your name'</span><span class="punctuation">)</span>
+<span class="ln">11 </span><span class="name">args</span> <span class="operator">=</span> <span class="name">p</span><span class="operator">.</span><span class="name">parse_args</span><span class="punctuation">()</span></code></pre>
+<ul class="simple">
+<li><p>line 4: import the <span class="docutils literal">argparse</span> module from the Standard Library</p></li>
+<li><p>line 5: create a new argument parser instance, which will be able to parse
+a list of strings (typically the CLI arguments from <span class="docutils literal">sys.argv</span>). This is
+a container of parser objects for individual arguments, such as '-n' or
+'--name' etc...</p></li>
+<li><p>lines 6-10: a multi-line instruction to add the 1st argument parser, which
+defines the requirements for the <span class="docutils literal">name</span> argument:</p>
+<ul>
+<li><p>line 6: the CLI argument designated with this either options <span class="docutils literal"><span class="pre">-n</span></span> or
+<span class="docutils literal"><span class="pre">--name</span></span> will interpreted as the <span class="docutils literal">name</span> parameter</p></li>
+<li><p>line 7: the type of this parameter is <span class="docutils literal">str</span></p></li>
+<li><p>line 8: it is an optional argument, so it may be omitted</p></li>
+<li><p>line 9: if omitted, the default value of it will be &quot;John Doe&quot;</p></li>
+<li><p>line 10: when the '-h' or '--help' argument is provided, this string
+elaborates on the meaning of this parameter. The description of the
+parameter may be multiple lines.</p></li>
+</ul>
+</li>
+</ul>
+<p>Now let's execute the program in two different ways</p>
+<ol class="arabic">
+<li><p>without any arguments</p>
+<pre class="code shell literal-block"><code>$ python3 cliargs1.py -h</code></pre>
+<p>No response, which is correct!</p>
+</li>
+<li><p>with a <span class="docutils literal"><span class="pre">'--help'</span></span> argument</p>
+<pre class="code shell literal-block"><code>$ python3 cliargs1.py -h
+usage: cliargs1.py <span class="operator">[</span>-h<span class="operator">]</span> <span class="operator">[</span>-n NAME<span class="operator">]</span>
+
+optional arguments:
+  -h, --help            show this <span class="name builtin">help</span> message and <span class="name builtin">exit</span>
+  -n NAME, --name NAME  Your name</code></pre>
+</li>
+</ol>
+<p>Extend the program by adding a new argument <span class="docutils literal"><span class="pre">'--age'</span></span> to the CLI parser and
+printing the parsed values:</p>
+<pre class="code python literal-block" id="cliargs2-py"><code><span class="ln"> 1 </span><span class="comment hashbang">#!/usr/bin/env python3</span>
+<span class="ln"> 2 </span><span class="comment single"># -*- coding: utf-8 -*-</span>
+<span class="ln"> 3 </span>
+<span class="ln"> 4 </span><span class="keyword namespace">import</span> <span class="name namespace">argparse</span>
+<span class="ln"> 5 </span><span class="name">p</span> <span class="operator">=</span> <span class="name">argparse</span><span class="operator">.</span><span class="name">ArgumentParser</span><span class="punctuation">()</span>
+<span class="ln"> 6 </span><span class="name">p</span><span class="operator">.</span><span class="name">add_argument</span><span class="punctuation">(</span><span class="literal string single">'-n'</span><span class="punctuation">,</span> <span class="literal string single">'--name'</span><span class="punctuation">,</span>
+<span class="ln"> 7 </span>               <span class="name builtin">type</span><span class="operator">=</span><span class="name builtin">str</span><span class="punctuation">,</span>
+<span class="ln"> 8 </span>               <span class="name">required</span><span class="operator">=</span><span class="name builtin pseudo">False</span><span class="punctuation">,</span>
+<span class="ln"> 9 </span>               <span class="name">default</span><span class="operator">=</span><span class="literal string single">'John Doe'</span><span class="punctuation">,</span>
+<span class="ln">10 </span>               <span class="name">help</span><span class="operator">=</span><span class="literal string single">'Your name'</span><span class="punctuation">)</span>
+<span class="ln">11 </span><span class="name">p</span><span class="operator">.</span><span class="name">add_argument</span><span class="punctuation">(</span><span class="literal string single">'-a'</span><span class="punctuation">,</span> <span class="literal string single">'--age'</span><span class="punctuation">,</span>
+<span class="ln">12 </span>               <span class="name builtin">type</span><span class="operator">=</span><span class="name builtin">int</span><span class="punctuation">,</span>
+<span class="ln">13 </span>               <span class="name">required</span><span class="operator">=</span><span class="name builtin pseudo">False</span><span class="punctuation">,</span>
+<span class="ln">14 </span>               <span class="name">default</span><span class="operator">=</span><span class="literal number integer">99</span><span class="punctuation">,</span>
+<span class="ln">15 </span>               <span class="name">help</span><span class="operator">=</span><span class="literal string single">'Your age'</span><span class="punctuation">)</span>
+<span class="ln">16 </span><span class="name">args</span> <span class="operator">=</span> <span class="name">p</span><span class="operator">.</span><span class="name">parse_args</span><span class="punctuation">()</span>
+<span class="ln">17 </span><span class="keyword">print</span><span class="punctuation">(</span><span class="literal string single">'Name:'</span><span class="punctuation">,</span> <span class="name">args</span><span class="operator">.</span><span class="name">name</span><span class="punctuation">)</span>
+<span class="ln">18 </span><span class="keyword">print</span><span class="punctuation">(</span><span class="literal string single">'Age :'</span><span class="punctuation">,</span> <span class="name">args</span><span class="operator">.</span><span class="name">age</span><span class="punctuation">)</span></code></pre>
+<p>Execute the program in the following ways:</p>
+<ol class="arabic">
+<li><p>No arguments:</p>
+<pre class="code shell literal-block"><code>$ python3 cliargs2.py
+Name: John Doe
+Age : <span class="literal number">99</span></code></pre>
+<p>The program prints out the default values of both parameters.</p>
+</li>
+<li><p>Only the <span class="docutils literal"><span class="pre">'--help'</span></span> argument will instruct the program to print out its
+help information.</p>
+<pre class="code shell literal-block"><code>$ python3 cliargs2.py --help
+usage: cliargs2.py <span class="operator">[</span>-h<span class="operator">]</span> <span class="operator">[</span>-n NAME<span class="operator">]</span> <span class="operator">[</span>-a AGE<span class="operator">]</span>
+
+optional arguments:
+  -h, --help            show this <span class="name builtin">help</span> message and <span class="name builtin">exit</span>
+  -n NAME, --name NAME  Your name
+  -a AGE, --age AGE     Your age</code></pre>
+</li>
+<li><p>Provide a value for both arguments:</p>
+<pre class="code shell literal-block"><code>$ python3 cliargs2.py --name Jane --age <span class="literal number">32</span>
+Name: Jane
+Age : <span class="literal number">32</span></code></pre>
+</li>
+</ol>
+<!-- vim: filetype=rst textwidth=78 foldmethod=syntax foldcolumn=3 wrap -->
+<!-- vim: linebreak ruler spell spelllang=en showbreak=… shiftwidth=3 tabstop=3 -->
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>
