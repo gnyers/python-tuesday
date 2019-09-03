@@ -22,7 +22,7 @@ https://www.meetup.com/ITGilde-Cooperatie-Amsterdam-Unix-Linux-Meetups/
 The topics of the sessions so far:
 
 - Session 1: Getting your environment set up and ready for Python development
-- Session 2: Working with files and file formats
+- Session 2: Working with text files and file formats
 
 
 

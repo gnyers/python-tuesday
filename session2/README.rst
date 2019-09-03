@@ -2,9 +2,9 @@
 Python Tuesday: Session 2
 =========================
 
------------------------------------
-Working with files and file formats
------------------------------------
+----------------------------------------
+Working with text files and file formats
+----------------------------------------
 
 :date: 2019-08-27
 :author: Gábor Nyers
