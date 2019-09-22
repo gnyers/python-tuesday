@@ -64,18 +64,31 @@ Check out the Git repo:
 
 .. code:: shell
 
+   cd $PROJECTDIR
    git clone git@github.com:gnyers/python-tuesday.git
 
-
-Install required modules
-------------------------
-
-This session uses several modules that are not part of the Python Stadard
-Library. To install these modules execute:
+To follow along with the instructions please open the README.html in your
+browser:
 
 .. code:: shell
 
-   pip install --user -r requirements.txt
+   firefox $PROJECTDIR/python-tuesday/session3/README.html
+
+
+Requirements
+------------
+
+The code of this workshop has been tested with:
+
+- Python v3.6 and
+- the following modules that are not part of the Python Standard Library:
+  ``openpyxl``
+  
+  To install these modules execute:
+
+  .. code:: shell
+
+     pip install --user -r requirements.txt
 
 
 Working with Spreadsheets
@@ -86,10 +99,31 @@ Working with Spreadsheets
    :backlinks: entry
    :local:
 
-Python modules
---------------
+This chapter will discuss the basics of working with Excel ``.xlsx`` files.
 
-.
+
+Python modules to deal with spreadsheets
+----------------------------------------
+
+Python provides numerous modules to deal with both Excel and LibreCalc
+spreadsheets. Because LibreOffice support Python as macro language, users have
+much more advanced capabilities. (See for more: [libreoffice_automation]_)
+
+Therefore, in this workshop our focus is on dealing with Excel spreadsheets.
+For this we have different options as wel: (Source: [PythonExcel]_)
+
+- openpyxl: The recommended package for reading and writing Excel 2010 files
+  (ie: .xlsx)
+
+- xlsxwriter:  An alternative package for writing data, formatting information
+  and, in particular, charts in the Excel 2010 format (ie: .xlsx)
+
+- xlrd: This package is for reading data and formatting information from older
+  Excel files (ie: .xls)
+
+- xlwt: This package is for writing data and formatting information to older
+  Excel files (ie: .xls)
+
 
 Writing data to a spreadsheet
 -----------------------------
@@ -135,8 +169,8 @@ The sheet now should look something like this:
    The spreadsheet created by the ``openpyxl`` module. Note the color of the
    worksheets.
 
-Add some data
-^^^^^^^^^^^^^
+Add data
+^^^^^^^^
 
 Now let's put some data into the sheet "TimeReg":
 
@@ -208,11 +242,12 @@ The result:
    :alt: Workbook with some data
    :align: center
 
-   The 'Names' sheet now contains the CSV data.
+   The 'Names' sheet now contains the CSV data. Note: multiple columns appear
+   as too narrow; this is 
 
 
-Add some formatting
-^^^^^^^^^^^^^^^^^^^
+Add formatting
+^^^^^^^^^^^^^^
 
 Formatting of cells can be done either directly or by applying a style. In
 general using styles is preferable.
@@ -224,7 +259,7 @@ general using styles is preferable.
    >>> from openpyxl.styles.borders import Side
    >>> h1 = openpyxl.styles.NamedStyle(name='h1')
 
-   ### Font style: bold, 18pt "Arial" of a nice color
+   ### Font style: bold, 18pt "Arial" of a nice color;
    >>> h1.font = Font('Arial', sz=18, b=True, color='aa00bb')
 
    ### Border style: 
@@ -245,11 +280,15 @@ This will result in the following:
    :alt: Custom sytle
    :align: center
 
-   The first row of the "TimeReg" sheet has the custom style "h1"
+   The first row of the "TimeReg" sheet has the custom style "h1". Note that
+   graphical design is not a primary concern at this point ;-)
 
 
 Add comment
 ^^^^^^^^^^^
+
+Comments can contain useful auxiliary information about a cell, such as
+instructions to the user or ways to verify the correctness of the data.
 
 .. code:: python
    :number-lines: 8
@@ -269,6 +308,115 @@ Add comment
 Reading data from a spreadsheet
 -------------------------------
 
+Getting totals
+^^^^^^^^^^^^^^
+
+Our goal is to calculate the total number of billable and non-billable hours
+based on the data of the following timesheet:
+
+.. figure:: images/timesheet-xlsx-01.png
+   :target: sandbox/timesheet.xlsx
+   :alt: Comment added to cell "A1"
+   :align: center
+
+   Example timesheet containing data
+
+First let's load the data from the spreadsheet:
+*(Please type the following in an interactive Python session)*
+
+.. code:: python
+   :number-lines: 1
+
+   ### load the ``openpyxl`` module
+   >>> import openpyxl
+
+   ### open the workbook
+   >>> wb = openpyxl.load_workbook('sandbox/timesheet.xlsx')
+
+   ### select the sheet containing the required data
+   >>> ws = wb['TimeSheet']
+
+   ### select the cells that contain the data; this obviously implies that you
+   ### need to be familiar with the structure of the workbook
+   >>> data_range = ws['A5:G40']
+
+   ### let's retrieve the data with the following list comprehension
+   >>> timesheet = [ [ cell.value  for cell in row  ]  for row in data_range ]
+   >>> print(timesheet)                              # doctest: +ELLIPSIS
+   [['Date', 'ProjectID', 'ActivityID', 'Billable Hours', 'Non-Billable Hours', 'RemarkPub', 'RemarkPriv'], [datetime.datetime(2019, 9, 1, 0, 0)...
+
+We're now ready to calculate the total number of billable hours from the range
+``'D5:D40'``:
+
+.. code:: python
+   :number-lines: 18
+
+   ### select the cells which contain the billable hours
+   >>> range_billable = ws['D5:D40']
+
+   ### since the range is 2D data structure, we'll need a nested loop to
+   ### process the data
+   ###
+   ### with the following list comprehension we create a list of hours
+   >>> billable_hours = [ cell.value  for row in range_billable[1:]
+   ...                                for cell in row if cell.value ]
+   >>> print(billable_hours)
+   [8, 5, 8, 8, 8, 8, 5, 8, 8, 8, 8, 5, 8, 8, 8, 8, 5, 8, 8, 8, 8]
+
+   ### the total of the billable hours
+   >>> print(sum(billable_hours))
+   156
+
+In a similar manner, we'll calculate the total of non-billable hours based on
+the data in the range ``'E5:E40'``:
+
+.. code:: python
+   :number-lines: 33
+
+   >>> range_non_billable = ws['E5:E40']
+   >>> non_billable_hours = [ cell.value  for row in range_non_billable[1:]
+   ...                                    for cell in row if cell.value ]
+   >>> print(non_billable_hours)
+   [2, 3, 3, 3, 2, 2, 3, 3, 3, 2, 2, 3, 3, 3, 2, 2, 3, 3, 3, 2, 2]
+   >>> total_non_billable = sum(non_billable_hours)
+   >>> print(total_non_billable)
+   54
+
+
+Simple Analytics
+^^^^^^^^^^^^^^^^
+
+Suppose we're interested in the dates when the number of billable hours was
+below 8:
+
+.. code:: python
+   :number-lines: 41
+
+   >>> r = ws['A6:D40']
+
+   ### Let's write up the query in a more understandable form
+   ### NOTE: the <1>...<5> indicate the order in which Python executes the
+   ###       statements
+   >>> result = [
+   ...  [ cell.value                   # <5> take the current cell's value
+   ...    for cell in row[::3]         # <4> loop through the current row and 
+   ...                                 #     take only elements w/ index 0 and 3
+   ...  ]
+   ...  for row in r                   # <1> loop through the data
+   ...      if row[3].value            # <2> take only rows where the billable
+   ...                                 #     hours are non-empty, and
+   ...         and
+   ...         row[3].value < 8        # <3> where the value is less than 8
+   ... ]
+
+   ### the ``result`` variable now points to a list of lists (2D list)
+   ### of the days when the number of billable hours were < 8:
+   >>> for d, h in result: print(d.strftime('%Y-%m-%d'), h)
+   2019-09-03 5
+   2019-09-10 5
+   2019-09-17 5
+   2019-09-24 5
+
 
 Showcase Application: Time sheet
 ================================
@@ -281,12 +429,20 @@ Requirements
 References
 ==========
 
+.. [PythonExcel] http://www.python-excel.org/
+
 .. [pymod_openpyxl] OpenPyXL is a Python library to read/write Excel 2010
    xlsx/xlsm/xltx/xltm files
-   https://openpyxl.readthedocs.io/
+
+   - source: https://bitbucket.org/openpyxl/openpyxl
+   - documentation: https://openpyxl.readthedocs.io/
+
 
 .. [openpyxl_tutorial] 
    https://openpyxl.readthedocs.io/en/stable/tutorial.html
+
+.. [libreoffice_automation] Automate your office tasks with Python Macros
+   http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html
 
 
 .. vim: filetype=rst tw=78 foldmethod=marker foldcolumn=3 wrap lbr nolist
