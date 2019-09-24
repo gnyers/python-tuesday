@@ -152,31 +152,32 @@ vim: softtabstop=2 tabstop=2
 <div class="contents local topic" id="table-of-contents">
 <p class="topic-title first">Table of contents</p>
 <ul class="auto-toc simple">
-<li><p><a class="reference internal" href="#introduction-working-with-data-part-1-spreadsheets" id="id5"><span class="sectnum">1.</span> Introduction: Working with data Part 1: Spreadsheets</a></p></li>
-<li><p><a class="reference internal" href="#preparations" id="id6"><span class="sectnum">2.</span> Preparations</a></p>
+<li><p><a class="reference internal" href="#introduction-working-with-data-part-1-spreadsheets" id="id4"><span class="sectnum">1.</span> Introduction: Working with data Part 1: Spreadsheets</a></p></li>
+<li><p><a class="reference internal" href="#preparations" id="id5"><span class="sectnum">2.</span> Preparations</a></p>
 <ul class="auto-toc">
-<li><p><a class="reference internal" href="#earlier-sessions" id="id7"><span class="sectnum">2.1.</span> Earlier sessions</a></p></li>
-<li><p><a class="reference internal" href="#this-session-s-material" id="id8"><span class="sectnum">2.2.</span> This session's material</a></p></li>
-<li><p><a class="reference internal" href="#requirements" id="id9"><span class="sectnum">2.3.</span> Requirements</a></p></li>
+<li><p><a class="reference internal" href="#earlier-sessions" id="id6"><span class="sectnum">2.1.</span> Earlier sessions</a></p></li>
+<li><p><a class="reference internal" href="#this-session-s-material" id="id7"><span class="sectnum">2.2.</span> This session's material</a></p></li>
+<li><p><a class="reference internal" href="#requirements" id="id8"><span class="sectnum">2.3.</span> Requirements</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#working-with-spreadsheets" id="id10"><span class="sectnum">3.</span> Working with Spreadsheets</a></p>
+<li><p><a class="reference internal" href="#working-with-spreadsheets" id="id9"><span class="sectnum">3.</span> Working with Spreadsheets</a></p>
 <ul class="auto-toc">
-<li><p><a class="reference internal" href="#python-modules-to-deal-with-spreadsheets" id="id11"><span class="sectnum">3.1.</span> Python modules to deal with spreadsheets</a></p></li>
-<li><p><a class="reference internal" href="#writing-data-to-a-spreadsheet" id="id12"><span class="sectnum">3.2.</span> Writing data to a spreadsheet</a></p></li>
-<li><p><a class="reference internal" href="#reading-data-from-a-spreadsheet" id="id13"><span class="sectnum">3.3.</span> Reading data from a spreadsheet</a></p></li>
+<li><p><a class="reference internal" href="#python-modules-to-deal-with-spreadsheets" id="id10"><span class="sectnum">3.1.</span> Python modules to deal with spreadsheets</a></p></li>
+<li><p><a class="reference internal" href="#writing-data-to-a-spreadsheet" id="id11"><span class="sectnum">3.2.</span> Writing data to a spreadsheet</a></p></li>
+<li><p><a class="reference internal" href="#reading-data-from-a-spreadsheet" id="id12"><span class="sectnum">3.3.</span> Reading data from a spreadsheet</a></p></li>
 </ul>
 </li>
-<li><p><a class="reference internal" href="#showcase-application-time-sheet" id="id14"><span class="sectnum">4.</span> Showcase Application: Time sheet</a></p>
+<li><p><a class="reference internal" href="#showcase-application-time-sheet" id="id13"><span class="sectnum">4.</span> Showcase Application: Time sheet</a></p>
 <ul class="auto-toc">
-<li><p><a class="reference internal" href="#id4" id="id15"><span class="sectnum">4.1.</span> Requirements</a></p></li>
+<li><p><a class="reference internal" href="#application-requirements" id="id14"><span class="sectnum">4.1.</span> Application Requirements</a></p></li>
+<li><p><a class="reference internal" href="#implementation-prototype" id="id15"><span class="sectnum">4.2.</span> Implementation prototype</a></p></li>
 </ul>
 </li>
 <li><p><a class="reference internal" href="#references" id="id16"><span class="sectnum">5.</span> References</a></p></li>
 </ul>
 </div>
 <div class="section" id="introduction-working-with-data-part-1-spreadsheets">
-<h1><a class="toc-backref" href="#id5"><span class="sectnum">1.</span> Introduction: Working with data Part 1: Spreadsheets</a></h1>
+<h1><a class="toc-backref" href="#id4"><span class="sectnum">1.</span> Introduction: Working with data Part 1: Spreadsheets</a></h1>
 <p>Spreadsheets and databases permeate our business lives. Databases usually
 contain structured data and often we use use dedicated applications to
 interact with them. Spreadsheets are used to do ad-hoc processing or simply to
@@ -187,9 +188,9 @@ live-code a simple Python application to read from- and write data to
 spreadsheets.</p>
 </div>
 <div class="section" id="preparations">
-<h1><a class="toc-backref" href="#id6"><span class="sectnum">2.</span> Preparations</a></h1>
+<h1><a class="toc-backref" href="#id5"><span class="sectnum">2.</span> Preparations</a></h1>
 <div class="section" id="earlier-sessions">
-<h2><a class="toc-backref" href="#id7"><span class="sectnum">2.1.</span> Earlier sessions</a></h2>
+<h2><a class="toc-backref" href="#id6"><span class="sectnum">2.1.</span> Earlier sessions</a></h2>
 <p>As we will build upon the previous topics, you might want to review the
 earlier sessions:</p>
 <ul class="simple">
@@ -200,7 +201,7 @@ earlier sessions:</p>
 </ul>
 </div>
 <div class="section" id="this-session-s-material">
-<h2><a class="toc-backref" href="#id8"><span class="sectnum">2.2.</span> This session's material</a></h2>
+<h2><a class="toc-backref" href="#id7"><span class="sectnum">2.2.</span> This session's material</a></h2>
 <p>Visit this page: <a class="reference external" href="https://github.com/gnyers/python-tuesday/tree/master/session3">https://github.com/gnyers/python-tuesday/tree/master/session3</a></p>
 <p>OR</p>
 <p>Check out the Git repo:</p>
@@ -211,12 +212,16 @@ browser:</p>
 <pre class="code shell literal-block"><code>firefox <span class="name variable">$PROJECTDIR</span>/python-tuesday/session3/README.html</code></pre>
 </div>
 <div class="section" id="requirements">
-<h2><a class="toc-backref" href="#id9"><span class="sectnum">2.3.</span> Requirements</a></h2>
+<h2><a class="toc-backref" href="#id8"><span class="sectnum">2.3.</span> Requirements</a></h2>
 <p>The code of this workshop has been tested with:</p>
 <ul>
 <li><p>Python v3.6 and</p></li>
-<li><p>the following modules that are not part of the Python Standard Library:
-<span class="docutils literal">openpyxl</span></p>
+<li><p>the following modules that are not part of the Python Standard Library:</p>
+<ul class="simple">
+<li><p><span class="docutils literal">openpyxl</span>: module to read/write Excel 2010 workbooks (OOXML format)</p></li>
+<li><p><span class="docutils literal">ptpython</span>: a very conveniant Python interactive shell with support for
+in-line sytax highlighting, command completion and improved code editing</p></li>
+</ul>
 <p>To install these modules execute:</p>
 <pre class="code shell literal-block"><code>pip install --user -r requirements.txt</code></pre>
 </li>
@@ -224,7 +229,7 @@ browser:</p>
 </div>
 </div>
 <div class="section" id="working-with-spreadsheets">
-<h1><a class="toc-backref" href="#id10"><span class="sectnum">3.</span> Working with Spreadsheets</a></h1>
+<h1><a class="toc-backref" href="#id9"><span class="sectnum">3.</span> Working with Spreadsheets</a></h1>
 <div class="contents local topic" id="chapter-contents">
 <p class="topic-title first">Chapter contents</p>
 <ul class="auto-toc simple">
@@ -232,16 +237,16 @@ browser:</p>
 <li><p><a class="reference internal" href="#writing-data-to-a-spreadsheet" id="id18"><span class="sectnum">3.2.</span> Writing data to a spreadsheet</a></p>
 <ul>
 <li><p><a class="reference internal" href="#create-a-workbook" id="id19">Create a workbook</a></p></li>
-<li><p><a class="reference internal" href="#add-some-data" id="id20">Add some data</a></p></li>
+<li><p><a class="reference internal" href="#add-data" id="id20">Add data</a></p></li>
 <li><p><a class="reference internal" href="#load-data-from-a-csv-file" id="id21">Load data from a CSV file</a></p></li>
-<li><p><a class="reference internal" href="#add-some-formatting" id="id22">Add some formatting</a></p></li>
+<li><p><a class="reference internal" href="#add-formatting" id="id22">Add formatting</a></p></li>
 <li><p><a class="reference internal" href="#add-comment" id="id23">Add comment</a></p></li>
 </ul>
 </li>
 <li><p><a class="reference internal" href="#reading-data-from-a-spreadsheet" id="id24"><span class="sectnum">3.3.</span> Reading data from a spreadsheet</a></p>
 <ul>
-<li><p><a class="reference internal" href="#getting-some-totals" id="id25">Getting some totals</a></p></li>
-<li><p><a class="reference internal" href="#some-simple-analytics" id="id26">Some Simple Analytics</a></p></li>
+<li><p><a class="reference internal" href="#getting-totals" id="id25">Getting totals</a></p></li>
+<li><p><a class="reference internal" href="#simple-analytics" id="id26">Simple Analytics</a></p></li>
 </ul>
 </li>
 </ul>
@@ -292,8 +297,8 @@ Screenshot with `xfce-screenshot`:
 worksheets.</p>
 </div>
 </div>
-<div class="section" id="add-some-data">
-<h3><a class="toc-backref" href="#id20">Add some data</a></h3>
+<div class="section" id="add-data">
+<h3><a class="toc-backref" href="#id20">Add data</a></h3>
 <p>Now let's put some data into the sheet &quot;TimeReg&quot;:</p>
 <pre class="code python literal-block"><code><span class="ln"> 9 </span><span class="comment single">### Get a sheet by its name</span>
 <span class="ln">10 </span><span class="operator">&gt;&gt;&gt;</span> <span class="name">ws_tr</span> <span class="operator">=</span> <span class="name">wb</span><span class="punctuation">[</span><span class="literal string single">'TimeReg'</span><span class="punctuation">]</span>
@@ -349,8 +354,8 @@ the file is as follows:</p>
 as too narrow; this is</p>
 </div>
 </div>
-<div class="section" id="add-some-formatting">
-<h3><a class="toc-backref" href="#id22">Add some formatting</a></h3>
+<div class="section" id="add-formatting">
+<h3><a class="toc-backref" href="#id22">Add formatting</a></h3>
 <p>Formatting of cells can be done either directly or by applying a style. In
 general using styles is preferable.</p>
 <pre class="code python literal-block"><code><span class="ln">37 </span><span class="operator">&gt;&gt;&gt;</span> <span class="keyword namespace">from</span> <span class="name namespace">openpyxl.styles</span> <span class="keyword namespace">import</span> <span class="name">NamedStyle</span><span class="punctuation">,</span> <span class="name">Font</span><span class="punctuation">,</span> <span class="name">Border</span>
@@ -392,8 +397,8 @@ instructions to the user or ways to verify the correctness of the data.</p>
 </div>
 <div class="section" id="reading-data-from-a-spreadsheet">
 <h2><a class="toc-backref" href="#id24"><span class="sectnum">3.3.</span> Reading data from a spreadsheet</a></h2>
-<div class="section" id="getting-some-totals">
-<h3><a class="toc-backref" href="#id25">Getting some totals</a></h3>
+<div class="section" id="getting-totals">
+<h3><a class="toc-backref" href="#id25">Getting totals</a></h3>
 <p>Our goal is to calculate the total number of billable and non-billable hours
 based on the data of the following timesheet:</p>
 <div class="figure align-center">
@@ -447,8 +452,8 @@ the data in the range <span class="docutils literal">'E5:E40'</span>:</p>
 <span class="ln">39 </span><span class="operator">&gt;&gt;&gt;</span> <span class="keyword">print</span><span class="punctuation">(</span><span class="name">total_non_billable</span><span class="punctuation">)</span>
 <span class="ln">40 </span><span class="literal number integer">54</span></code></pre>
 </div>
-<div class="section" id="some-simple-analytics">
-<h3><a class="toc-backref" href="#id26">Some Simple Analytics</a></h3>
+<div class="section" id="simple-analytics">
+<h3><a class="toc-backref" href="#id26">Simple Analytics</a></h3>
 <p>Suppose we're interested in the dates when the number of billable hours was
 below 8:</p>
 <pre class="code python literal-block"><code><span class="ln">41 </span><span class="operator">&gt;&gt;&gt;</span> <span class="name">r</span> <span class="operator">=</span> <span class="name">ws</span><span class="punctuation">[</span><span class="literal string single">'A6:D40'</span><span class="punctuation">]</span>
@@ -479,9 +484,87 @@ below 8:</p>
 </div>
 </div>
 <div class="section" id="showcase-application-time-sheet">
-<h1><a class="toc-backref" href="#id14"><span class="sectnum">4.</span> Showcase Application: Time sheet</a></h1>
-<div class="section" id="id4">
-<h2><a class="toc-backref" href="#id15"><span class="sectnum">4.1.</span> Requirements</a></h2>
+<h1><a class="toc-backref" href="#id13"><span class="sectnum">4.</span> Showcase Application: Time sheet</a></h1>
+<div class="section" id="application-requirements">
+<h2><a class="toc-backref" href="#id14"><span class="sectnum">4.1.</span> Application Requirements</a></h2>
+<ol class="arabic simple">
+<li><p>Worksheet management of a given spreadsheet:</p>
+<ol class="arabic simple">
+<li><p>list the sheets</p></li>
+<li><p>add sheet</p></li>
+</ol>
+</li>
+<li><p>Data management:</p>
+<ol class="arabic simple">
+<li><p>dump the data on a sheet to the stdout</p></li>
+<li><p>append provided CSV data at the end of a sheet</p></li>
+</ol>
+</li>
+<li><p>CLI Interface: arguments as described above</p></li>
+</ol>
+</div>
+<div class="section" id="implementation-prototype">
+<h2><a class="toc-backref" href="#id15"><span class="sectnum">4.2.</span> Implementation prototype</a></h2>
+<pre class="code python literal-block"><code><span class="ln"> 1 </span><span class="comment hashbang">#!/usr/bin/env python3</span>
+<span class="ln"> 2 </span><span class="comment single"># -*- coding: utf-8 -*-</span>
+<span class="ln"> 3 </span>
+<span class="ln"> 4 </span><span class="literal string doc">'''Demonstration of working with spreadsheets
+</span><span class="ln"> 5 </span><span class="literal string doc">
+</span><span class="ln"> 6 </span><span class="literal string doc">1. Worksheet management of a given spreadsheet:
+</span><span class="ln"> 7 </span><span class="literal string doc">
+</span><span class="ln"> 8 </span><span class="literal string doc">   1. list the sheets
+</span><span class="ln"> 9 </span><span class="literal string doc">      CLI args: --list-sheets WORKBOOK
+</span><span class="ln">10 </span><span class="literal string doc">   2. add sheet
+</span><span class="ln">11 </span><span class="literal string doc">      CLI args: --addsheet SHEETNAME WORKBOOK
+</span><span class="ln">12 </span><span class="literal string doc">
+</span><span class="ln">13 </span><span class="literal string doc">2. Data management:
+</span><span class="ln">14 </span><span class="literal string doc">
+</span><span class="ln">15 </span><span class="literal string doc">   1. dump the data on a sheet to the stdout or a given output file as text
+</span><span class="ln">16 </span><span class="literal string doc">      CLI args: --dump SHEETNAME WORKBOOK
+</span><span class="ln">17 </span><span class="literal string doc">   2. append provided CSV data at the end of a sheet
+</span><span class="ln">18 </span><span class="literal string doc">      CLI args: --append CSVRECORD --sheet SHEETNAME WORKBOOK
+</span><span class="ln">19 </span><span class="literal string doc">
+</span><span class="ln">20 </span><span class="literal string doc">3. CLI Interface: as described above
+</span><span class="ln">21 </span><span class="literal string doc">'''</span>
+<span class="ln">22 </span>
+<span class="ln">23 </span><span class="comment single">### Import modules</span>
+<span class="ln">24 </span><span class="keyword namespace">import</span> <span class="name namespace">sys</span>
+<span class="ln">25 </span><span class="keyword namespace">import</span> <span class="name namespace">os.path</span>
+<span class="ln">26 </span>
+<span class="ln">27 </span><span class="comment single">### Constants</span>
+<span class="ln">28 </span>
+<span class="ln">29 </span><span class="name">HEADER_ROW</span> <span class="operator">=</span> <span class="literal number integer">5</span>                         <span class="comment single"># sheet headers are assumed in this row</span>
+<span class="ln">30 </span>
+<span class="ln">31 </span><span class="comment single">### Function(s) for CLI arg. parsing</span>
+<span class="ln">32 </span>
+<span class="ln">33 </span><span class="keyword">def</span> <span class="name function">parseargs</span><span class="punctuation">(</span><span class="name">cmdline</span><span class="operator">=</span><span class="name">sys</span><span class="operator">.</span><span class="name">argv</span><span class="punctuation">[</span><span class="literal number integer">1</span><span class="punctuation">:],</span> <span class="name">known_args_only</span><span class="operator">=</span><span class="name builtin pseudo">False</span><span class="punctuation">):</span>
+<span class="ln">34 </span>    <span class="keyword">pass</span>
+<span class="ln">35 </span>
+<span class="ln">36 </span><span class="comment single">### Functions implementing requirements</span>
+<span class="ln">37 </span>
+<span class="ln">38 </span><span class="keyword">def</span> <span class="name function">list_sheets</span><span class="punctuation">(</span><span class="name">workbook</span><span class="punctuation">):</span>
+<span class="ln">39 </span>    <span class="literal string doc">''' List the sheets in *workbok*
+</span><span class="ln">40 </span><span class="literal string doc">    '''</span>
+<span class="ln">41 </span>    <span class="keyword">pass</span>
+<span class="ln">42 </span>
+<span class="ln">43 </span><span class="keyword">def</span> <span class="name function">add_sheet</span><span class="punctuation">(</span><span class="name">workbook</span><span class="punctuation">,</span> <span class="name">name</span><span class="punctuation">,</span> <span class="name">index</span><span class="operator">=</span><span class="literal number integer">0</span><span class="punctuation">):</span>
+<span class="ln">44 </span>    <span class="literal string doc">''' Create new sheet with *name* in *workbook* at position *index*
+</span><span class="ln">45 </span><span class="literal string doc">    '''</span>
+<span class="ln">46 </span>    <span class="keyword">pass</span>
+<span class="ln">47 </span>
+<span class="ln">48 </span><span class="keyword">def</span> <span class="name function">append_data</span><span class="punctuation">(</span><span class="name">sheet</span><span class="punctuation">,</span> <span class="name">data</span><span class="punctuation">):</span>
+<span class="ln">49 </span>    <span class="literal string doc">''' Append *data* after the last record in sheet
+</span><span class="ln">50 </span><span class="literal string doc">    '''</span>
+<span class="ln">51 </span>    <span class="keyword">pass</span>
+<span class="ln">52 </span>
+<span class="ln">53 </span><span class="keyword">def</span> <span class="name function">dump_data</span><span class="punctuation">(</span><span class="name">sheet</span><span class="punctuation">,</span> <span class="name">fd</span><span class="operator">=</span><span class="name">sys</span><span class="operator">.</span><span class="name">stdout</span><span class="punctuation">):</span>
+<span class="ln">54 </span>    <span class="literal string doc">''' Dump all data of *sheet* to file-descriptor *fd*
+</span><span class="ln">55 </span><span class="literal string doc">    '''</span>
+<span class="ln">56 </span>    <span class="keyword">pass</span>
+<span class="ln">57 </span>
+<span class="ln">58 </span><span class="comment single">### main starts here</span>
+<span class="ln">59 </span><span class="keyword">if</span> <span class="name variable magic">__name__</span> <span class="operator">==</span> <span class="literal string single">'__main__'</span><span class="punctuation">:</span>
+<span class="ln">60 </span>    <span class="name">args</span> <span class="operator">=</span> <span class="name">parseargs</span><span class="punctuation">()</span></code></pre>
 </div>
 </div>
 <div class="section" id="references">

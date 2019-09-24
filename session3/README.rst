@@ -82,7 +82,10 @@ The code of this workshop has been tested with:
 
 - Python v3.6 and
 - the following modules that are not part of the Python Standard Library:
-  ``openpyxl``
+
+  - ``openpyxl``: module to read/write Excel 2010 workbooks (OOXML format)
+  - ``ptpython``: a very conveniant Python interactive shell with support for
+    in-line sytax highlighting, command completion and improved code editing
   
   To install these modules execute:
 
@@ -421,26 +424,41 @@ below 8:
 Showcase Application: Time sheet
 ================================
 
-Requirements
-------------
+Application Requirements
+------------------------
 
+#. Worksheet management of a given spreadsheet:
+
+   #. list the sheets
+   #. add sheet
+
+#. Data management:
+
+   #. dump the data on a sheet to the stdout
+   #. append provided CSV data at the end of a sheet
+
+#. CLI Interface: arguments as described above
+
+
+Implementation prototype
+------------------------
+
+.. include:: ts-prototype.py
+   :number-lines: 1
+   :code: python
 
 
 References
 ==========
 
 .. [PythonExcel] http://www.python-excel.org/
-
 .. [pymod_openpyxl] OpenPyXL is a Python library to read/write Excel 2010
    xlsx/xlsm/xltx/xltm files
 
    - source: https://bitbucket.org/openpyxl/openpyxl
    - documentation: https://openpyxl.readthedocs.io/
-
-
 .. [openpyxl_tutorial] 
    https://openpyxl.readthedocs.io/en/stable/tutorial.html
-
 .. [libreoffice_automation] Automate your office tasks with Python Macros
    http://christopher5106.github.io/office/2015/12/06/openoffice-libreoffice-automate-your-office-tasks-with-python-macros.html
 
