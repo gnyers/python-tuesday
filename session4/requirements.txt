@@ -1,0 +1,5 @@
+# a convenient Python interactive shell
+ptpython
+
+# A pure Python client library (i.e.: driver) for MariaDB/MySQL
+PyMySQL

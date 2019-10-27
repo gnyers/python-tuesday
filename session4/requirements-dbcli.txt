@@ -1,0 +1,5 @@
+# A few user-friendly database CLIs implemented in Python for SQLite, MariaDB,
+# and PostgreSQL
+litecli
+mycli
+pgcli
