@@ -122,8 +122,8 @@ The following tools can help to deal with databases:
 The scope
 =========
 
-Like in most other programming languages in Python this is a huge topic, so
-we'll need to restrict our scope.
+Like in most other programming languages, databases are a huge topic in Python
+as well. So we'll need to restrict our scope.
 
 Topics inside of the scope
 --------------------------
@@ -161,7 +161,9 @@ Concepts
 Access to databases via DB API driver
 -------------------------------------
 
-The different layers when accessing a database:
+Similar to other programming languages and applications, accessing databases
+from Python will require some middleware. The different layers when accessing
+a database:
 
 .. class:: style2
 
@@ -178,17 +180,22 @@ The different layers when accessing a database:
    | Server side | Database Software (RDBMS)          |
    +-------------+------------------------------------+
 
-
-Similar to other programming languages and applications, accessing databases
-from Python will require some middleware. This middleware needs to implement
-the specifications of DB API, which is described in [PEP249]_. This middleware
-is responsible for:
+This middleware needs to implement the specifications of DB API, which is
+described in [PEP249]_. In general the responsibilities are the following:
 
 - establishing a connection either through network, socket or some other
   mechanism.
 - executing SQL statements
 - fetching the results
 
+Usually the Python database drivers are wrappers around existing (mostly C)
+libraries. There are, however, a few exceptions that are completely written in
+Python (e.g. PyMySQL)
+
+The Python Wiki (see [PySupportedDBs]_) provides an overview of the database
+products that have a Python database driver. A few examples: IBM DB2, Firebird
+(and Interbase), Informix, Ingres, MariaDB / MySQL, Oracle, PostgreSQL, MaxDB,
+Microsoft SQL Server, Microsoft Access, Sybase,
 
 Database Cursor
 ---------------
@@ -235,7 +242,7 @@ Connect to a database
 SQlite
 ^^^^^^
 
-Connect to a SQLite database in file ``test.db``:
+Connect to a SQLite database represented by the file ``test.db``:
 
 .. code:: python
    :number-lines: 1
@@ -326,9 +333,10 @@ Create a cursor object
 The cursor object will be used to submit SQL statements to the database and
 retrieve the results.
 
-Use of multiple cursor objects through the same connection is possible.
-However, keep in mind that the result of the same query may be different,
-since each cursor is a different point-in-time snapshot of the database.
+Use of multiple cursor objects through the same connection is possible, but
+keep in mind that the result of the same query may be different. This is
+a consequence of the fact that cursors are different point-in-time snapshot of
+the database.
 
 Note the similarities in dealing with different databases! This is due to the
 fact that the drivers implemented according the [PEP249]_ specifications.
@@ -396,9 +404,8 @@ MariaDB / MySQL
 Construct the SQL Statement
 ---------------------------
 
-Relational databases use the SQL language to query or change the data in
-the database. So this is what Python applications ultimately need to do.
-
+Relational database products use the SQL language to query or change the data.
+So this is what Python applications will need to do as well.
 
 .. note:: direct SQL statements vs. ORM
 
@@ -480,49 +487,45 @@ SQL statements with string formatting
 SQL statements with parameter substitution
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-The DB-API defines
+One of the most important considerations when constructing a SQL statement is
+security. Since most applications work with user provided data, which
+ultimately will end up as part of a SQL query, care must be taken to sanitize
+the user input. (see also: [SQLInjection]_)
+
+Part of the DB-API specification for database drivers is to provide
+a parameter substitution. This facility is meant to take care of verifying
+user input, to avoid "SQL Injection"-type attacks.
+
+The concept of parameter substitution is very similar to how string formatting
+works in Python.  Parameter style options as defined by [PEP249]_ for
+executing SQL statements. Drivers may implement one or more of the following
+syntax:
+
+- "qmark" ``?``: ``statement = "SELECT * FROM users WHERE name=?"``
+- "numeric" ``:1``: ``statement = "SELECT * FROM users WHERE name=:1"``
+- "named" ``:name``: ``statement = "SELECT * FROM users WHERE name=:name"``
+- "format" ``%s``: ``statement = "SELECT * FROM users WHERE name=%s"``
+- "pyformat" ``%(name)s``: ``statement = "SELECT * FROM users WHERE name=%(name)s"``
+
 
 **Example 3:** SQL statement to add a new user:
 
-- string quotation can be tricky so to avoid SQL injection attacks (see
-  [SQLInjection]_)
-
-
-
 .. code:: python
+   :number-lines: 1
    :class: python-interactive
 
    >>> sql_add_user = '''
-   ... INSERT INTO users VALUES ();
+   ... INSERT INTO users (fname, sname, email)
+   ... VALUES (?, ?, ?);
    ... '''
+   >>> cur1.execute(sql_add_user, ['John', 'Doe', 'jdoe@example.com'])
 
-Syntax of parameter substitution
-""""""""""""""""""""""""""""""""
-
-The DB-API specifications allow for placeholders of different style 
-
-- ``qmark``: Question mark style, e.g. ``...WHERE name=?``
-- ``numeric``: Numeric, positional style, e.g. ``...WHERE name=:1``
-- ``named``: Named style, e.g. ``...WHERE name=:name``
-- ``format``: ANSI C printf format codes, e.g. ``...WHERE name=%s``
-- ``pyformat``: Python extended format codes, e.g. ``...WHERE name=%(name)s``
-
-see for more: https://www.python.org/dev/peps/pep-0249/#paramstyle
-
-
-Database-independent Python applications
-========================================
-
-Despite the standardized way of accessing databases in Python and the widely
-used SQL language, true database independence is difficult. The root of this
-problem is the different SQL dialects used- and different features provided by
-database products.
-
-As Python programmers we can choose to deal with differences of SQL dialects
-in our code, but maintaining these differences can be very difficult.
-
-The usual way to man a Python application database-independent is by
-implementing an additional layer of abstraction in the form of an [ORM]_
+- **line 1-4:** the variable ``sql_add_user`` will contain the parametrized
+  SQL statement as a ``str`` value
+- **line 3:** the question marks (``?``) are the placeholders, which will be
+  substituted by the driver with the verified parameters.
+- **line 5:** execute the SQL statement by providing the parametrized SQL
+  statement **and** the actual values **separately**.
 
 
 Database differences
@@ -573,16 +576,20 @@ Note the differences:
    - records are numbered by SQLite, not numbered by MariaDB
    - the data types: 'int' in SQLite vs. 'int(11) in MariaDB
 
-How to cope with these differences?
------------------------------------
+Database-independent Python applications
+========================================
 
-We need some kind of abstraction layer to deal with the differences between
-database products. This abstraction layer can be implemented for a specific
-application and a specific set of databases, but this will be a nightmare to
-maintain.
+Despite the standardized way of accessing databases in Python and the widely
+used SQL language, true database-independence is difficult. The root of this
+problem is the different SQL dialects used- and the different features
+provided by database products.
 
-The optimal solution is to use an already existing Object-relational Mapper
-([ORM]_)
+As Python programmers we can choose to deal with the diversity of SQL dialects
+in our code, but maintaining these differences is almost always too heavy
+a burden.
+
+The usual way to man a Python application database-independent is by
+implementing an additional layer of abstraction in the form of an [ORM]_
 
 
 Other useful HOWTOs and tutorials
@@ -623,12 +630,14 @@ References
 .. [SQLAlchemy] Perhaps the most popular Python ORM (https://www.sqlalchemy.org/)
 .. [DjangoORM] The built-in ORM of the Django web development framework
 .. [PeeweeORM] https://docs.peewee-orm.com/
+.. [PySupportedDBs] https://wiki.python.org/moin/DatabaseInterfaces
 .. [DBProgInPython] https://wiki.python.org/moin/DatabaseProgramming
 .. [PEP249] Python Database API Specification v2.0
    (https://www.python.org/dev/peps/pep-0249/)
 .. [SQLLang] https://en.wikipedia.org/wiki/SQL
 .. [SQLInjection] SQL Injection attacks are one of the most frequently used
-   hacking technique https://www.w3schools.com/sql/sql_injection.asp
+   hacking technique. See: https://www.w3schools.com/sql/sql_injection.asp and
+   https://en.wikipedia.org/wiki/SQL_injection
 
 
 
