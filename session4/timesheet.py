@@ -166,7 +166,7 @@ def verify_tables(conn, args):
 def add_new_user(conn, args):
     sql = '''
     INSERT INTO users (fname, sname, email)
-    VALUES (?, ?, ?)
+    VALUES (?, ?, ?);
     '''
     res = sql_exec(conn, sql, (args.first_name, args.surname, args.email))
     print('New user added, id={}'.format(res[1]))
@@ -174,7 +174,7 @@ def add_new_user(conn, args):
 def add_new_project(conn, args):
     sql = '''
     INSERT INTO projects (name)
-    VALUES (?)
+    VALUES (?);
     '''
     res = sql_exec(conn, sql, (args.name,))
     print('New project added, id={}'.format(res[1]))
@@ -182,7 +182,7 @@ def add_new_project(conn, args):
 def add_new_booking(conn, args):
     sql = '''
     INSERT INTO bookings (user, project, date, hours, remarks)
-    VALUES (?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, ?, ?);
     '''
     res = sql_exec(conn, sql, (args.user, args.project, args.date, args.hours, args.remarks))
     print('New booking added, id={}'.format(res[1]))
