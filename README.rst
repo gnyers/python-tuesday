@@ -24,7 +24,7 @@ The topics of the sessions so far:
 - Session 1: Getting your environment set up and ready for Python development
 - Session 2: Working with text files and file formats
 - Session 3: Working with data Part 1: Spreadsheets
-- Session 4: Working with data Part 1: Databases
+- Session 4: Working with data Part 2: Databases
 
 
 
