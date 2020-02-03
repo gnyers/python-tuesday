@@ -17,7 +17,7 @@ Python Tuesday sessions
 This repository contains the material of the "Python Tuesday" sessions. For
 more information see our Meetup page:
 
-https://www.meetup.com/ITGilde-Cooperatie-Amsterdam-Unix-Linux-Meetups/
+https://www.meetup.com/python-tuesday/
 
 The topics of the sessions so far:
 
@@ -25,6 +25,7 @@ The topics of the sessions so far:
 - Session 2: Working with text files and file formats
 - Session 3: Working with data Part 1: Spreadsheets
 - Session 4: Working with data Part 2: Databases
+- Session 5: Log analysis with Jupyter Notebooks
 
 
 
