@@ -1,0 +1,27 @@
+#cloud-config
+
+write_files:
+- path: /etc/rsyslog.d/99-remote-loghost.conf
+  content: |
+    # Remote loghost configuration from cloud-init
+    *.* @loghost:514
+  permissions: '0644'
+  owner: root:root
+- path: /etc/cloud/cloud-init.disabled
+  content: |
+    # The presence of this file will disable cloud-init at next boot
+  permissions: '0644'
+  owner: root:root
+
+users:
+- groups: wheel
+  lock_passwd: false
+  name: tux
+  passwd: $6$28qAEdNwmJl$7GhuLnYxB48outNQexnGF8UkRnH7ii9UfPirpy46N0spH3WTCZM4t5Ql8e3N9csX9DuCxVRqC2ClkVwVIWKVg/
+  shell: /bin/bash
+  ssh-authorized-keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUfoydU0wSmOU/ylpDrhiVzg62s7KUq6cFjYatj7bOJTJ0POpWsW6/tRAxWuVatSeTtf65OgUuaXUeOLW/n6xSKjA+uUbwpLWBXIi5o6ChrPqUq1KKkb3KCeAtzptxcy27+a/FfhiJDB/Xrp/xayTzOQiAisF8rlV1iRYPatRTdoCLCGE3HNv/Xn/kQpzXB/unhpZQYC6n/RBxKApITFlvxWBEIknAaCPPeg7mRvBMNSlAAPR4jbjKsFWClyJyql1uuktLRZfmsUXUo9GhsebCUorLhd3knC6SrRFNpt2cn7AR3Xd2JPA80eD9LSKg1M59RhS8N3ljxvp7IVyeC8P/ publickey
+  sudo: ['ALL=(ALL) NOPASSWD:ALL']
+- name: root
+  ssh-authorized-keys:
+  - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDUfoydU0wSmOU/ylpDrhiVzg62s7KUq6cFjYatj7bOJTJ0POpWsW6/tRAxWuVatSeTtf65OgUuaXUeOLW/n6xSKjA+uUbwpLWBXIi5o6ChrPqUq1KKkb3KCeAtzptxcy27+a/FfhiJDB/Xrp/xayTzOQiAisF8rlV1iRYPatRTdoCLCGE3HNv/Xn/kQpzXB/unhpZQYC6n/RBxKApITFlvxWBEIknAaCPPeg7mRvBMNSlAAPR4jbjKsFWClyJyql1uuktLRZfmsUXUo9GhsebCUorLhd3knC6SrRFNpt2cn7AR3Xd2JPA80eD9LSKg1M59RhS8N3ljxvp7IVyeC8P/ publickey
