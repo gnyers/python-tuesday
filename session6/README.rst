@@ -1,18 +1,11 @@
 ==============================================================================
-Title
+cloud-init-nocloud
 ==============================================================================
 
-------------------------------------------------------------------------------
-Subtitle
-------------------------------------------------------------------------------
-
-:date: 2020-02-22
+:date:  2020-02-21
+:tags: cloud-init deployment
+:file: README.rst
 :author: Gábor Nyers
-:tags: 
-:category: 
-:summary: 
-:slug: 
-:lang: en
 
 .. sectnum::
    :start: 1
@@ -25,8 +18,8 @@ Subtitle
    :local:
 
 
-<YOUR TEXT HERE>
-
+This is a demo Flask application to provide ``meta-data`` and ``user-data``
+for ``cloud-init`` instances.
 
 
 

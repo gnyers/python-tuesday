@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 import sys
 import random
 from logging import (debug, info, warning, error, critical,
@@ -10,9 +11,16 @@ from flask import (Flask, request, Response, render_template, url_for,
 basicConfig(stream=sys.stderr, level=INFO,
                     format='%(asctime)s %(levelname)s:%(message)s')
 
+# Application parameters
 BIND_ADDR = '0.0.0.0'
-BIND_PORT = 5001
+if os.environ.get('DEBUG').lower() in ('y', 'yes', '1', 'true'): DEBUG=True
+else                                                           : DEBUG=False
+try:
+    BIND_PORT = int(os.environ.get('BIND_PORT', 5001))
+except ValueError:
+    BIND_PORT = 5001
 
+# Create Flask instance
 app = Flask(__name__, template_folder='t')
 
 @app.route('/meta-data')
@@ -55,7 +63,5 @@ def phone_home():
     else:
         return phone_home.__doc__
 
-
 if __name__ == '__main__':
-    # app.run(host=BIND_ADDR, port=BIND_PORT          )   # Debug disabled
-    app.run(host=BIND_ADDR, port=BIND_PORT, debug=True)   # Debug enabled
+    app.run(host=BIND_ADDR, port=BIND_PORT, debug=DEBUG)
