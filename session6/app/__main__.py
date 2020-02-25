@@ -13,8 +13,8 @@ basicConfig(stream=sys.stderr, level=INFO,
 
 # Application parameters
 BIND_ADDR = '0.0.0.0'
-if os.environ.get('DEBUG').lower() in ('y', 'yes', '1', 'true'): DEBUG=True
-else                                                           : DEBUG=False
+if os.environ.get('DEBUG','').lower() in ('y', 'yes', '1', 'true'): DEBUG=True
+else                                                              : DEBUG=False
 try:
     BIND_PORT = int(os.environ.get('BIND_PORT', 5001))
 except ValueError:

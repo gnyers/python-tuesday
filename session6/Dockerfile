@@ -18,6 +18,8 @@ RUN \
 COPY app/ /tmp/app/
 ENV PYTHONPATH=/tmp \
     BIND_PORT=5001
-EXPOSE 
+EXPOSE $BIND_PORT
+
+VOLUME /tmp/app
 
 CMD [ "python", "-m", "app" ]
