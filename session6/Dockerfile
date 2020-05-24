@@ -23,3 +23,4 @@ EXPOSE $BIND_PORT
 VOLUME /tmp/app
 
 CMD [ "python", "-m", "app" ]
+# CMD python -m app

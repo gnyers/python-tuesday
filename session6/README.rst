@@ -1,9 +1,9 @@
 ==============================================================================
-cloud-init-nocloud
+cloud-init-nocloud: Dockerizing a Python application
 ==============================================================================
 
 :date:  2020-02-21
-:tags: cloud-init deployment
+:tags: docker cloud-init deployment
 :file: README.rst
 :author: Gábor Nyers
 
@@ -19,6 +19,30 @@ cloud-init-nocloud
 
 Agenda
 ======
+
+- Introduction
+- Why containers
+- The application
+- Build container
+
+
+Introduction
+============
+
+There are 3 distinct, seemingly unrelated parts to this session:
+
+- Python: the primary purpose of the Python Tuesday series
+- Docker: a technology that can be used to "package up" Python applications
+- Cloud-init: a component widely used at cloud providers (such as AWS, Azure,
+  Google, DigitalOcean etc...) for (mass-)deployment of new virtual machines
+
+This is how these distinct topics supposed to come together into a demo
+workshop:
+
+1. We take a simple Python application to serve VM profiles through the
+   network to ``cloud-init``.
+2. We'll package this application into a Docker container
+
 
 Why containers
 ==============
@@ -70,8 +94,8 @@ Why containers
      and less opaque than VMs.
 
 
-Application
-===========
+The Application
+===============
 
 This is a demo Flask application to provide ``meta-data`` and ``user-data``
 for ``cloud-init`` instances.
@@ -141,10 +165,6 @@ In Python: ::
  try              : BIND_PORT = int(os.environ.get('BIND_PORT', 0)) or 5001
  except ValueError: BIND_PORT = 5001
 
-In the demo application:
-
-- ``BIND_PORT``: 
-
 How to pass parameters: ::
 
  docker run -d -e BIND_PORT=7002 -p 7002:7002  cloud-init-data
@@ -164,6 +184,42 @@ Determine what (if any) directories to share with host system?
 In ``Dockerfile``: ::
 
  VOLUME /tmp/app
+
+
+Build the container
+===================
+
+Dockerfile
+----------
+
+::
+
+ FROM python:3-alpine
+ LABEL version="1.0" \
+       license=GPLv2 \
+       maintainer="Gábor Nyers"
+ LABEL description="A demo Python application to serve meta-data and user-data \
+ to cloud-init containers."
+ LABEL documentation="Start your container with: \
+   docker run -d -p 5001:5001 cloud-init-data"
+
+ RUN apk update
+ RUN apk upgrade python-pip
+
+
+ COPY requirements.txt /tmp/
+ RUN \
+     pip install -r /tmp/requirements.txt
+
+ COPY app/ /tmp/app/
+ ENV PYTHONPATH=/tmp \
+     BIND_PORT=5001
+ EXPOSE $BIND_PORT
+
+ VOLUME /tmp/app
+
+ CMD [ "python", "-m", "app" ]
+ # CMD python -m app
 
 
 

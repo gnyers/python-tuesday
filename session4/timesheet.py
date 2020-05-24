@@ -2,10 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import argparse
+import datetime
 
 def parseargs(cmdline=sys.argv[1:], known_args_only=False):
-    import argparse
-    import datetime
     p = argparse.ArgumentParser()
     p.add_argument('-d', '--database', type=str, required=True, help='The SQLite database')
     p.set_defaults(func=verify_tables)

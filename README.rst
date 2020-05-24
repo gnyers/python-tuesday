@@ -26,6 +26,8 @@ The topics of the sessions so far:
 - Session 3: Working with data Part 1: Spreadsheets
 - Session 4: Working with data Part 2: Databases
 - Session 5: Log analysis with Jupyter Notebooks
+- Session 6: Dockerizing a Python application
+- Session 7: Working with Data Part 3: The Iterator Protocol and its Uses
 
 
 
