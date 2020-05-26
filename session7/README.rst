@@ -470,6 +470,8 @@ Counting
     >>> Counter('abracadabra')
     Counter({'a': 5, 'b': 2, 'r': 2, 'c': 1, 'd': 1})
 
+   .. _gender_data_iterator:
+
    **However** the data is in a :type:`dict`! So let's extract the required
    data with a small :code:`lambda` function: ::
 
@@ -623,6 +625,156 @@ Categorizing
                      {'name': 'Eline', 'age': 29, 'gender': 'f'}]
     }
 
+Iterable Classes
+--------------------------------------------------------------------------------
+
+**Problem**
+   Create the :type:`Addressbook` class, which is a collection of
+   :type:`Person` instances. Make sure that the :type:`Addressbook` instances
+   are *Iterable*.
+
+**Solution**
+   Let's use the recently introduced :mod:`dataclasses` module to create the
+   classes. ::
+
+    from dataclasses import dataclass, field
+    from typing import List
+
+
+    @dataclass
+    class Person:
+        fname: str = ''
+        sname: str = ''
+        gender: str = ''
+        email: str = ''
+
+    @dataclass
+    class Addressbook:
+        name: str = 'My Addressbook'
+        _items: List[Person] = field(default_factory=list, init=False)
+
+   At this point the :type:`Addressbook` instances can hold items, but it is
+   not yet an *Iterable*: ::
+
+    >>> ab = Addressbook()
+    >>> ab
+    Addressbook(name='My Addressbook', _items=[])
+    >>> ab2._items += [ 'Jenny', 'Robert', 'Alice' ]
+    >>> ab2
+    Addressbook(name='My Addressbook', _items=['Jenny', 'Robert', 'Alice'])
+
+   However it is not yet an *Iterable*: ::
+
+    >>> list(ab2)
+    Traceback (most recent call last):
+      File "<stdin>", line 1, in <module>
+    TypeError: 'Addressbook' object is not iterable
+
+   In |Python| a class is only *Iterable* if it implements the
+   :func:`.__iter__()` method, which provides an *Iterator* instance. So let's
+   do it: ::
+
+    @dataclass
+    class Addressbook:
+        name: str = 'My Addressbook'
+        _items: List[Person] = field(default_factory=list, init=False)
+
+        def __iter__(self):
+            return iter(self._items)
+
+   It is now working: ::
+
+    >>> ab2 = Addressbook()
+    >>> ab2._items += [ 'Jenny', 'Robert', 'Alice' ]
+    >>> ab2
+    Addressbook(name='My Addressbook', _items=['Jenny', 'Robert', 'Alice'])
+
+    >>> list(ab2)                      # convert Addressbook -> list
+    ['Jenny', 'Robert', 'Alice']
+
+   While at it why don't we add a couple of other nice features, such as:
+
+   - implement the :func:`.add()` method, which will add an item to the
+     address book
+   - implement the :func:`.__len__()` method, so that the :func:`len()`
+     function is able to show the number of elements in the collection.
+
+   ::
+
+    @dataclass
+    class Addressbook:
+        name: str = 'My Addressbook'
+        _items: List[Person] = field(default_factory=list, init=False)
+
+        def __iter__(self):
+            return iter(self._items)
+
+        def add(self, person):
+            self._items.append(person)
+
+        def __len__(self):
+            return len(self._items)
+
+   Try out the result: ::
+
+    >>> fred = Person(fname='Fred', sname='Flintstone', gender='m',
+                  email='fred@bedrock.place')
+    >>> wilma = Person(fname='Wilma', sname='Flintstone', gender='f',
+                   email='wilma@bedrock.place')
+
+    >>> ab = Addressbook(name='The Flintstones')
+    >>> ab.add(fred)
+    >>> ab.add(wilma)
+
+    >>> print(f'Number of entries in addressbook: {len(ab)}')
+    2
+
+**Bonus**
+   By implementing the :func:`.getitem()` magic method on the :type:`Person`
+   class, we even can use the `previous solution <gender_data_iterator_>`_ to count: ::
+
+    @dataclass
+    class Person:
+        fname: str = ''
+        sname: str = ''
+        gender: str = ''
+        email: str = ''
+
+        def __getitem__(self, item):
+           res = getattr(self, item)
+           return res
+
+    @dataclass
+    class Addressbook:
+        name: str = 'My Addressbook'
+        _items: List[Person] = field(default_factory=list, init=False)
+
+        def __iter__(self):
+            return iter(self._items)
+
+        def add(self, person):
+            self._items.append(person)
+
+        def __len__(self):
+            return len(self._items)
+
+    fred = Person(fname='Fred', sname='Flintstone', gender='m',
+              email='fred@bedrock.place')
+
+    wilma = Person(fname='Wilma', sname='Flintstone', gender='f',
+               email='wilma@bedrock.place')
+
+    ab = Addressbook(name='The Flintstones')
+    ab.add(fred)
+    ab.add(wilma)
+
+   Finally let's try how our new classes fit in our data-processing toolkit so
+   far : ::
+
+    gender_data_iterator = map(lambda v: v['gender'], ab)
+
+    >>> Counter(gender_data_iterator)
+    Counter({'m': 1, 'f': 1})
 
 
 .. vim: filetype=rst textwidth=78 foldmethod=syntax foldcolumn=3 wrap
