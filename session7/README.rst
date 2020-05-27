@@ -730,8 +730,9 @@ Iterable Classes
     2
 
 **Bonus**
-   By implementing the :func:`.getitem()` magic method on the :type:`Person`
-   class, we even can use the `previous solution <gender_data_iterator_>`_ to count: ::
+   By implementing the :func:`.__getitem__()` magic method on the :type:`Person`
+   class, we even can use the `previous solution <gender_data_iterator_>`_ to
+   count: ::
 
     @dataclass
     class Person:
