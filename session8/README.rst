@@ -558,6 +558,28 @@ We need to create a custom function to export the content of an
  ...     return json.dumps(d)
 
 
+Bonus: instance methods on ``dataclass`` classes
+--------------------------------------------------------------------------------
+
+**Question**: Can I implement instance methods on ``dataclass`` classes:
+
+**Answer**: Yes! ::
+
+ @dataclass(frozen=True, order=True)
+ class Contact:
+     fname: str
+     sname: str = ''
+     email: str = ''
+     def name(self):
+         return '{}, {}'.format(self.sname, self.fname)
+
+ jdoe = Contact(fname='John', sname='Doe', email='jdoe@example.com')
+ print(jdoe.name())
+
+Output: ::
+
+ Doe, John
+
 
 
 References
