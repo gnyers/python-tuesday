@@ -21,13 +21,14 @@ https://www.meetup.com/python-tuesday/
 
 The topics of the sessions so far:
 
-- Session 1: Getting your environment set up and ready for Python development
-- Session 2: Working with text files and file formats
-- Session 3: Working with data Part 1: Spreadsheets
-- Session 4: Working with data Part 2: Databases
-- Session 5: Log analysis with Jupyter Notebooks
-- Session 6: Dockerizing a Python application
-- Session 7: Working with Data Part 3: The Iterator Protocol and its Uses
+- `Session 1 <session1>`_: Getting your environment set up and ready for Python development
+- `Session 2 <session2>`_: Working with text files and file formats
+- `Session 3 <session3>`_: Working with data Part 1: Spreadsheets
+- `Session 4 <session4>`_: Working with data Part 2: Databases
+- `Session 5 <session5>`_: Log analysis with Jupyter Notebooks
+- `Session 6 <session6>`_: Dockerizing a Python application
+- `Session 7 <session7>`_: Working with Data Part 3: The Iterator Protocol and its Uses
+- `Session 8 <session8>`_: Creating classes easily with the ``dataclasses`` module
 
 
 
