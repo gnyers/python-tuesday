@@ -14,10 +14,7 @@ Python Tuesday sessions
    :local:
 
 
-This repository contains the material of the "Python Tuesday" sessions. For
-more information see our Meetup page:
-
-https://www.meetup.com/python-tuesday/
+This repository contains the material of the "Python Tuesday" sessions.
 
 The topics of the sessions so far:
 
