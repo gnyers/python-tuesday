@@ -1,0 +1,47 @@
+/*
+ * CSS
+ */
+
+body {
+  background-color: white;
+}
+/*
+*/
+
+pre.sourceCode:hover {
+	background-color: #f0f0f0;
+}
+pre.sourceCode:hover:before {
+	content: "Click to copy!";
+	/*font-weight: bold;*/
+	font-family: sans;
+	font-size: smaller;
+  float: right;
+	margin-right: 2em;
+}
+
+pre.sourceCode.copied:hover:before {
+	content: "Copied to clipboard!";
+	color: green;
+}
+
+pre > code {
+	background-color: inherit;
+	padding: inherit;
+	border: inherit;
+	border-radius: inherit;
+}
+
+code {
+	background-color: #f0f0f0;
+	padding: 0.1em 0.2em 0.1em 0.2em;
+	border: 1px #e0e0e0 solid;
+	border-radius: 0.2em;
+}
+
+
+/*
+vim: filetype=css textwidth=78 foldmethod=syntax foldcolumn=3 wrap
+vim: linebreak ruler spell spelllang=en showbreak=… shiftwidth=2
+vim: softtabstop=2 tabstop=2
+*/
