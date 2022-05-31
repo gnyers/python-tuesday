@@ -30,15 +30,41 @@ interest.
 This session is meant for the **novice** Python programmer; you may code along or just
 focus on the explanation on how to approach the problem and build the solution.
 
+### Disclaimer :-)
+
+Sort of... The purpose of this session is to provide practical guidance for novice Python
+programmers. The resulting code probably lacks most elementary software engineering
+practices, such as tests and most error checking- and handling.
+
+So you shouldn't use it directly on your production system or on a job
+interview.
+
 
 ## Prerequisites
 
+For more information about setting up a Python development environment please refer to the
+this [earlier session](../session1/README.rst).
 
 ### Linux
 
-1. Install/verify the Python interpreter
+**NOTE**: The actual installation depends on your Linux distribution (e.g.:
+RedHat/CentOS/openSUSE or Debian/Ubuntu etc...) and -- in case of VSCode -- if your
+preference of using a containerized application, such as provided by
+[Flatpak](https://flatpak.org/) or [Snap](https://snapcraft.io/).
+
+1. Install/verify the Python interpreter (usually installed by default)
+
+   - RHEL/AlmaLinux/RockyLinux/CentOS: 
+     install: `yum install python3`
+   - openSUSE / SUSE: `zypper install python3`
+   - Debian / Ubuntu: `apt install python3`
+
 1. Install VSCode
 
+   - With native package manager for above Linux distro's: 
+     [VSCode download page](https://code.visualstudio.com/Download)
+   - With [Flatpak](https://flathub.org/apps/details/com.visualstudio.code)
+   - With [Snap](https://snapcraft.io/code) 
 
 ### Windows
 
