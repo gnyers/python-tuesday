@@ -36,8 +36,6 @@ focus on the explanation on how to approach the problem and build the solution.
 
 ### Linux
 
-@TODO: Finish description of Linux Prerequisite steps
-
 1. Install/verify the Python interpreter
 1. Install VSCode
 
