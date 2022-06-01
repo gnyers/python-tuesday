@@ -21,10 +21,9 @@ and a few functions provided by the
 The chosen use-case is related to file management: we will be building a moderately
 sophisticated program to analyze the content of a directory.  Our program should
 recursively read the content of a directory and provide answers to questions such as: how
-many directories, files, symbolic- and hard links are in the directory? What are the top
-10 directories in terms of size or number of files in them.
+many directories, files, symbolic- and hard links are in the directory?
 
-We will take a step-by-step approach and will make a few side-steps to related topics of
+We will take a step-by-step approach and will make a few sidesteps to related topics of
 interest.
 
 This session is meant for the **novice** Python programmer; you may code along or just
