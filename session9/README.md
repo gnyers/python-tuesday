@@ -13,7 +13,7 @@ licence: CC BY-NC 4.0 https://creativecommons.org/licenses/by-nc/4.0/
 ## Abstract
 
 In this session we'll be focusing on solving simple problems while learning about the
-language its 
+language, its 
 [**built-in data structures**](https://docs.python.org/3/library/stdtypes.html)
 and a few functions provided by the 
 [**Python Standard Library**](https://docs.python.org/3/library/index.html).
