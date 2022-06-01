@@ -26,6 +26,7 @@ The topics of the sessions so far:
 - `Session 6 <session6>`_: Dockerizing a Python application
 - `Session 7 <session7>`_: Working with Data Part 3: The Iterator Protocol and its Uses
 - `Session 8 <session8>`_: Creating classes easily with the ``dataclasses`` module
+- `Session 9 <session9>`_: Solving practical problems with Python
 
 
 

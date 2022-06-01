@@ -1,6 +1,6 @@
 ---
 title: Solving practical problems with Python
-author: Gábor Nyers <gnyers@trebut.nl>
+author: Gábor Nyers <python-tuesday@trebut.nl>
 date: 2022-05-03
 licence: CC BY-NC 4.0 https://creativecommons.org/licenses/by-nc/4.0/
 ---
