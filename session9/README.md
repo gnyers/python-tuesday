@@ -655,15 +655,20 @@ The 2 fancy bits in the loop's declaration
    the above tuples in each round, e.g.:
 
    ~~~
-   ('exampledir/a', ['b'], ['file5', 'file2.bin'])
-    
-    \_____ ______/  \_ _/  \_________ _________/ 
-          V           V              V     
-                                           
-         path      subdirs         files   
+   path, subdirs, files = ('exampledir/a', ['b'], ['file5', 'file2.bin'])
+   #  ^      ^      ^      \____________/  \___/  \____________________/ 
+   #  |      |      |            |           |              |
+   #  `------|------|------------'           |              |
+   #         `------|------------------------'              |
+   #                `---------------------------------------'
+   #
+   # After unpacking, the variables hold the following values:
+   #
+   print(path)                    # exampledir/a            (type: str)
+   print(subdirs)                 # ['b']                   (type: list of str)
+   print(files)                   # ['file5', 'file2.bin']  (type: list of str)
    ~~~
    
-
 
 ## Build an actual program from the snippets
 
