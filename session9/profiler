@@ -1,5 +1,27 @@
 #!/usr/bin/env python3
 
+'''Recursively analyze a directory structure and provide some stats about the
+disk space usage of the entire content, the number of files, directories, hard-
+en symlinks.
+
+Usage:
+
+  ./profiler exampledir
+
+Example output of a simple directory structure:
+
+  --- Statistics of directory: exampledir/
+  Number of errors encountered while processing 0
+     
+  The number of dirs: 6
+  The number of non-dirs (i.e.: files, hard- and symlinks): 8
+  The number of symlinks: 1
+  The number of hardlinks: 3
+  Used disk space: 524 bytes
+  Which of the hardlinks point to the same file? 
+    exampledir/file1.dat, exampledir/a/file2.bin, exampledir/c/e/file15 : 7 bytes
+'''
+
 import os
 import sys
 from os.path import join, isdir, isfile, islink
@@ -11,12 +33,14 @@ __date__ = '2022-05-31'
 __license__ = 'GPLv3'
 version_info = tuple(__version__.split('.'))
 
-data = {}
+# Variable defs
+startdir = sys.argv[1]                 # get CLI argument 'dir'
+data = {}                              # data structure
 
 def getattrs(path):
     '''Return a customized set of attributes of path
     '''
-    attrs = os.stat(path)
+    attrs = os.lstat(path)
     ret = { 'isdir': isdir(path),      # is it a directory? True/False
             'isfile': isfile(path),    # is it a file? 
                                        # NOTE: also True if hard- or symlink!
@@ -36,7 +60,6 @@ def getattrs(path):
 # Initialize stuff
 errors = {}
 total_size = 0
-startdir = sys.argv[1]                 # get CLI argument 'dir'
 
 # recursively iterate through the `startdir`, 
 # **whithout** following symbolic links

@@ -143,7 +143,7 @@ The Python interactive shell or "**REPL**"
 
    ~~~
 
-1. Step-by-step composition of complex "one-liner" statements, e.g.:
+1. Quick interactive composition of complex "one-liner" statements, e.g.:
 
    1. Get some user input and store it in the variable `email`:
 
@@ -195,9 +195,7 @@ The Python interactive shell or "**REPL**"
    >>> help(email)
    ~~~
 
-   :::{.note}
    **NOTE**: press the "`q`" key to exit "`help()`".
-   :::
  
 
 ## A few simple snippets for managing files
@@ -248,6 +246,7 @@ into more powerful programs.
    import os
    files_cwd = os.listdir('.')    # the content of the current directory (see `getcwd()`)
    print(files_cwd[:4])           # e.g.: [ 'README.md', 'names.csv', 'subdir' ]
+                                  # `[:4]` notation: show up to the 4th element
 
    files2 = os.listdir('/tmp')    # list the content of the `/tmp` directory (absolute
                                   # path!)
@@ -289,8 +288,8 @@ into more powerful programs.
    ~~~python
    import glob                         # load the module `glob`
    py_files = glob.glob('/tmp/*.py')   # store every Python files's name as a list
-   for f in py_files:                  # for every file name if `py_files`...
-       print(f)                        # ... print it out
+   for f in py_files:                  # for every file name in `py_files`...
+       print(f)                        # ... print its name
    ~~~
 
    **NOTE**: 
@@ -302,15 +301,17 @@ into more powerful programs.
 
 ### Snippets to get types and attributes of files and directories
 
-File system objects  have several attributes, e.g.:
+File system objects have several attributes, e.g.:
 
-- type, such as: file, directory, (such as: files, directories, hard- and symbolic links,
-  sockets etc...
-- permissions, such as: 
-  - on Linux, MacOS X and Unix-like OS: readable, writeable or executable for owner,
-    group-owner and others
+- **type**, such as: file, directory, symbolic links, sockets etc...
+- **permissions**, e.g.: on Linux, MacOS X and other Unix-like OSs: readable, writeable or
+  executable for owner, group-owner and others
+- **timestamps**, e.g.: last -creation, -modification and -access
+- etc...
 
 1. Does `README.md` exists in the current working directory?
+
+   A simple snippet showing how to build the existence check into an `if` construct:
 
    ~~~python
    import os.path as p                 # load os.path module, alias it to `p`
@@ -326,7 +327,7 @@ File system objects  have several attributes, e.g.:
    1. the `os.path.exists()` function will not differentiate between files, directories or
       other file system objects (e.g.: *symbolic links*)
 
-1. Similar as above, but `README.md` should exist **and** is should be a file!
+1. Similar as above, but the code probes `README.md`'s type:
 
    ~~~python
    # We assume here that 'README.md' is a file in the current working directory
@@ -338,16 +339,21 @@ File system objects  have several attributes, e.g.:
    print(p.islink(fname))              # is it a symbolic link? prints "False"
    ~~~
 
-1. Get a file system object's  attributes, such as: type, size, creation date:
+1. Get a file system object's attributes, such as: type, size, creation date:
 
    ~~~python
    import os
 
    fpath = 'exampledir/a/file2.bin'
-   attrs = os.stat(fpath)
+   attrs = os.lstat(fpath)
    print(attrs.st_mtime)               # mod. time (sec. since epoch): 1653942544.7019486
    print(attrs.st_nlink)               # number of links to this inode: 3
    ~~~
+
+   **NOTE**:
+
+   Python also provides the `os.stat()` function, which - as opposed to `lstat()` will
+   "follow" the link to its target and will report the attributes of the target objects.
 
 
 ### Snippets for manipulating paths
@@ -371,6 +377,23 @@ Sometimes you may need to manipulate the paths of files, e.g.:
    dpath, fname = p.split(fpath)       # dpath='exampledir/a', fname='file1.dat'
    ~~~
 
+1. Split the file's name and extension:
+
+   ~~~python
+   fname = 'file2.bin'
+
+   # using the above "Pythonic" way 
+   name, ext = p.splitext(fname)       # name='file2', ext='.bin'
+   ~~~
+
+   Or combining the `split()` and `splitext` functions:
+   
+   ~~~python
+   fpath = 'exampledir/a/file2.bin')
+   dirname, fname = p.split(fpath)     # ('exampledir/a/', 'file2.bin')
+   name, ext = p.splitext(fname)       # name='file2', ext='.bin'
+   ~~~
+      
 
 ### Snippets for creating and deleting files and directories
 
@@ -390,6 +413,22 @@ Sometimes you may need to manipulate the paths of files, e.g.:
    open(fname, 'w').close()            # the actual creation of the empty file
    ~~~
 
+   **NOTE**: 
+   
+   1. The "`.`" (dot) is separating 2 different actions above, that will be executed in
+      the following sequence:
+
+      1. `open(fname, 'w')`: create a new, or **truncate** an existing file with the name
+         `emptyfile1`, return an open **filedescriptor** to it.
+      1. On the filedescriptor object invoke the `.close()` method, thus "releasing" this
+         resource.
+
+   1. The `'w'` character-code means: open for writing **and** create(/truncate!) the
+      file. In case an existing file should remain, use `'x'` letter code.
+      See [this table](https://docs.python.org/3/library/functions.html#open) for other
+      options and their meaning.
+
+
 1. Create a symbolic link:
 
    ~~~python
@@ -404,7 +443,7 @@ Sometimes you may need to manipulate the paths of files, e.g.:
    **NOTE**:
    
    1. On Windows creating a symbolic links is supported since Windows Vista.
-   1. Beginning from Windows 10 symlinks can also be created without "Administrator"
+   1. Beginning with Windows 10 symlinks can also be created without "Administrator"
       privileges.
 
 1. Delete a file:
@@ -416,7 +455,7 @@ Sometimes you may need to manipulate the paths of files, e.g.:
    os.unlink(fname)                    # the actual deleting
    ~~~
 
-1. Delete a directory:
+1. Delete an **empty directory**; if not **yet** empty, must delete content first!:
 
    ~~~python
    import os
@@ -426,14 +465,9 @@ Sometimes you may need to manipulate the paths of files, e.g.:
    ~~~
 
 
-
-
-
-
 ## More advanced snippets
 
-Let's now combine the above [simple snippets](#a-few-simple-snippets-for-managing-files)
-and build a more advanced building blocks.
+Let's now combine the above simple snippets and build a more advanced building blocks.
 
 
 ### Snippets for processing files
@@ -464,7 +498,8 @@ and build a more advanced building blocks.
       `import os.path as p`;
       
       In this case the objects in `os.path` can be prefixed simply with `p.`, such as
-      `p.isfile()` (instead of `os.path.isfile()`)
+      `p.isfile()`, instead of `os.path.isfile()`.
+
    1. `files, dirs = [], []` is an example of **tuple packing and unpacking**; very
       practical to initialize multiple variables in a single line of code
    
@@ -526,7 +561,7 @@ The Standard Library's [`os.walk()`][os_walk] function will **recursively traver
 directory hierarchy**. This is required by [Feature 1](#feature-1).
 
 **Example**: To understand how the `os.walk()` function works, let's consider the
-following directory hierarchy and below code:
+following directory hierarchy and code:
 
 ~~~bash
 $ tree exampledir/
@@ -590,31 +625,43 @@ Current files   : ['file15']
 
 **NOTE**:
 
-The 2 fancy bits in the declaration of the loop above:<br>
-`for path,subdirs,files in os.walk('exampledir'):`
+The 2 fancy bits in the loop's declaration 
+(`for path,subdirs,files in os.walk('exampledir'):`) are:
+
 
 1. The expression `os.walk('exampledir')` will return a tuple in each round, e.g.:
 
    ~~~
-   ('exampledir', ['a', 'c'], ['file1'])
-   ('exampledir/a', ['b'], ['file5', 'file2'])
+   ('exampledir', ['a', 'c'], ['file1.dat'])
+   ('exampledir/a', ['b'], ['file5', 'file2.bin'])
    ('exampledir/a/b', ['d'], ['file3'])
    ('exampledir/a/b/d', [], ['file9', 'file8'])
    ('exampledir/c', ['e'], ['file13'])
    ('exampledir/c/e', [], ['file15'])
    ~~~
+
+   This `tuple` will always contain 3 elements:
+
+   - 1st element (with index 0): current directory, that is being visited, e.g.:
+     `exampledir/a`
+
+   - 2nd element (index 1): a `list` of subdirectories in the current directory, e.g.: 
+     `['b']` (list with a single element)
+
+   - 3rd element (index 2): a `list` containing the file names that are located in the
+     current directory, e.g.: `['file5', 'file2.bin']`
    
 2. Using [**tuple unpacking**](https://www.w3schools.com/python/python_tuples_unpack.asp)
    the variables `path`, `subdirs` and `files` will be assigned the respective elements of
    the above tuples in each round, e.g.:
 
    ~~~
-   ('exampledir/a', ['b'], ['file1', 'file5'])
+   ('exampledir/a', ['b'], ['file5', 'file2.bin'])
     
-    \_____ ______/  \_ _/  \_______ ________/ 
-          V           V            V 
-     
-         path      subdirs       files
+    \_____ ______/  \_ _/  \_________ _________/ 
+          V           V              V     
+                                           
+         path      subdirs         files   
    ~~~
    
 
