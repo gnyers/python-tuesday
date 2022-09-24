@@ -5,7 +5,8 @@ date: 2022-05-03
 licence: CC BY-NC 4.0 https://creativecommons.org/licenses/by-nc/4.0/
 ---
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../assets/css/styles.css">
+
 
 # Solving practical problems with Python
 
@@ -128,7 +129,6 @@ The Python interactive shell or "**REPL**"
    >>> name = 'Alice'
    >>> name
    'Alice'
-
    ~~~
 
    Import the JSON module and convert a JSON string:
@@ -594,7 +594,7 @@ for path,subdirs,files in os.walk('exampledir'):
 
 The output of the above demo code on the directory `exampledir`:
 
-~~~
+~~~bash
 --- Round 1 --------------------         :  exampledir/           <-- Round 1
 Current path    : exampledir             :  ├── a                 <-- Round 2   
 Current subdirs : ['a', 'c']             :  │   ├── b             <-- Round 3   
@@ -630,7 +630,7 @@ The 2 fancy bits in the loop's declaration
 
 1. The expression `os.walk('exampledir')` will return a tuple in each round, e.g.:
 
-   ~~~
+   ~~~python
    ('exampledir', ['a', 'c'], ['file1.dat'])
    ('exampledir/a', ['b'], ['file5', 'file2.bin'])
    ('exampledir/a/b', ['d'], ['file3'])
@@ -654,7 +654,7 @@ The 2 fancy bits in the loop's declaration
    the variables `path`, `subdirs` and `files` will be assigned the respective elements of
    the above tuples in each round, e.g.:
 
-   ~~~
+   ~~~python
    path, subdirs, files = ('exampledir/a', ['b'], ['file5', 'file2.bin'])
    #  ^      ^      ^      \____________/  \___/  \____________________/ 
    #  |      |      |            |           |              |
@@ -725,7 +725,7 @@ See [this example implementation](profiler).
 [sorting_howto]: https://docs.python.org/3/howto/sorting.html#key-functions "Sorting HOWTO"
 [os_walk]: https://docs.python.org/3/library/os.html#os.walk "os.walk()"
 
-<script src="script.js" defer></script>
+<script src="../assets/js/script.js" defer></script>
 
 <!--
 vim: filetype=markdown spelllang=en,nl spell foldmethod=marker lbr nolist ruler

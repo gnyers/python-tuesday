@@ -1,0 +1,165 @@
+/*
+ * CSS
+ */
+
+body {
+  background-color: white;
+  counter-reset: snippetcnt;
+  max-width: 1200px;
+  margin: auto;
+}
+/*
+*/
+
+pre.sourceCode{
+  padding: 0.1em 0.2em 0.1em 0.2em;
+  border-radius: 0.2em;
+  font-size: 1.1em;
+  border-left: none;
+  counter-increment: snippetcnt;
+}
+pre.sourceCode:before {
+  /* counter-increment: snippetcnt;
+  */
+}
+pre.sourceCode:after {
+  /* Code-block listing number */
+  float: right;
+  font-family: sans;
+  font-size: 0.8em;
+  font-weight: normal;
+  color: #bbb;
+  content: "Listing " counter(snippetcnt);
+  line-height: 1em;
+  white-space: pre;
+}
+pre.sourceCode:hover {
+  /* switch background when hovering above a code-block */
+  background-color: #f0f0f0;
+}
+pre.sourceCode:hover:before {
+  /* Show copy-to-clipboard message when hovering above code-block */
+  /* margin-right: 1em; */
+  float: right;
+  /*content: "COPY " url("clipboard-copy.svg");*/
+  content: url("clipboard-copy.svg");
+}
+pre.sourceCode.copied:hover:before {
+  /* Show copy message after code-block content is copied to the clipboard */
+  content: url("clipboard-check.svg");
+}
+
+code {
+  font-size: 1.4em;
+  background-color: #ddd;
+  padding: 0 0.2em 0 0.2em;
+  border-radius: 0.2em;
+}
+code.sourceCode {
+  font-size: 1.0em;
+  background-color: inherit;
+  padding: 0;
+  /*border-radius: inherit;*/
+}
+
+@media print {
+  :root {
+    font-family: "Helvetica";
+    font-size: 10pt;
+    line-height: 1.2em;
+  }
+
+  /* Pandoc specific styling of the document title */
+  h1.title {
+    string-set: doctitle content();
+  }
+  h2 {
+    string-set: chtitle content();
+  }
+
+  pre.sourceCode{
+    border-left: 2px solid #aaa;
+    border-right: 2px solid #aaa;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+    border-radius: 0;
+  }
+  pre.sourceCode:after {
+    /*z-index: 10;*/
+    /*transform: rotate(-90deg) translate(50%, 50%);*/
+    background-color: green;
+    padding: 0.1em 0;
+    font-size: 0.5em;
+    /*float: blabla;*/
+  }
+
+  code {
+    font-size: 0.9em;
+  }
+  code.sourceCode {
+    font-size: 0.8em;
+    background-color: inherit;
+    padding: 0;
+  }
+
+  @page {
+    size: A4 portrait;
+    /* margin-top: 2cm; */
+    margin-top: 1.6cm;
+    border: dashed 0.5pt #ccc;   /* debug */
+    @top-left {
+      width: 50%;
+      background-color: #f2f2f2;
+      margin-bottom: 0.2cm;
+      padding-top: 0.7em;
+      padding-left: 1em;
+      /* 
+      border-bottom: solid 0.2pt #000;
+      border-right: solid 1pt #000;
+      */
+      border-bottom-left-radius: 0.5em;
+      font-size: 8pt;
+      color: #000;
+      content: "Python Tuesday, Session 9:\A"  string(doctitle, first);
+      white-space: pre;
+    }
+    /*
+    @top-center {
+      width: 100%;
+      margin-bottom: 0.4cm;
+      border-bottom: solid 0.2pt #000;
+      font-size: 8pt;
+      color: #000;
+      content: "";
+    }
+    */
+    @top-right {
+      /*
+      content: "-----------------"; 
+      border-bottom: solid 1px red;
+       */
+      width: 50%;
+      background-color: #f2f2f2;
+      margin-bottom: 0.2cm;
+      padding-top: 0.7em;
+      padding-right: 1em;
+      border-bottom-right-radius: 0.5em;
+      /*
+      border-bottom: solid 0.2pt #000;
+      */
+      font-size: 8pt;
+      color: #000;
+      content: string(chtitle, first);
+    }
+    @bottom-right {
+      font-size: 8pt;
+      content: counter(page) " / " counter(pages);
+    }
+  }
+}
+
+/*
+vim: filetype=css textwidth=78 foldmethod=syntax foldcolumn=3 wrap
+vim: linebreak ruler spell spelllang=en showbreak=… shiftwidth=2
+vim: softtabstop=2 tabstop=2 expandtab
+*/

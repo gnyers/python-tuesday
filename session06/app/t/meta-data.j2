@@ -1,0 +1,54 @@
+#cloud-config
+
+instance-id: {{ fqdn }}
+local-hostname: {{ fqdn }}
+
+ssh_keys:
+  # Pre-generated SSH host keys
+  rsa_private: |
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    | Pre-generated SSH host keys goes here |
+    -----END OPENSSH PRIVATE KEY-----
+  rsa_public: |
+    ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDPV/vT/xMvqyMEt31Waq5ljEqc+QH44YTYp0KfxeC/RuehMIO1ec+PpXa2sbuXZNNpKoGjyHC/dpiM2M62P4LN3DeFCk/696c4F5uCq/oJG7YbrlbJSS8MNV5I9Gi6ly6DOLUFUFZFRjtQC7qzPWekrNtD7yvK3CPi9EJjSJdRVxusbtj/SuPPraUR9zW2e8MSiBelhFB2nMLYJhatfpjP8Ll6PbMIfNOYmCLHqVsGd7HzzRgPnaMU1PlA3WOaLlRSvMA/A2htzj/qtMskk+I08D9BGXnfeP3Ta4qZNWMXsK//iJ8ZN7ceOsz3vkqtAMF0WFFX5OIPvuy/5GbZj9yD 
+  ecdsa_private: |
+    -----BEGIN OPENSSH PRIVATE KEY-----
+    | Pre-generated SSH host keys goes here |
+    -----END OPENSSH PRIVATE KEY-----
+  ecdsa_public: |
+    ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBG4yTQcWG0rkWokwLYxUWgfhgzQb87ZYcji3/YpaszoEO29AZZoHpABSVFIiMTZIMkSgNjOqR8Oem0PFDTzdvZo= 
+
+network:
+  version: 2
+  ethernets:
+    eth0:
+      addresses: [ ]
+      dhcp4: true
+      dhcp6: true
+      nameservers: {}
+      optional: true
+
+output:
+  init:
+    output: "> /var/log/cloud-init.out"
+    error: "> /var/log/cloud-init.err"
+  config: "tee -a /var/log/cloud-config.log"
+  final:
+    - ">> /var/log/cloud-final.out"
+    - "/var/log/cloud-final.err"
+
+rsyslog:
+    remotes:
+        log_serv: "*.* @{{ loghost_url }}"
+
+package_upgrade: true
+packages:
+  - pwgen
+  - telnet
+
+phone_home:
+  url: {{ phone_home_url }}
+  post: [ ]
+  tries: 5
+
+# vim:syntax=yaml

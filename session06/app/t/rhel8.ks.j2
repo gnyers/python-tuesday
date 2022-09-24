@@ -1,0 +1,55 @@
+#version=RHEL8
+ignoredisk --only-use=sda
+# Partition clearing information
+clearpart --none --initlabel
+# Use graphical install
+# graphical
+# Use text install
+text
+repo --name="{{ repo.appstream.name | default("AppStream", true) }}" --baseurl={{ repo.appstream.baseurl | default("file:///run/install/repo/AppStream", true) }}
+# Use CDROM installation media
+cdrom
+# Keyboard layouts
+keyboard --vckeymap=us --xlayouts='us'
+# System language
+lang en_US.UTF-8
+
+# Network information
+network  --bootproto=dhcp --device={{ macaddr }} --ipv6=auto --activate
+network  --hostname={{ hostname }}.{{ domain }}
+# Root password
+rootpw --iscrypted {{ rootpw | default("$6$RR6kKfZpLd7x16Su$35ZQbsMzSpGlOTBRI/Ga/EPdypUi7SVsmskHaEZ.oEQKfl7wDkM0GSrdcibFxKETWQTYkQkdZp.bN1kFi8/8e/", true) }}
+# Run the Setup Agent on first boot
+firstboot --enable
+# Do not configure the X Window System
+skipx
+# System services
+services --enabled="chronyd"
+# System timezone
+timezone Europe/Amsterdam --isUtc
+
+# Groups and Users
+group --name={{ adminsgrp }} --gid={{ adminsgid }}
+user --groups={{ adminuser_groups | default("wheel", true) }} --name={{ adminuser | default("tux", true ) }} --password={{ | default("$6$6o1T6My5TTj/z82/$muvPiGohnkwpjA3Ojiws9t7RX1VdW5ZuEBRrMI3vG5BmBnZOFft6r9gp6xyFO1Tv7RuKrwNuR0VoipCJd4eFB1", true) }} --iscrypted --uid={{ adminuser_uid | default(10001, true) }} --gecos="{{ adminuser_gecos | default(tux, true) }}" --gid={{ adminuser_gid | default(10001, true) }}
+
+# Disk partitioning information
+part / --fstype="xfs" --ondisk=sda --size=12288 --label=root
+part /boot --fstype="ext4" --ondisk=sda --size=512 --label=boot
+
+# Logging
+logging --host={{ loghost | default("loghost", true) }} --port={{ loghostport | default(514, true) }} --level=warning
+
+%packages
+@^minimal-environment
+
+%end
+
+%addon com_redhat_kdump --disable --reserve-mb='auto'
+
+%end
+
+%anaconda
+pwpolicy root --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+pwpolicy user --minlen=6 --minquality=1 --notstrict --nochanges --emptyok
+pwpolicy luks --minlen=6 --minquality=1 --notstrict --nochanges --notempty
+%end
