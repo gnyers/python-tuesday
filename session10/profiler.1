@@ -1,0 +1,125 @@
+#!/usr/bin/env python3
+
+'''Recursively analyze a directory structure and provide some stats about the
+disk space usage of the entire content, the number of files, directories, hard-
+en symlinks.
+
+Usage:
+
+  ./profiler exampledir
+
+Example output of a simple directory structure:
+
+  --- Statistics of directory: exampledir/
+  Number of errors encountered while processing 0
+     
+  The number of dirs: 6
+  The number of non-dirs (i.e.: files, hard- and symlinks): 8
+  The number of symlinks: 1
+  The number of hardlinks: 3
+  Used disk space: 524 bytes
+  Which of the hardlinks point to the same file? 
+    exampledir/file1.dat, exampledir/a/file2.bin, exampledir/c/e/file15 : 7 bytes
+'''
+
+import os
+import sys
+from os.path import join, isdir, isfile, islink
+
+# Program details
+__author__ = 'Gábor Nyers'
+__version__ = '0.0.1'
+__date__ = '2022-05-31'
+__license__ = 'GPLv3'
+version_info = tuple(__version__.split('.'))
+
+# Variable defs
+startdir = sys.argv[1]                 # get CLI argument 'dir'
+data = {}                              # data structure
+
+def getattrs(path):
+    '''Return a customized set of attributes of path
+    '''
+    attrs = os.lstat(path)
+    ret = { 'isdir': isdir(path),      # is it a directory? True/False
+            'isfile': isfile(path),    # is it a file? 
+                                       # NOTE: also True if hard- or symlink!
+            'issymlink': islink(path), # is it a symlink?
+            'refcount': attrs.st_nlink, # how many filenames to same inode? 
+                                       # NOTE: >1 if hardlink!
+            'size': attrs.st_size,     # the nr. of bytes of disk space consumed
+            'inode': attrs.st_ino,     # the inode's **unique** id
+                                       # NOTE: find out names pointing to same file
+          }
+    # Hardlinks are files that have multiple names, in the same or different 
+    # directory
+    if ret['isfile'] and ret['refcount'] > 1:
+        ret['ishardlink'] = True
+    return ret
+
+# Initialize stuff
+errors = {}
+total_size = 0
+
+# recursively iterate through the `startdir`, 
+# **whithout** following symbolic links
+for path, subdirs, files in os.walk(startdir, followlinks=False):
+    data[path] = getattrs(path)
+    data[path].update({'nr_of_nondirs': len(files)})  # how many non-dir
+                                       # objects in curr. dir?
+
+    sizes = 0
+    for f in files:                    # nested loop to inspect dir. objects
+        try:                           # in case somthing goes wrong...
+            fpath = join(path, f)
+            data[fpath] = getattrs(fpath)
+            sizes += data[fpath]['size']
+        except Exception as e:         # ... handle any run-time errors
+            errors[fpath] = e.args     # remember which file and what error
+
+    data[path].update({'disk_usage': sizes})  # how many non-dir
+
+### For debug purposes: uncomment to see what the content is of `data` is
+# for p, attrs in data.items():
+#     print(f'{p}: {attrs}')
+
+### Print results:
+print(f'--- Statistics of directory: {startdir}')
+
+print(f'Number of errors encountered while processing {len(errors)}')
+print(f'   {", ".join(errors.keys())}')
+
+dirs = [ path for path,attrs in data.items() if attrs['isdir'] ]
+print(f'The number of dirs: {len(dirs)}')
+
+files = [ path for path,attrs in data.items() if not(attrs['isdir']) ]
+print(f'The number of non-dirs (i.e.: files, hard- and symlinks): {len(files)}')
+
+symlinks = [ path for path,attrs in data.items() if attrs.get('issymlink') ]
+print(f'The number of symlinks: {len(symlinks)}')
+
+hardlinks =  [ path for path,attrs in data.items() if attrs.get('ishardlink') ]
+print(f'The number of hardlinks: {len(hardlinks)}')
+
+total_disk_usage = sum([ attrs.get('disk_usage',0) 
+                         for path,attrs in data.items()
+                         if attrs['isdir']
+                       ])
+print(f'Used disk space: {total_disk_usage} bytes')
+
+# build a dict where the elemens are: inode: path                               # new: 1
+deduped_non_dir_inodes = {attrs['inode']: path                                  # new: 1
+                          for path, attrs in data.items()                       # new: 1 
+                          if not attrs['isdir'] }                               # new: 1
+total_disk_usage_corrected = sum([ data[path]['size']                           # new: 1
+                             for inode,path in deduped_non_dir_inodes.items()]) # new: 1
+print(f'Used disk space (corrected): {total_disk_usage_corrected} bytes')       # new: 1
+
+print('Which of the hardlinks point to the same file? ')
+distict_files = {}
+for path in hardlinks:
+    distict_files.setdefault(data[path]['inode'], []).append(path)
+for inode, paths in distict_files.items():
+    fsize = data[paths[0]]['size']
+    print(f'  {", ".join(paths)} : {fsize} bytes')
+

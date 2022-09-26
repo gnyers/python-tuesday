@@ -1,0 +1,15 @@
+docutils.conf
+*.tar.gz
+*.tgz
+*.swp
+**/references/*
+**/.vscode/*
+.~lock.*
+.ipynb_checkpoints
+**/__pycache__
+**/*.html
+**/*.pyc
+future_*
+tmp/
+.env
+.envrc
