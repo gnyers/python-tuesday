@@ -108,12 +108,12 @@ total_disk_usage = sum([ attrs.get('disk_usage',0)
 
 **Why** is this expression incorrect?
 
-:  In the calculation of the total disk usage above expression will disregard the fact
-   that [hard links][hard-link] are *just names* pointing to the same [**inode**][inode]
-   (i.e.: file content).
+In the calculation of the total disk usage above expression will disregard the fact
+that [hard links][hard-link] are *just names* pointing to the same [**inode**][inode]
+(i.e.: file content).
 
-     Instead of counting the size **only once**, the current expression adds the file's
-     size to the total for **every** hardlink, i.e.: `file2.bin`, `file15` and `file1.dat`
+Instead of counting the size **only once**, the current expression adds the file's
+size to the total for **every** hardlink, i.e.: `file2.bin`, `file15` and `file1.dat`
 
 
 ## Calculate the correct total usage
