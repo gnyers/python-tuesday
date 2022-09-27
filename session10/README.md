@@ -118,96 +118,101 @@ total_disk_usage = sum([ attrs.get('disk_usage',0)
 
 ## Calculate the correct total usage
 
-The **Solution**:
 
-:  We need an auxiliary data structure that contains the inodes of **all** non-directory
-   filesystem objects. The calculation should only take into account the sizes of those
-   inodes mentioned here.
+### The **Solution**:
 
-     **NOTE**: See [profiler.1](profiler.1) for the implemented solution!
-   
-     1. the auxiliary data structure could be either:
 
-        -  a `set`, e.g:
+**NOTE**: See [profiler.1](profiler.1) for the implemented solution!
 
-           ~~~python
-           deduped_non_dir_inodes = { attrs['inode']
-                                      for path, attrs in data.items() 
-                                      if not attrs['isdir'] }
-           # deduped_non_dir_inodes:
-           # {217065955, 40485989, 40485993, 298461643, 40485982, 40485983}
-           ~~~
+1. We need an auxiliary data structure that contains the inodes of **all** non-directory
+   filesystem objects.
 
-        -  or a `dict`, e.g.:
+   The auxiliary data structure could be either:
 
-           ~~~python
-           deduped_non_dir_inodes = { attrs['inode']:path 
-                                      for path, attrs in data.items()
-                                      if not attrs['isdir'] } 
-           # deduped_non_dir_inodes:
-           # { 40485993: '../session09/exampledir/c/e/file15',
-           #   40485989: '../session09/exampledir/a/file5',
-           #   217065955: '../session09/exampledir/a/b/file3',
-           #   40485982: '../session09/exampledir/a/b/d/file9',
-           #   40485983: '../session09/exampledir/a/b/d/file8',
-           #   298461643: '../session09/exampledir/c/file13' }
-           ~~~
+   -  a `set`, e.g:
 
-        The `dict` option is more suitable for this case, because we already have the
-        dictionary `data`.  
-        The keys of which are the filesystem objects' `path`. So by combining the two,
-        we can easily retrieve the `size` of each unique non-directory `inode`:
+      ~~~python
+      deduped_non_dir_inodes = { attrs['inode']
+                                 for path, attrs in data.items() 
+                                 if not attrs['isdir'] }
+      # deduped_non_dir_inodes:
+      # {217065955, 40485989, 40485993, 298461643, 40485982, 40485983}
+      ~~~
 
-        ~~~python
-        >>> deduped_non_dir_inodes[217065955]
-        '../session09/exampledir/a/b/file3'
+   -  or a `dict`, e.g.:
 
-        >>> data['../session09/exampledir/a/b/file3']['size']
-        153
-        ~~~
+      ~~~python
+      deduped_non_dir_inodes = { attrs['inode']:path 
+                                 for path, attrs in data.items()
+                                 if not attrs['isdir'] } 
+      # deduped_non_dir_inodes:
+      # { 40485993: '../session09/exampledir/c/e/file15',
+      #   40485989: '../session09/exampledir/a/file5',
+      #   217065955: '../session09/exampledir/a/b/file3',
+      #   40485982: '../session09/exampledir/a/b/d/file9',
+      #   40485983: '../session09/exampledir/a/b/d/file8',
+      #   298461643: '../session09/exampledir/c/file13' }
+      ~~~
 
-     1. modify the expression that calculates the total disk usage:
+   The `dict` option is more suitable for this case, because we already have the
+   dictionary `data`.  
+   The keys of which are the filesystem objects' `path`. So by combining the two,
+   we can easily retrieve the `size` of each unique non-directory `inode`:
 
-           ~~~python
-           deduped_non_dir_inodes = {attrs['inode']: path      
-                                     for path, attrs in data.items()
-                                     if not attrs['isdir'] }
-           total_disk_usage_corrected = sum([ data[path]['size']
-                             for inode,path in deduped_non_dir_inodes.items()])
-           ~~~
+   ~~~python
+   >>> deduped_non_dir_inodes[217065955]
+   '../session09/exampledir/a/b/file3'
 
-        **NOTE**: that the calculation now loops through the auxiliary data structure
-        `deduped_non_dir_inodes`.
+   >>> data['../session09/exampledir/a/b/file3']['size']
+   153
+   ~~~
+
+
+1. The calculation should only take into account the sizes of those inodes mentioned in
+   the auxiliary data structure.
+
+   Modify the expression that calculates the total disk usage:
+
+   ~~~python
+   deduped_non_dir_inodes = {attrs['inode']: path      
+                             for path, attrs in data.items()
+                             if not attrs['isdir'] }
+   total_disk_usage_corrected = sum([ data[path]['size']
+                     for inode,path in deduped_non_dir_inodes.items()])
+   ~~~
+
+   **NOTE**: that the calculation now loops through the auxiliary data structure
+   `deduped_non_dir_inodes`.
 
 
 **NOTE**: See [profiler.1](profiler.1) for the implemented solution!
 
 
 
-**Incorrect solution**:
+### Incorrect solution
 
-:  It could be argued that the original expression needs only to be slightly modified and
-   extended with a simple check `attrs['refcount'] < 2`, e.g.:
+It could be argued that the original expression needs only to be slightly modified and
+extended with a simple check `attrs['refcount'] < 2`, e.g.:
 
-     ~~~python
-     # Incorrect solution:
-     total_disk_usage = sum([ attrs['size']
-                              for path,attrs in data.items()
-                              if not attrs['isdir'] 
-                                 and attrs['refcount'] < 2 ])  # <-- check of refcount
-     ~~~
-     
-     **Why** is this incorrect:
-     
-     -  Most importantly: above expression will disregard **all** hard-links and will not
-        count the size of **any** them! For the correct calculation of the total disk
-        usage the size of **every inode** needs to be added **exactly once**!
+~~~python
+# Incorrect solution:
+total_disk_usage = sum([ attrs['size']
+                         for path,attrs in data.items()
+                         if not attrs['isdir'] 
+                            and attrs['refcount'] < 2 ])  # <-- check of refcount
+~~~
+  
+**Why** is this incorrect:
+  
+-  Most importantly: above expression will disregard **all** hard-links and will not
+   count the size of **any** them! For the correct calculation of the total disk
+   usage the size of **every inode** needs to be added **exactly once**!
 
-     -  Also: there could be multiple **different**  hard-links in the directory structure.
-     
-        In this case `attrs['refcount']` only indicates that this filesystem object is a
-        hard-link. It **does not** tells which [inode][inode] is being referenced by the
-        current element.
+-  Also: there could be multiple **different**  hard-links in the directory structure.
+
+   In this case `attrs['refcount']` only indicates that this filesystem object is a
+   hard-link. It **does not** tells which [inode][inode] is being referenced by the
+   current element.
 
 
 
@@ -218,12 +223,12 @@ The **Solution**:
 Since the session is meant for the novice programmer, let's recap the purpose and usage of
 command-line (CLI) arguments.
 
-- **Primary purpose** of CLI arguments:<br>
-  From the early days of operating systems, CLI arguments are used to control a program's
-  behavior by enumerating the required parameters on the command line.
-
-- These arguments need to be interpreted (i.e.: "parsed") by the program **immediately**
-  after start in order for it to configure its run-time parameters.
+-  **Primary purpose** of CLI arguments:<br>
+   From the early days of operating systems, CLI arguments are used to control a program's
+   behavior by enumerating the required parameters on the command line.
+   
+-  These arguments need to be interpreted (i.e.: "parsed") by the program **immediately**
+   after start in order for it to configure its run-time parameters.
 
 
 ### The anatomy of a command
