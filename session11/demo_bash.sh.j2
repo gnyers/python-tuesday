@@ -1,0 +1,15 @@
+# Script to create users from data file
+
+# Create the groups
+{%- for grp in data  %}
+groupadd {{ grp }}
+{%-  endfor          %}
+
+# Create the users
+{%  for grp in data   %}
+## Creating the users of the group '{{ grp }}':
+{%- for user in data[grp] %}
+useradd -g {{ grp }} -c '{{ data[grp][user] }}' {{ user | lower }}
+{%- endfor  %}
+{%  endfor  %}
+

@@ -9,7 +9,9 @@ docutils.conf
 **/__pycache__
 **/*.html
 **/*.pyc
+**/exampledir/
 future_*
 tmp/
 .env
 .envrc
+*.drawio

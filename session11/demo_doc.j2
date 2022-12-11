@@ -1,0 +1,18 @@
+{#- this file: demo_doc.j2             -#}
+{%- set env = environments[ envname ]  -%}
+
+# Instruction start the webserver
+
+1. Log in to `{{ env.fqdn_web }}` as user `{{ env.admin }}`.
+
+1. Execute the following:
+
+   ```bash
+   systemctl start {{ env.svc_web }}
+   ```
+
+
+date last update: {{ now.strftime('%Y-%m-%d') }}
+
+
+

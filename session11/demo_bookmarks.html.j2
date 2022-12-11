@@ -1,0 +1,68 @@
+<!--
+Usage: 
+  - Create importable bookmarks for Firefox,
+    with additional bookmark attributes:
+       
+    ./j2pp.py --param firefox=1 title='Demo bookmarks' \
+              --data demo_bookmarks_data.yaml \
+              demo_bookmarks.html.j2
+
+  - Create importable bookmarks for Chrome/Chromium:
+
+    ./j2pp.py --param firefox=0 title='Demo bookmarks' \
+              --data demo_bookmarks_data.yaml \
+              demo_bookmarks.html.j2
+-->
+
+{%- macro firefox_attrs(bm) -%}
+{#- These attributes are not supported by Chrome, only Firefox       -#}
+       {{ ' SHORTCUTURL="%s"' | format (bm.shortcut | default(''))
+          if bm.shortcut|default(False)
+          else ''                                                    -}}
+       {{ ' TAGS="%s"'     | format(bm.tags|default([])|join(', '))
+          if bm.tags|default(False)
+          else ''                                                    -}}
+       {{ ' ICON_URI="%s"' | format(bm.icon_uri|default(''))
+          if bm.icon_uri|default(False)
+          else ''                                                    -}}
+       {{ ' ADD_DATE="%s"' | format(bm.add_date)
+          if bm.add_date|default(False)
+          else ''                                                    -}}
+       {{ ' LAST_MODIFIED="%s"' | format(now.timestamp()|int)        -}}
+       {{ ' ICON="%s"' | format(bm.icon | default(''))
+          if bm.icom|default(False)
+          else ''                                                    -}}
+{%- endmacro -%}
+
+{%- macro bookmark(bm) %}
+  <DT><A 
+       {{- ' HREF="%s"' | format(bm.url | default('#'))
+          if bm.url|default(False)
+          else 'https://example.com/404'                             -}}
+       {{- firefox_attrs(bm) if firefox|default(False) else ""      -}}
+      >{{ bm.title | default('Unnamed Link') }}</A></DT>
+{%- endmacro -%}
+
+
+{% macro bookmark_folder(foldername, urls) %}
+
+<DT><H3>{{foldername}}</H3></DT>
+<DL>
+  {%- for obj in urls -%}
+    {%- if obj.foldername | default(False) and obj.content | default(False) -%}
+      {#- Process nested folder -#}
+      {{ bookmark_folder(obj.foldername, obj.content) }}
+    {%- else -%}
+      {#- Process bookmark -#}
+      {{ bookmark(obj) }}
+    {%- endif -%}
+  {%- endfor %}
+</DL>
+{% endmacro -%}
+
+<html>
+<h1>{{ title }} -- for {{ "Firefox" if firefox|default(False) else "Chrome/Firefox" }}</h1>
+{{- bookmark_folder('Bookmarks', bookmarks|default([])) -}}
+</body>
+</html>
+

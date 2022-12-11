@@ -1,0 +1,6 @@
+[flake8]
+exclude =
+    .git,
+
+extend-ignore = 
+     E501,          # line too long (80 > 79 characters)

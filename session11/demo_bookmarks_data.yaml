@@ -1,0 +1,29 @@
+bookmarks:
+  - title: ":wave: Music page 1"
+    url: https://mydomain.nl/music/1
+    tags: [ music, tag 1, tag 3 ]
+    shortcut: page1
+    icon_uri: https://www.defluit.nl/
+  - title: Music page 2
+    url: https://mydomain.nl/music/2
+  - title: Music page 3
+    url: https://mydomain.nl/music/3
+  - title: Music page 4
+    url: https://mydomain.nl/music/4
+  - title: Music page 5
+    url: https://mydomain.nl/music/5
+  - title: Music page 6
+    url: https://mydomain.nl/music/6
+  - foldername: Test folder
+    content:
+    - title: Test page 5
+      url: https://mydomain.nl/Test/5
+    - title: Test page 6
+      url: https://mydomain.nl/Test/6
+    - foldername: Sub-sub folder
+      content:
+      - title: Bla!
+        url: https://nu.nl
+  - title: Music page 7
+    url: https://mydomain.nl/music/7
+

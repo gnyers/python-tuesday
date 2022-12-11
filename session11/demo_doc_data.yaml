@@ -1,0 +1,10 @@
+# this file: demo_doc_data.yaml
+environments:
+  prd:
+    fqdn_web: webprd32.prd.example.com
+    admin: webmaster
+    svc_web: httpd
+  tst:
+    fqdn_web: web2.tst.example.com
+    admin: admin
+    svc_web: httpd
