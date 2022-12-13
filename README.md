@@ -17,7 +17,7 @@ The topics of the sessions so far:
   combining code snippets to solve a problem
 - [Session 10](session10): Solving practical problems with Python - Part 2:
   make a program more robust for daily use
-
+- [Session 11](session11): Practical Jinja2: automation, reporting and documents
 
 
 
