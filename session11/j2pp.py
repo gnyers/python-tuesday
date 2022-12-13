@@ -6,6 +6,10 @@ Render a Jinja2 template using data provided in a JSON, YAML or CSV file and
 in the CLI arguments.
 '''
 
+__author__ = 'Gábor Nyers'
+__version__ = '0.1.0'
+__license__ = 'CC BY-NC 4.0'
+
 # imports of modules in Standard Library
 import json
 import os
@@ -38,7 +42,6 @@ def parseargs(cmdline=sys.argv[1:].copy(),       # for safety use a copy of argv
         epilog=epilog,
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    # p.description, p.epilog = description, epilog
 
     p.add_argument('-D', '--debug',
                    action='store_true',
